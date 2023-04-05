@@ -1,0 +1,14 @@
+Package: hlabud
+Title: Amino Acid Association Methods for the Human Leukocyte Antigen (HLA) Genes
+Version: 0.0.0.9000
+Authors@R: 
+    person("Kamil", "Slowikowski", , "kslowikowski@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-2843-6370"))
+Description: Methods for analysis of HLA genes at the amino acid level.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Depends: 
+    R (>= 2.10)
+LazyData: true
