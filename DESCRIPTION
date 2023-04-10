@@ -12,3 +12,16 @@ RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
 LazyData: true
+Imports: 
+    curl,
+    dplyr,
+    glue,
+    jsonlite,
+    magrittr,
+    onehot,
+    rappdirs,
+    rlang,
+    stats,
+    stringr,
+    tibble,
+    tidyr

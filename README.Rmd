@@ -24,8 +24,8 @@ file_size <- function(x) glue("{fs::file_size(x)}B")
 
 ## Overview
 
-hlabud provides functions to ease downloading and analyzing human leukocyte
-antigen (HLA) genotypes hosted at [IMGTHLA].
+hlabud provides functions to download and analyze human leukocyte antigen (HLA)
+genotypes from [IMGTHLA] in a tidy R workflow.
 
 [IMGTHLA]: https://github.com/ANHIG/IMGTHLA
 

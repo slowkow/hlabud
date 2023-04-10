@@ -1,13 +1,13 @@
 hlabud
 ================
 Kamil Slowikowski
-2023-04-05
+2023-04-06
 
 ## Overview
 
-hlabud provides functions to ease downloading and analyzing human
-leukocyte antigen (HLA) genotypes hosted at
-[IMGTHLA](https://github.com/ANHIG/IMGTHLA).
+hlabud provides functions to download and analyze human leukocyte
+antigen (HLA) genotypes from [IMGTHLA](https://github.com/ANHIG/IMGTHLA)
+in a tidy R workflow.
 
 ## Installation
 
