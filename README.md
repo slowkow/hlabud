@@ -31,6 +31,9 @@ devtools::install_github("slowkow/hlabud")
 Examples
 ========
 
+Here are a few examples that demonstrate how to use hlabud in an
+analysis.
+
 Get a one-hot encoded matrix for all HLA-DRB1 alleles
 -----------------------------------------------------
 
@@ -39,7 +42,6 @@ from the latest IMGTHLA release:
 
 ``` r
 library(hlabud)
-# Load the amino acid alignments for HLA-DQB1
 a <- hla_alignments(gene = "DRB1", quiet = FALSE)
 ```
 
