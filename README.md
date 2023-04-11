@@ -1,18 +1,18 @@
--   [Overview](#overview)
--   [Installation](#installation)
--   [Examples](#examples)
-    -   [Get a one-hot encoded matrix for all HLA-DRB1
-        alleles](#get-a-one-hot-encoded-matrix-for-all-hla-drb1-alleles)
-    -   [Logistic regression association testing for each amino acid
-        position](#logistic-regression-association-testing-for-each-amino-acid-position)
-    -   [UMAP embedding of 3,486 HLA-DRB1
-        alleles](#umap-embedding-of-3486-hla-drb1-alleles)
-    -   [Download and unpack the latest release from
-        IMGTHLA](#download-and-unpack-the-latest-release-from-imgthla)
--   [Related work](#related-work)
+-   [Introduction](#introduction)
+    -   [Installation](#installation)
+    -   [Examples](#examples)
+        -   [Get a one-hot encoded matrix for all HLA-DRB1
+            alleles](#get-a-one-hot-encoded-matrix-for-all-hla-drb1-alleles)
+        -   [Logistic regression association testing for each amino acid
+            position](#logistic-regression-association-testing-for-each-amino-acid-position)
+        -   [UMAP embedding of 3,486 HLA-DRB1
+            alleles](#umap-embedding-of-3486-hla-drb1-alleles)
+        -   [Download and unpack the latest release from
+            IMGTHLA](#download-and-unpack-the-latest-release-from-imgthla)
+    -   [Related work](#related-work)
 
-Overview
---------
+Introduction
+============
 
 hlabud provides functions to download and analyze human leukocyte
 antigen (HLA) genotypes from [IMGTHLA](https://github.com/ANHIG/IMGTHLA)
@@ -39,7 +39,7 @@ from the latest IMGTHLA release:
 ``` r
 library(hlabud)
 # Load the amino acid alignments for HLA-DQB1
-a <- hla_alignments(gene = "DRB1")
+a <- hla_alignments(gene = "DRB1", quiet = FALSE)
 ```
 
     ## hlabud is using IMGTHLA release 3.51.0
@@ -116,7 +116,7 @@ dim(dosage)
 
     ## [1]  5 35
 
-Notice:
+**Note:**
 
 -   The `dosage` matrix has one row for each individual and one column
     for each amino acid at each position. By default, `amino_dosage()`
@@ -244,6 +244,13 @@ getOption("hlabud_release")
 
 # Use a specific release
 options(hlabud_release = "3.51.0")
+
+# List all releases
+hla_releases()
+#>  [1] "3.51.0"   "3.50.0"   "3.49.0"   "3.48.0"   "3.47.0"   "3.46.0"   "3.45.1"   "3.45.01"
+#>  [9] "3.45.0.1" "3.45.0"   "3.44.1"   "3.44.0"   "3.43.0"   "3.42.0"   "3.41.2"   "3.41.0"
+#> [17] "3.40.0"   "3.39.0"   "3.38.0"   "3.37.0"   "3.36.0"   "3.35.0"   "3.34.0"   "3.33.0"
+#> [25] "3.32.0"   "3.31.0"   "3.30.0"   "3.29.0"   "3.28.0"   "3.27.0"
 ```
 
 After installing a few releases, this is what the hlabud folder might
