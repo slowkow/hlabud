@@ -3,11 +3,12 @@
 -   [Examples](#examples)
     -   [Make a one-hot encoded matrix from a set of HLA
         alleles](#make-a-one-hot-encoded-matrix-from-a-set-of-hla-alleles)
+    -   [UMAP embedding of HLA-DRB1
+        alleles](#umap-embedding-of-hla-drb1-alleles)
     -   [Download and unpack the latest release from
         IMGTHLA](#download-and-unpack-the-latest-release-from-imgthla)
 -   [Related work](#related-work)
-    -   [[BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package
-        on CRAN](#bigdawg-r-package-on-cran)
+    -   [BIGDAWG](#bigdawg)
 
 Overview
 --------
@@ -19,12 +20,11 @@ in a tidy R workflow.
 Installation
 ------------
 
-``` r
-devtools::install_github("slowkow/hlabud")
-```
+The quickest way to get hlabud is to install from GitHub:
 
 ``` r
-library(hlabud)
+# install.packages("devtools")
+devtools::install_github("slowkow/hlabud")
 ```
 
 Examples
@@ -32,18 +32,16 @@ Examples
 
 ### Make a one-hot encoded matrix from a set of HLA alleles
 
-It is not necessary to download all of the data. Some functions can
-download only the minimum necessary files on the fly, as needed.
-
-Below, `hla_alignments()` will use the `DQB1_prot.txt` file in our data
-directory, or else it will download the appropriate file automatically.
+We can use `hla_alignments("DQB1")` to load the `DQB1_prot.txt` file
+from the latest IMGTHLA release:
 
 ``` r
+library(hlabud)
 # Load the amino acid alignments for HLA-DQB1
 al <- hla_alignments(gene = "DQB1", type = "prot")
 ```
 
-We get the amino acid sequence alignments in a data frame:
+The amino acid sequence alignments are in a data frame:
 
 ``` r
 al$sequences[1:5,]
@@ -58,8 +56,8 @@ al$sequences[1:5,]
     ## 4 DQB1*05:01:01:04 --------------------------------------------------------------------------------…
     ## 5 DQB1*05:01:01:05 --------------------------------------------------------------------------------…
 
-And we also get a one-hot encoded matrix with one column for each amino
-acid at each position:
+And we get a one-hot encoded matrix with one column for each amino acid
+at each position:
 
 ``` r
 al$onehot[1:5,1:5]
@@ -83,8 +81,10 @@ genotypes <- c(
 )
 ```
 
-If we want to run an association test on the amino acid positions, then
-we need to convert each individual’s genotypes to amino acid dosages:
+Suppose we want to run an association test on the amino acid positions.
+
+We can use `amino_dosage()` to convert each individual’s genotypes to
+amino acid dosages:
 
 ``` r
 dosage <- amino_dosage(genotypes, al$onehot)
@@ -118,21 +118,16 @@ Also notice that the first individual has dosage=3 for `P6_D` (position
 input. Please be careful to check that the dosage looks the way you
 expect.
 
-Here is one simplistic method to generate genotypes for 50 individuals:
+### UMAP embedding of HLA-DRB1 alleles
 
-``` r
-# Create a sample of 50 individuals
-set.seed(42)
-alleles <- data.frame(
-  a1 = sample(al$sequences$allele, 50),
-  a2 = sample(al$sequences$allele, 50)
-)
-alleles <- with(alleles, sprintf("%s+%s", a1, a2))
-head(alleles)
-```
+Here is an embedding of 3486 HLA-DRB1 alleles created by passing the
+one-hot amino acid encoding of the alleles as the input to UMAP:
 
-    ## [1] "DQB1*04:46N+DQB1*05:01:04"   "DQB1*06:64+DQB1*06:280"      "DQB1*06:417+DQB1*05:02:11"  
-    ## [4] "DQB1*02:01:19+DQB1*02:01:19" "DQB1*06:03:05+DQB1*03:450"   "DQB1*03:395+DQB1*02:124"
+![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)
+
+We can highlight which alleles have amino acid H at position 13:
+
+![](README_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 ### Download and unpack the latest release from IMGTHLA
 
@@ -160,7 +155,10 @@ options(hlabud_release = "3.51.0")
 Related work
 ------------
 
-### [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package on CRAN
+### BIGDAWG
+
+[BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) is an R package
+available on CRAN that facilitates case-control analysis of HLA data.
 
 > ‘Bridging ImmunoGenomic Data-Analysis Workflow Gaps’ (‘BIGDAWG’) is an
 > integrated analysis system that automates the manual data-manipulation
@@ -168,10 +166,13 @@ Related work
 > required for analyses of highly polymorphic genetic systems (e.g., the
 > immunological human leukocyte antigen (HLA) and killer-cell
 > Immunoglobulin-like receptor (KIR) genes) and their respective genomic
-> data (immunogenomic) (Pappas DJ, Marin W, Hollenbach JA, Mack SJ.
-> 2016. ‘Bridging ImmunoGenomic Data Analysis Workflow Gaps (BIGDAWG):
-> An integrated case-control analysis pipeline.’ Human Immunology.
-> 77:283-287). Starting with unambiguous genotype data for case-control
-> groups, ‘BIGDAWG’ performs tests of Hardy-Weinberg equilibrium, and
-> carries out case-control association analyses for haplotypes,
-> individual loci, specific HLA exons, and HLA amino acid positions.
+> data (immunogenomic)
+>
+> Pappas DJ, Marin W, Hollenbach JA, Mack SJ. 2016. ‘Bridging
+> ImmunoGenomic Data Analysis Workflow Gaps (BIGDAWG): An integrated
+> case-control analysis pipeline.’ Human Immunology. 77:283-287).
+>
+> Starting with unambiguous genotype data for case-control groups,
+> ‘BIGDAWG’ performs tests of Hardy-Weinberg equilibrium, and carries
+> out case-control association analyses for haplotypes, individual loci,
+> specific HLA exons, and HLA amino acid positions.

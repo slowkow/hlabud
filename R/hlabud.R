@@ -118,7 +118,7 @@ hla_releases <- function(overwrite = FALSE) {
 #'
 #' @return A dataframe.
 #' @export
-hla_alignments <- function(release = NULL, gene = "DRB", type = "prot") {
+hla_alignments <- function(gene = "DRB", type = "prot", release = NULL) {
   hlabud_dir <- setup_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   releases <- hla_releases()
