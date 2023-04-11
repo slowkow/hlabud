@@ -118,7 +118,7 @@ hla_releases <- function(overwrite = FALSE) {
 #'
 #' @return A dataframe.
 #' @export
-hla_alignments <- function(gene = "DRB", type = "prot", release = NULL) {
+hla_alignments <- function(gene = "DRB", type = "prot", release = NULL, quiet = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   releases <- hla_releases()
@@ -135,6 +135,9 @@ hla_alignments <- function(gene = "DRB", type = "prot", release = NULL) {
   if (!type %in% c("nuc", "gen", "prot")) {
     stop("Unrecognized type '{type}' not in: nuc gen prot")
   }
+  if (!quiet) {
+    message(glue("hlabud is using IMGTHLA release {release}"))
+  }
   if (type == "prot") {
     prot_file <- file.path(hlabud_dir, release, "alignments", glue("{gene}_{type}.txt"))
     if (!file.exists(prot_file)) {
@@ -142,9 +145,19 @@ hla_alignments <- function(gene = "DRB", type = "prot", release = NULL) {
       j <- read_json(tags_file)
       sha <- j[[ix]]$commit$sha
       repo_url <- "https://github.com/ANHIG/IMGTHLA"
-      lines <- readLines(glue("{repo_url}/raw/{sha}/alignments/{gene}_{type}.txt"))
+      prot_url <- glue("{repo_url}/raw/{sha}/alignments/{gene}_{type}.txt")
+      if (!quiet) {
+        message(glue("Downloading {prot_url}"))
+      }
+      lines <- readLines(prot_url)
       mkdir(dirname(prot_file))
+      if (!quiet) {
+        message(glue("Writing {prot_file}"))
+      }
       writeLines(lines, prot_file)
+    }
+    if (!quiet) {
+      message(glue("Reading {prot_file}"))
     }
     return(read_prot(prot_file))
   }
