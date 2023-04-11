@@ -79,12 +79,12 @@ mpn65 <- c(
 
 # Introduction
 
-hlabud provides functions to download and analyze human leukocyte antigen (HLA)
-genotypes from [IMGTHLA] in a tidy R workflow.
+hlabud is an R package that provides functions to download and analyze human
+leukocyte antigen (HLA) genotypes from [IMGTHLA] in a tidy R workflow.
 
 [IMGTHLA]: https://github.com/ANHIG/IMGTHLA
 
-## Installation
+# Installation
 
 The quickest way to get hlabud is to install from GitHub:
 
@@ -93,7 +93,7 @@ The quickest way to get hlabud is to install from GitHub:
 devtools::install_github("slowkow/hlabud")
 ```
 
-## Examples
+# Examples
 
 ```{r, include=FALSE}
 library(hlabud)
@@ -102,7 +102,7 @@ a <- hla_alignments(gene = my_gene, type = "prot")
 n_alleles <- nrow(a$seq)
 ```
 
-### Get a one-hot encoded matrix for all HLA-`r my_gene` alleles
+## Get a one-hot encoded matrix for all HLA-`r my_gene` alleles
 
 We can use `hla_alignments("DRB1")` to load the `DRB1_prot.txt` file from the
 latest IMGTHLA release:
@@ -164,7 +164,7 @@ dim(dosage)
 
 Please be careful to check that your data looks the way you expect!
 
-### Logistic regression association testing for each amino acid position
+## Logistic regression association testing for each amino acid position
 
 Let's simulate a dataset:
 
@@ -235,7 +235,7 @@ p
 ```
 
 
-### UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
+## UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
 
 Here is a UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
 encoded as a one-hot amino acid matrix with `r ncol(a$onehot)` columns, one for each amino
@@ -305,7 +305,7 @@ p
 # ggsave("test.png", p)
 ```
 
-### Download and unpack the latest release from IMGTHLA
+## Download and unpack the latest release from IMGTHLA
 
 Run `install_hla()` to download and unpack the [latest IMGTHLA
 release](https://github.com/ANHIG/IMGTHLA/releases).
@@ -361,7 +361,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 -rw-rw-r--  1 user user    129M Apr  4 20:07 v3.51.0-alpha.tar.gz
 ```
 
-## Related work
+# Related work
 
 - [BIGDAWG] is an R package available on CRAN that facilitates case-control
   analysis of HLA data. Check it out!

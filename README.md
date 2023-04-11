@@ -1,25 +1,25 @@
 -   [Introduction](#introduction)
-    -   [Installation](#installation)
-    -   [Examples](#examples)
-        -   [Get a one-hot encoded matrix for all HLA-DRB1
-            alleles](#get-a-one-hot-encoded-matrix-for-all-hla-drb1-alleles)
-        -   [Logistic regression association testing for each amino acid
-            position](#logistic-regression-association-testing-for-each-amino-acid-position)
-        -   [UMAP embedding of 3,486 HLA-DRB1
-            alleles](#umap-embedding-of-3486-hla-drb1-alleles)
-        -   [Download and unpack the latest release from
-            IMGTHLA](#download-and-unpack-the-latest-release-from-imgthla)
-    -   [Related work](#related-work)
+-   [Installation](#installation)
+-   [Examples](#examples)
+    -   [Get a one-hot encoded matrix for all HLA-DRB1
+        alleles](#get-a-one-hot-encoded-matrix-for-all-hla-drb1-alleles)
+    -   [Logistic regression association testing for each amino acid
+        position](#logistic-regression-association-testing-for-each-amino-acid-position)
+    -   [UMAP embedding of 3,486 HLA-DRB1
+        alleles](#umap-embedding-of-3486-hla-drb1-alleles)
+    -   [Download and unpack the latest release from
+        IMGTHLA](#download-and-unpack-the-latest-release-from-imgthla)
+-   [Related work](#related-work)
 
 Introduction
 ============
 
-hlabud provides functions to download and analyze human leukocyte
-antigen (HLA) genotypes from [IMGTHLA](https://github.com/ANHIG/IMGTHLA)
-in a tidy R workflow.
+hlabud is an R package that provides functions to download and analyze
+human leukocyte antigen (HLA) genotypes from
+[IMGTHLA](https://github.com/ANHIG/IMGTHLA) in a tidy R workflow.
 
 Installation
-------------
+============
 
 The quickest way to get hlabud is to install from GitHub:
 
@@ -29,9 +29,10 @@ devtools::install_github("slowkow/hlabud")
 ```
 
 Examples
---------
+========
 
-### Get a one-hot encoded matrix for all HLA-DRB1 alleles
+Get a one-hot encoded matrix for all HLA-DRB1 alleles
+-----------------------------------------------------
 
 We can use `hla_alignments("DRB1")` to load the `DRB1_prot.txt` file
 from the latest IMGTHLA release:
@@ -127,7 +128,8 @@ dim(dosage)
 
 Please be careful to check that your data looks the way you expect!
 
-### Logistic regression association testing for each amino acid position
+Logistic regression association testing for each amino acid position
+--------------------------------------------------------------------
 
 Let’s simulate a dataset:
 
@@ -195,7 +197,8 @@ position. The top hits with P &lt; 0.05 are labeled.
 
 ![](README_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
-### UMAP embedding of 3,486 HLA-DRB1 alleles
+UMAP embedding of 3,486 HLA-DRB1 alleles
+----------------------------------------
 
 Here is a UMAP embedding of 3,486 HLA-DRB1 alleles encoded as a one-hot
 amino acid matrix with 1404 columns, one for each amino acid at each
@@ -211,7 +214,8 @@ We can highlight which alleles have amino acid H at position 13:
 
 ![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
-### Download and unpack the latest release from IMGTHLA
+Download and unpack the latest release from IMGTHLA
+---------------------------------------------------
 
 Run `install_hla()` to download and unpack the [latest IMGTHLA
 release](https://github.com/ANHIG/IMGTHLA/releases).
@@ -268,7 +272,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 ```
 
 Related work
-------------
+============
 
 -   [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) is an R
     package available on CRAN that facilitates case-control analysis of
