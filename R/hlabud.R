@@ -47,6 +47,7 @@ setup_hlabud_dir <- function() {
 #' they will automatically download the minimum necessary files.
 #'
 #' @return NULL
+#' @export
 install_hla <- function(release = "latest", quiet = FALSE) {
 
   hlabud_dir <- setup_hlabud_dir()
@@ -99,6 +100,7 @@ install_hla <- function(release = "latest", quiet = FALSE) {
 #' Get IMGTHLA releases from GitHub
 #'
 #' @return A character vector of release names like "3.51.0"
+#' @export
 hla_releases <- function(overwrite = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
@@ -115,6 +117,7 @@ hla_releases <- function(overwrite = FALSE) {
 #' Get aligned sequences in a dataframe
 #'
 #' @return A dataframe.
+#' @export
 hla_alignments <- function(release = NULL, gene = "DRB", type = "prot") {
   hlabud_dir <- setup_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
@@ -155,6 +158,7 @@ hla_alignments <- function(release = NULL, gene = "DRB", type = "prot") {
 #' * seq: the amino acid sequence
 #' The matrix has a one-hot encoding of the variants among the alleles, with
 #' one row for each allele and one column for each amino acid at each position.
+#' @export
 read_prot <- function(prot_file) {
   my_gene <- str_split_fixed(basename(prot_file), "_", 2)[,1]
   al <- readLines(prot_file)
@@ -169,9 +173,9 @@ read_prot <- function(prot_file) {
   my_regex <- glue("^ {my_gene}\\\\*")
   al <- al[str_detect(al, my_regex)]
   al <- str_split_fixed(al, " +", 3)
-  al <- as_tibble(al)
-  al[[1]] <- NULL
+  al <- al[,2:3]
   colnames(al) <- c("allele", "seq")
+  al <- as.data.frame(al)
   al <- al %>% group_by(.data$allele) %>% mutate(id = sprintf("V%s", seq(n()))) %>% ungroup()
   al <- al %>% pivot_wider(names_from = "id", values_from = "seq")
   al <- al %>% unite("seq", starts_with("V"), sep = "")
@@ -269,6 +273,7 @@ get_onehot <- function(al, n_pre) {
 #' @param drop_constants Filter out constant amino acid positions by default.
 #' @param drop_duplicates Filter out duplicate amino acid positions by default.
 #' @returns A data frame with one row for each input genotype.
+#' @export
 amino_dosage <- function(genotypes, aminos, drop_constants = TRUE, drop_duplicates = TRUE) {
   dosages <- matrix(NA, ncol = ncol(aminos), nrow = length(genotypes))
   for (i in seq_along(genotypes)) {

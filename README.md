@@ -1,42 +1,36 @@
-hlabud
-================
-Kamil Slowikowski
-2023-04-06
+-   [Overview](#overview)
+-   [Installation](#installation)
+-   [Examples](#examples)
+    -   [Make a one-hot encoded matrix from a set of HLA
+        alleles](#make-a-one-hot-encoded-matrix-from-a-set-of-hla-alleles)
+    -   [Download and unpack the latest release from
+        IMGTHLA](#download-and-unpack-the-latest-release-from-imgthla)
+-   [Related work](#related-work)
+    -   [[BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package
+        on CRAN](#bigdawg-r-package-on-cran)
 
-## Overview
+Overview
+--------
 
 hlabud provides functions to download and analyze human leukocyte
 antigen (HLA) genotypes from [IMGTHLA](https://github.com/ANHIG/IMGTHLA)
 in a tidy R workflow.
 
-## Installation
+Installation
+------------
 
 ``` r
-install.packages("hlabud")
+devtools::install_github("slowkow/hlabud")
 ```
-
-## Examples
-
-We can download and unpack all of the data for any IMGTHLA release:
 
 ``` r
-# Download all of the data (120MB) for the latest IMGTHLA release
-install_hla(release = "latest")
-
-# Or download a specific release
-install_hla(release = "3.51.0")
-
-# Where is the data being installed?
-getOption("hlabud_dir")
-#> [1] "/home/slowkow/.local/share/hlabud"
-
-# Check which release we are using
-getOption("hlabud_release")
-#> [1] "3.51.0"
-
-# Use a specific release
-options(hlabud_release = "3.51.0")
+library(hlabud)
 ```
+
+Examples
+--------
+
+### Make a one-hot encoded matrix from a set of HLA alleles
 
 It is not necessary to download all of the data. Some functions can
 download only the minimum necessary files on the fly, as needed.
@@ -140,7 +134,31 @@ head(alleles)
     ## [1] "DQB1*04:46N+DQB1*05:01:04"   "DQB1*06:64+DQB1*06:280"      "DQB1*06:417+DQB1*05:02:11"  
     ## [4] "DQB1*02:01:19+DQB1*02:01:19" "DQB1*06:03:05+DQB1*03:450"   "DQB1*03:395+DQB1*02:124"
 
-## Related work
+### Download and unpack the latest release from IMGTHLA
+
+We can download and unpack all of the data for any IMGTHLA release:
+
+``` r
+# Download all of the data (120MB) for the latest IMGTHLA release
+install_hla(release = "latest")
+
+# Or download a specific release
+install_hla(release = "3.51.0")
+
+# Where is the data being installed?
+getOption("hlabud_dir")
+#> [1] "/home/slowkow/.local/share/hlabud"
+
+# Check which release we are using
+getOption("hlabud_release")
+#> [1] "3.51.0"
+
+# Use a specific release
+options(hlabud_release = "3.51.0")
+```
+
+Related work
+------------
 
 ### [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package on CRAN
 
