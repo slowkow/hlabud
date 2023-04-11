@@ -108,15 +108,16 @@ dim(dosage)
 
     ## [1]  4 18
 
-Notice that the `dosage` matrix has one row for each individual and one
-column for each amino acid at each position. By default,
-`amino_dosage()` will discard the columns where all individuals are
-identical.
+Notice:
 
-Also notice that the first individual has dosage=3 for `P6_D` (position
-6 Asp). That’s because we assigned this individual 3 alleles in our
-input. Please be careful to check that the dosage looks the way you
-expect.
+-   The `dosage` matrix has one row for each individual and one column
+    for each amino acid at each position. By default, `amino_dosage()`
+    will discard the columns where all individuals are identical.
+
+-   The first individual has `dosage=3` for `P6_D` (position 6 Asp).
+    That’s because we assigned this individual 3 alleles in our input.
+
+Please be careful to check that your data looks the way you expect!
 
 ### UMAP embedding of HLA-DRB1 alleles
 
@@ -142,7 +143,7 @@ install_hla(release = "3.51.0")
 
 # Where is the data being installed?
 getOption("hlabud_dir")
-#> [1] "/home/slowkow/.local/share/hlabud"
+#> [1] "/home/username/.local/share/hlabud"
 
 # Check which release we are using
 getOption("hlabud_release")
@@ -150,6 +151,20 @@ getOption("hlabud_release")
 
 # Use a specific release
 options(hlabud_release = "3.51.0")
+```
+
+For example, here is an hlabud folder with data from 3 different
+releases:
+
+``` bash
+❯ ls -lah "/home/user/.local/share/hlabud"
+total 207M
+drwxrwxr-x  3 user user      32 Apr  5 01:19 3.30.0
+drwxrwxr-x 11 user user    4.0K Apr  7 19:31 3.40.0
+drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
+-rw-rw-r--  1 user user     15K Apr  7 19:23 tags.json
+-rw-rw-r--  1 user user     79M Apr  7 19:28 v3.40.0-alpha.tar.gz
+-rw-rw-r--  1 user user    129M Apr  4 20:07 v3.51.0-alpha.tar.gz
 ```
 
 Related work
