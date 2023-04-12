@@ -6,6 +6,9 @@
 \usage{
 read_prot(prot_file)
 }
+\arguments{
+\item{prot_file}{File name for a txt file from IMGTHLA like "DQB1_prot.txt"}
+}
 \value{
 A list with a dataframe and a matrix. The dataframe has two columns:
 \itemize{

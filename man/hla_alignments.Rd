@@ -4,7 +4,16 @@
 \alias{hla_alignments}
 \title{Get aligned sequences in a dataframe}
 \usage{
-hla_alignments(release = NULL, gene = "DRB", type = "prot")
+hla_alignments(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE)
+}
+\arguments{
+\item{gene}{The name of a gene like "DRB1"}
+
+\item{type}{The type of sequence, one of "prot", "nuc", "gen"}
+
+\item{release}{The name of a release like "3.51.0"}
+
+\item{quiet}{If FALSE, print messages along the way.}
 }
 \value{
 A dataframe.

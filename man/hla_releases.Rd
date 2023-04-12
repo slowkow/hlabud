@@ -6,6 +6,9 @@
 \usage{
 hla_releases(overwrite = FALSE)
 }
+\arguments{
+\item{overwrite}{Overwrite the existing tags.json file with a new one from GitHub}
+}
 \value{
 A character vector of release names like "3.51.0"
 }

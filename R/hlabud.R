@@ -27,25 +27,32 @@ setup_hlabud_dir <- function() {
 #' release to the folder appropriate for your operating system:
 #'
 #' Linux:
-#'    ~/.local/share/hlabud
+#'
+#'     ~/.local/share/hlabud
+#'
 #' Mac:
-#'    ~/Library/Application Support/hlabud
+#'
+#'     ~/Library/Application Support/hlabud
+#'
 #' Windows:
-#'    C:\Documents and Settings\<User>\Application Data\slowkow\hlabud
+#'
+#'     C:\Documents and Settings\<User>\Application Data\slowkow\hlabud
 #'
 #' A typical release is about 120 MB in size, so the download can take a few
 #' minutes.
 #' 
 #' We can get or set the folder with the `hlabud_dir` option:
 #'
-#'    my_dir <- getOption("hlabud_dir")
-#'    options(hlabud_dir = my_dir)
+#'     my_dir <- getOption("hlabud_dir")
+#'     options(hlabud_dir = my_dir)
 #'
 #' The release tarball from Github is unpacked into the folder.
 #'
 #' Other functions in the hlabud package will use the unpacked data, or else
 #' they will automatically download the minimum necessary files.
 #'
+#' @param release Either "latest" or else a release name like "3.51.0"
+#' @param quiet If FALSE, print messages along the way.
 #' @return NULL
 #' @export
 install_hla <- function(release = "latest", quiet = FALSE) {
@@ -100,6 +107,7 @@ install_hla <- function(release = "latest", quiet = FALSE) {
 #' Get IMGTHLA releases from GitHub
 #'
 #' @return A character vector of release names like "3.51.0"
+#' @param overwrite Overwrite the existing tags.json file with a new one from GitHub
 #' @export
 hla_releases <- function(overwrite = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
@@ -117,8 +125,12 @@ hla_releases <- function(overwrite = FALSE) {
 #' Get aligned sequences in a dataframe
 #'
 #' @return A dataframe.
+#' @param gene The name of a gene like "DRB1"
+#' @param type The type of sequence, one of "prot", "nuc", "gen"
+#' @param release The name of a release like "3.51.0"
+#' @param quiet If FALSE, print messages along the way.
 #' @export
-hla_alignments <- function(gene = "DRB", type = "prot", release = NULL, quiet = TRUE) {
+hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE) {
   hlabud_dir <- setup_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   releases <- hla_releases()
@@ -171,6 +183,7 @@ hla_alignments <- function(gene = "DRB", type = "prot", release = NULL, quiet = 
 #' * seq: the amino acid sequence
 #' The matrix has a one-hot encoding of the variants among the alleles, with
 #' one row for each allele and one column for each amino acid at each position.
+#' @param prot_file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
 #' @export
 read_prot <- function(prot_file) {
   my_gene <- str_split_fixed(basename(prot_file), "_", 2)[,1]

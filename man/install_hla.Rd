@@ -6,25 +6,39 @@
 \usage{
 install_hla(release = "latest", quiet = FALSE)
 }
+\arguments{
+\item{release}{Either "latest" or else a release name like "3.51.0"}
+
+\item{quiet}{If FALSE, print messages along the way.}
+}
 \description{
 Fetch a list of releases from Github. By default, install the latest
 release to the folder appropriate for your operating system:
 }
 \details{
 Linux:
-~/.local/share/hlabud
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{~/.local/share/hlabud
+}\if{html}{\out{</div>}}
+
 Mac:
-~/Library/Application Support/hlabud
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{~/Library/Application Support/hlabud
+}\if{html}{\out{</div>}}
+
 Windows:
-C:\Documents and Settings\\if{html}{\out{<User>}}\Application Data\slowkow\hlabud
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{C:\\Documents and Settings\\<User>\\Application Data\\slowkow\\hlabud
+}\if{html}{\out{</div>}}
 
 A typical release is about 120 MB in size, so the download can take a few
 minutes.
 
 We can get or set the folder with the \code{hlabud_dir} option:
 
-my_dir <- getOption("hlabud_dir")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{my_dir <- getOption("hlabud_dir")
 options(hlabud_dir = my_dir)
+}\if{html}{\out{</div>}}
 
 The release tarball from Github is unpacked into the folder.
 
