@@ -64,9 +64,9 @@ Learn about the conventions for HLA nomenclature:
     Antigens. 2010;75: 291–455.
     <a href="doi:10.1111/j.1399-0039.2010.01466.x" class="uri">doi:10.1111/j.1399-0039.2010.01466.x</a>
 
-For case-control analysis of HLA genotype data, please consider the
+For case-control analysis of HLA genotype data, consider the
 [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package
-available on CRAN, as cite the associated article:
+available on CRAN. Here is the related article:
 
 -   Pappas DJ, Marin W, Hollenbach JA, Mack SJ. [Bridging ImmunoGenomic
     Data Analysis Workflow Gaps (BIGDAWG): An integrated case-control

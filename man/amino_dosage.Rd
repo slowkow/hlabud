@@ -40,11 +40,11 @@ DRB1_file <- file.path(
 )
 a <- read_prot(DRB1_file)
 genotypes <- c(
-  "DRB1*12:02:02:03+DRB1*12:02:02:03+DRB1*14:54:02",
-  "DRB1*04:174+DRB1*15:152",
-  "DRB1*04:56:02+DRB1*15:01:48",
-  "DRB1*14:172+DRB1*04:160",
-  "DRB1*04:359+DRB1*04:284:02"
+  "DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02",
+  "DRB1*04:174,DRB1*15:152",
+  "DRB1*04:56:02,DRB1*15:01:48",
+  "DRB1*14:172,DRB1*04:160",
+  "DRB1*04:359,DRB1*04:284:02"
 )
 dosage <- amino_dosage(genotypes, a$aminos)
 dosage[,1:5]

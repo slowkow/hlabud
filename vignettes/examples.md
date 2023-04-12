@@ -13,87 +13,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r,include=FALSE}
-options(width=80)
-library(data.table)
-library(dplyr)
-library(parameters)
-library(pbapply)
-library(glue)
-library(scales)
-library(readr)
-library(stringr)
-library(magrittr)
-library(ggplot2)
-library(ggrepel)
-library(ggstance)
-file_size <- function(x) glue("{fs::file_size(x)}B")
 
-#' @importFrom ggplot2 theme_classic theme element_rect element_line
-#'   element_blank element_text
-#' @importFrom grid unit
-theme_kamil <- theme_classic(
-  base_family = "Arial",
-  base_size = 16,
-  base_line_size = 0.3,
-  base_rect_size = 0.3
-) +
-theme(
-  panel.spacing    = unit(2, "lines"),
-  panel.border     = element_rect(linewidth = 0.5, fill = NA),
-  axis.ticks       = element_line(linewidth = 0.4),
-  axis.line        = element_blank(),
-  strip.background = element_blank(),
-  plot.title       = element_text(size = 16),
-  plot.title.position = "plot",
-  plot.subtitle    = element_text(size = 16),
-  plot.caption     = element_text(size = 16),
-  strip.text       = element_text(size = 16),
-  legend.text      = element_text(size = 16),
-  legend.title     = element_text(size = 16),
-  axis.text        = element_text(size = 16),
-  axis.title       = element_text(size = 16)
-)
-theme_set(theme_kamil)
-options(
-  ggplot2.discrete.colour = c(
-    "#666666", "#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7"
-  ),
-  ggplot2.discrete.fill = c(
-    "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#666666"
-  )
-)
-
-mpn65 <- c(
-  '#ff0029', '#377eb8', '#66a61e', '#984ea3', '#00d2d5', '#ff7f00', '#af8d00',
-  '#7f80cd', '#b3e900', '#c42e60', '#a65628', '#f781bf', '#8dd3c7', '#bebada',
-  '#fb8072', '#80b1d3', '#fdb462', '#fccde5', '#bc80bd', '#ffed6f', '#c4eaff',
-  '#cf8c00', '#1b9e77', '#d95f02', '#e7298a', '#e6ab02', '#a6761d', '#0097ff',
-  '#00d067', '#000000', '#252525', '#525252', '#737373', '#969696', '#bdbdbd',
-  '#f43600', '#4ba93b', '#5779bb', '#927acc', '#97ee3f', '#bf3947', '#9f5b00',
-  '#f48758', '#8caed6', '#f2b94f', '#eff26e', '#e43872', '#d9b100', '#9d7a00',
-  '#698cff', '#d9d9d9', '#00d27e', '#d06800', '#009f82', '#c49200', '#cbe8ff',
-  '#fecddf', '#c27eb6', '#8cd2ce', '#c4b8d9', '#f883b0', '#a49100', '#f48800',
-  '#27d0df', '#a04a9b'
-)
-
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
-library(hlabud)
-my_gene <- "DRB1"
-a <- hla_alignments(gene = my_gene, type = "prot")
-n_alleles <- nrow(a$seq)
-
-```
 
 # Introduction
 
 Kamil Slowikowski
 
-`r Sys.Date()`
+2023-04-12
 
 [hlabud] is an R package that provides functions to download and analyze human leukocyte antigen (HLA) genotypes from [IMGTHLA] in a tidy R workflow.
 
@@ -102,10 +28,14 @@ Kamil Slowikowski
 
 For example, what amino acid positions are different between the DRB1\*04:174 and DRB1\*15:152 genotypes?
 
-```{r}
+
+```r
 library(hlabud)
 a <- hla_alignments("DRB1")
 amino_dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
+#>             P9_E P9_W
+#> DRB1*04:174    1    0
+#> DRB1*15:152    0    1
 ```
 
 The two genotypes are nearly identical, but the amino acid at position 9 is different:
@@ -118,7 +48,8 @@ The two genotypes are nearly identical, but the amino acid at position 9 is diff
 
 The quickest way to get hlabud is to install from GitHub:
 
-```{r, eval=FALSE}
+
+```r
 # install.packages("devtools")
 devtools::install_github("slowkow/hlabud")
 ```
@@ -132,26 +63,48 @@ Thank you for [reporting issues](https://github.com/slowkow/hlabud/issues) with 
 
 # Examples
 
-## Get a one-hot encoded matrix for all HLA-`r my_gene` alleles
+## Get a one-hot encoded matrix for all HLA-DRB1 alleles
 
 We can use `hla_alignments("DRB1")` to load the `DRB1_prot.txt` file from the
 latest [IMGTHLA](https://github.com/ANHIG/IMGTHLA/releases) release:
 
-```{r}
+
+```r
 library(hlabud)
 a <- hla_alignments(gene = "DRB1", quiet = FALSE)
+#> hlabud is using IMGTHLA release 3.51.0
+#> Reading /projects/home/ks38/.local/share/hlabud/3.51.0/alignments/DRB1_prot.txt
 ```
 
 The `a` object is a list with three items:
 
-```{r}
+
+```r
 str(a, max.level = 1)
+#> List of 3
+#>  $ sequences:'data.frame':	3486 obs. of  2 variables:
+#>  $ aminos   :'data.frame':	3486 obs. of  288 variables:
+#>  $ onehot   : num [1:3486, 1:1334] 1 1 1 1 1 1 1 1 1 1 ...
+#>   ..- attr(*, "dimnames")=List of 2
 ```
 
 `a$sequences` has amino acid sequence alignments in a data frame:
 
-```{r}
+
+```r
 a$sequences[1:5,]
+#>             allele
+#> 1 DRB1*01:01:01:01
+#> 2 DRB1*01:01:01:02
+#> 3 DRB1*01:01:01:03
+#> 4 DRB1*01:01:01:04
+#> 5 DRB1*01:01:01:05
+#>                                                                                                                                                                                                                                                                             seq
+#> 1 MVCLKLPGGSCMTALTVTLMVLSSPLALAGDTRPRFLWQLKFECHFFNGTERVR.LLERCIYNQEE.SVRFDSDVGEYRAVTELGRPDAEYWNSQKDLLEQRRAAVDTYCRHNYGVGESFTVQRR.VEPKVTVYPSKTQPLQHHNLLVCSVSGFYPGSIEVRWFRNGQEEKAGVVSTGLIQNGDWTFQTLVMLETVPRSGEVYTCQVEHPSVTSPLTVEWRARSESAQSKMLSGVGGFVLGLLFLGAGLFIYFRNQKGHSGLQPTGFLS
+#> 2 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------
+#> 3 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------
+#> 4 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------
+#> 5 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------
 ```
 
 Here are the conventions used for alignments (copied from EBI):
@@ -171,26 +124,45 @@ Learn more about the alignments at:
 
 `a$aminos` has a matrix of amino acids with one column for each position:
 
-```{r}
+
+```r
 a$aminos[1:5,1:10]
+#>                  Pn29 Pn28 Pn27 Pn26 Pn25 Pn24 Pn23 Pn22 Pn21 Pn20
+#> DRB1*01:01:01:01    M    V    C    L    K    L    P    G    G    S
+#> DRB1*01:01:01:02    M    V    C    L    K    L    P    G    G    S
+#> DRB1*01:01:01:03    M    V    C    L    K    L    P    G    G    S
+#> DRB1*01:01:01:04    M    V    C    L    K    L    P    G    G    S
+#> DRB1*01:01:01:05    M    V    C    L    K    L    P    G    G    S
 ```
 
 `a$onehot` has a one-hot encoded matrix with one column for each amino acid at
 each position:
 
-```{r}
-a$onehot[1:5,1:8]
+
+```r
+a$onehot[1:5,1:10]
+#>                  Pn29_M Pn28_V Pn27_C Pn26_L Pn25_K Pn25_R Pn24_F Pn24_L Pn23_P
+#> DRB1*01:01:01:01      1      1      1      1      1      0      0      1      1
+#> DRB1*01:01:01:02      1      1      1      1      1      0      0      1      1
+#> DRB1*01:01:01:03      1      1      1      1      1      0      0      1      1
+#> DRB1*01:01:01:04      1      1      1      1      1      0      0      1      1
+#> DRB1*01:01:01:05      1      1      1      1      1      0      0      1      1
+#>                  Pn22_G
+#> DRB1*01:01:01:01      1
+#> DRB1*01:01:01:02      1
+#> DRB1*01:01:01:03      1
+#> DRB1*01:01:01:04      1
+#> DRB1*01:01:01:05      1
 ```
 
 ## Convert genotypes to a dosage matrix
 
 Suppose we have some individuals with the following genotypes:
 
-```{r, eval=FALSE, include=FALSE}
-dput(paste(sample(rownames(a$onehot), 5), sample(rownames(a$onehot), 5), sep = "+"))
-```
 
-```{r}
+
+
+```r
 genotypes <- c(
   "DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02",
   "DRB1*04:174,DRB1*15:152",
@@ -206,10 +178,24 @@ to convert the genotype names to a matrix of allele dosages (e.g., 0, 1, 2).
 We can use `amino_dosage()` to convert each individual's genotypes to amino
 acid dosages:
 
-```{r}
+
+```r
 dosage <- amino_dosage(genotypes, a$onehot)
 dosage[,1:6]
+#>                                                 Pn29_M P6_R P9_E P9_W P10_Q
+#> DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02      2    3    3    0     0
+#> DRB1*04:174,DRB1*15:152                              0    2    1    1     2
+#> DRB1*04:56:02,DRB1*15:01:48                          0    2    1    1     2
+#> DRB1*14:172,DRB1*04:160                              0    2    2    0     1
+#> DRB1*04:359,DRB1*04:284:02                           0    2    2    0     2
+#>                                                 P10_Y
+#> DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02     3
+#> DRB1*04:174,DRB1*15:152                             0
+#> DRB1*04:56:02,DRB1*15:01:48                         0
+#> DRB1*14:172,DRB1*04:160                             1
+#> DRB1*04:359,DRB1*04:284:02                          0
 dim(dosage)
+#> [1]  5 35
 ```
 
 **Note:**
@@ -228,7 +214,8 @@ Please be careful to check that your data looks the way you expect!
 Let's simulate a dataset with cases and controls to demonstrate one approach
 for testing which amino acid positions might be associated with cases.
 
-```{r}
+
+```r
 set.seed(2)
 n <- 100
 d <- data.frame(
@@ -242,16 +229,29 @@ d <- data.frame(
 )
 d <- cbind(d, amino_dosage(d$geno, a$onehot))
 d[1:5,1:6]
+#>                                                geno age case Pn29_M Pn25_K
+#> DRB1*04:271,DRB1*01:02:12 DRB1*04:271,DRB1*01:02:12  72    0      0      0
+#> DRB1*04:19,DRB1*15:07:01   DRB1*04:19,DRB1*15:07:01  22    1      2      2
+#> DRB1*14:54:08,DRB1*04:292 DRB1*14:54:08,DRB1*04:292  34    0      0      0
+#> DRB1*03:98,DRB1*03:108       DRB1*03:98,DRB1*03:108  76    0      0      0
+#> DRB1*03:74,DRB1*13:71         DRB1*03:74,DRB1*13:71  96    1      0      0
+#>                           Pn25_R
+#> DRB1*04:271,DRB1*01:02:12      0
+#> DRB1*04:19,DRB1*15:07:01       0
+#> DRB1*14:54:08,DRB1*04:292      0
+#> DRB1*03:98,DRB1*03:108         0
+#> DRB1*03:74,DRB1*13:71          0
 ```
 
-Our simulated dataset has `r n` individuals, `r sum(d$case == 1)` cases and `r sum(d$case == 0)` controls. We also have one column for each amino acid position that we might want to test for association with the `case` variable.
+Our simulated dataset has 100 individuals, 52 cases and 48 controls. We also have one column for each amino acid position that we might want to test for association with the `case` variable.
 
 One possible approach for association testing is to use `glm()` to fit a
 logistic regression model for each amino acid position. This could reveal if
 any amino acid position might be associated with the `case` variable in our
 simulated dataset.
 
-```{r glm, cache=TRUE, warning=FALSE, message=FALSE}
+
+```r
 
 # select the amino acid positions that have at least 3 people with dosage > 0
 my_as <- names(which(colSums(d[,4:ncol(d)] > 0) >= 3))
@@ -268,136 +268,43 @@ my_glm %>%
   arrange(p) %>%
   filter(!Parameter %in% c("(Intercept)")) %>%
   head
+#>    Parameter Coefficient        SE   CI    CI_low    CI_high         z df_error          p
+#> 1:     P62_Y   0.3941101 0.1616955 0.95 0.1689189  0.8533865 -2.269486      Inf 0.02323880
+#> 2:     P13_G   4.0243902 2.7614898 0.95 1.1612170 18.7172101  2.029142      Inf 0.04244386
+#> 3:     P49_Y   1.8181911 0.5670185 0.95 0.9999588  3.4287965  1.917030      Inf 0.05523418
+#> 4:     P72_R   2.3127447 1.0221532 0.95 1.0163649  5.8789932  1.897060      Inf 0.05782000
+#> 5:     P76_A   0.5331945 0.1773077 0.95 0.2713305  1.0083553 -1.891117      Inf 0.05860878
+#> 6:     P16_H   0.3488372 0.1991184 0.95 0.1040766  1.0169353 -1.845022      Inf 0.06503428
 ```
 
 The volcano below shows the Odds Ratio and P-value for each amino acid
 position. The top hits with P &lt; 0.05 are labeled.
 
-```{r glm-volcano, fig.width = 6, fig.height = 4, fig.dpi = 300, echo = FALSE}
+![](examples_files/figure-html/glm-volcano-1.png)<!-- -->
 
-my_glm_case <- my_glm %>%
-  filter(!Parameter %in% c("(Intercept)")) %>%
-  filter(Coefficient < 10) %>%
-  arrange(p)
-
-p <- ggplot(my_glm_case) +
-  aes(Coefficient, -log10(p)) +
-  geom_vline(xintercept = 1, linewidth = 0.3, alpha = 0.3) +
-  geom_point() +
-  geom_text_repel(
-    data = \(d) d %>% filter(p < 0.05),
-    mapping = aes(label = Parameter)
-  ) +
-  labs(
-    x = "Odds Ratio",
-    y = "-log10 P",
-    title = "Association between amino acid positions and case status",
-    subtitle = glue("{nrow(my_glm_case)} amino acid positions")
-  )
-p
-# ggsave("test.png", p)
-
-```
-
-In this simulation, the `case` variable is associated with `r my_glm_case$Parameter[1]` `r with(my_glm_case[1,], glue("(P = {signif(p, 2)}, OR = {signif(Coefficient, 2)}, 95% CI {signif(CI_low, 2)} to {signif(CI_high, 2)})"))`.
+In this simulation, the `case` variable is associated with P62_Y (P = 0.023, OR = 0.39, 95% CI 0.17 to 0.85).
 
 
-## UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
+## UMAP embedding of 3,486 HLA-DRB1 alleles
 
-There are many things we might do with a one-hot encoding of HLA-`r my_gene` alleles.
+There are many things we might do with a one-hot encoding of HLA-DRB1 alleles.
 
-For example, here is a UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles encoded as a one-hot amino acid matrix with `r ncol(a$onehot)` columns, one for each amino acid at each position.
+For example, here is a UMAP embedding of 3,486 HLA-DRB1 alleles encoded as a one-hot amino acid matrix with 1334 columns, one for each amino acid at each position.
 
-```{r, eval=FALSE}
+
+```r
 uamp(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
 ```
 
-```{r umap1, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
-
-library(uwot)
-
-set.seed(2)
-d <- umap(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
-
-a$umap <- data.frame(allele = rownames(a$onehot), x = d[,1], y = d[,2])
-a$umap %<>% mutate(allele = str_remove(allele, ".+\\*"))
-a$umap %<>% mutate(d4 = str_extract(allele, "^[^:]+:[^:]+"))
-a$umap %<>% mutate(d2 = str_extract(d4, "^[^:]+"))
-a$umap %<>% mutate(m2 = str_extract(d4, "[^:]+$"))
-a$umap$label <- ""
-set.seed(2)
-ix <- sample(1:nrow(a$umap), 40)
-a$umap$label[ix] <- a$umap$d4[ix]
-
-p <- ggplot(a$umap) +
-  aes(x, y, color = d2) +
-  geom_point() +
-  geom_text_repel(aes(label = label), max.overlaps = 100) +
-  scale_color_manual(values = mpn65) + 
-  guides(color = guide_legend(title = "2-digit", override.aes = list(label = "", size = 5))) +
-  labs(
-    title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {options('hlabud_release')}")
-  ) +
-  theme(
-    axis.text = element_blank(),
-    axis.ticks = element_blank(),
-    axis.title = element_blank(),
-  )
-p
-# ggsave("test.png", p)
-
-```
+![](examples_files/figure-html/umap1-1.png)<!-- -->
 
 We can highlight which alleles have amino acid H at position 13:
 
-```{r umap-P13H, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
-my_position <- "P13_H"
-a$umap$color <- as.factor(as.integer(a$onehot[,my_position]))
-p <- ggplot(a$umap) +
-  aes(x, y, color = color) +
-  geom_point() +
-  geom_text_repel(aes(label = label), max.overlaps = 100) +
-  guides(color = guide_legend(title = my_position, override.aes = list(label = "", size = 5))) +
-  labs(
-    title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {options('hlabud_release')}")
-  ) +
-  theme(
-    axis.text = element_blank(),
-    axis.ticks = element_blank(),
-    axis.title = element_blank(),
-  )
-p
-# ggsave("test.png", p)
-```
+![](examples_files/figure-html/umap-P13H-1.png)<!-- -->
 
 Or we can represent each amino acid at position 13 with a different color:
 
-```{r umap-P13, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
-
-my_position <- "P13"
-a$umap$color <- factor(as.character(a$aminos[,my_position]))
-
-p <- ggplot(a$umap) +
-  aes(x, y, color = color) +
-  geom_point() +
-  geom_text_repel(aes(label = label), max.overlaps = 100) +
-  guides(color = guide_legend(title = my_position, override.aes = list(label = "", size = 5))) +
-  scale_color_manual(values = mpn65) +
-  labs(
-    title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {options('hlabud_release')}")
-  ) +
-  theme(
-    axis.text = element_blank(),
-    axis.ticks = element_blank(),
-    axis.title = element_blank(),
-  )
-p
-# ggsave("test.png", p)
-
-```
+![](examples_files/figure-html/umap-P13-1.png)<!-- -->
 
 ## Download and unpack all data from the latest IMGTHLA release
 
@@ -412,7 +319,8 @@ Here are a few examples of how to download releases or get a list of release nam
 
 Download the latest release (default) or a specific release:
 
-```{r, eval=FALSE}
+
+```r
 # Download all of the data (120MB) for the latest IMGTHLA release
 install_hla(release = "latest")
 
@@ -422,7 +330,8 @@ install_hla(release = "3.51.0")
 
 Optionally, get or set the directory hlabud uses to store the data:
 
-```{r, eval=FALSE}
+
+```r
 getOption("hlabud_dir")
 #> [1] "/home/username/.local/share/hlabud"
 
@@ -432,7 +341,8 @@ options(hlabud_dir = "/path/to/my/dir")
 
 Check which release hlabud is using, or choose a release:
 
-```{r, eval=FALSE}
+
+```r
 getOption("hlabud_release")
 #> [1] "3.51.0"
 

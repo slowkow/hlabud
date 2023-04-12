@@ -247,7 +247,7 @@ read_prot <- function(prot_file) {
   colnames(al) <- c("allele", "seq")
   al <- as.data.frame(al)
   al <- al %>% group_by(.data$allele) %>% mutate(id = sprintf("V%s", seq(n()))) %>% ungroup()
-  al <- al %>% pivot_wider(names_from = "id", values_from = "seq")
+  al <- al %>% pivot_wider(names_from = "id", values_from = "seq", values_fill = "")
   al <- al %>% unite("seq", starts_with("V"), sep = "")
   al$seq <- str_replace_all(al$seq, " ", "")
   #
@@ -349,11 +349,11 @@ get_onehot <- function(al, n_pre) {
 #' )
 #' a <- read_prot(DRB1_file)
 #' genotypes <- c(
-#'   "DRB1*12:02:02:03+DRB1*12:02:02:03+DRB1*14:54:02",
-#'   "DRB1*04:174+DRB1*15:152",
-#'   "DRB1*04:56:02+DRB1*15:01:48",
-#'   "DRB1*14:172+DRB1*04:160",
-#'   "DRB1*04:359+DRB1*04:284:02"
+#'   "DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02",
+#'   "DRB1*04:174,DRB1*15:152",
+#'   "DRB1*04:56:02,DRB1*15:01:48",
+#'   "DRB1*14:172,DRB1*04:160",
+#'   "DRB1*04:359,DRB1*04:284:02"
 #' )
 #' dosage <- amino_dosage(genotypes, a$aminos)
 #' dosage[,1:5]
@@ -361,8 +361,8 @@ get_onehot <- function(al, n_pre) {
 amino_dosage <- function(genotypes, aminos, drop_constants = TRUE, drop_duplicates = TRUE) {
   dosages <- matrix(0, ncol = ncol(aminos), nrow = length(genotypes))
   for (i in seq_along(genotypes)) {
-    # Split a string of genotypes like "HLA-A*01:01+HLA-A*01:01"
-    a <- str_split(genotypes[i], "\\+")[[1]]
+    # Split a string of genotypes like "HLA-A*01:01,HLA-A*01:01"
+    a <- str_split(genotypes[i], ",")[[1]]
     for (my_a in a) {
       # Find the first row in aminos where the prefix matches our genotype
       ix <- which(str_starts(rownames(aminos), fixed(my_a)))

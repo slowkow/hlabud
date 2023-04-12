@@ -26,6 +26,15 @@ Imports:
     tibble,
     tidyr
 Suggests: 
+    data.table,
+    ggplot2,
+    ggrepel,
+    ggstance,
     knitr,
-    rmarkdown
+    parameters,
+    pbapply,
+    readr,
+    rmarkdown,
+    scales,
+    uwot
 VignetteBuilder: knitr

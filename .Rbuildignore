@@ -10,3 +10,5 @@
 ^test.png$
 ^doc$
 ^Meta$
+_cache/
+_files/
