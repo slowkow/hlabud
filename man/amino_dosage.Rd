@@ -32,3 +32,15 @@ By default, the returned data frame is filtered to exclude:
 \item amino acid positions that are identical to previous positions
 }
 }
+\examples{
+a <- read_prot("https://github.com/ANHIG/IMGTHLA/raw/5f2c562056f8ffa89aeea0631f2a52300ee0de17/alignments/DRB1_prot.txt")
+genotypes <- c(
+  "DRB1*12:02:02:03+DRB1*12:02:02:03+DRB1*14:54:02",
+  "DRB1*04:174+DRB1*15:152",
+  "DRB1*04:56:02+DRB1*15:01:48",
+  "DRB1*14:172+DRB1*04:160",
+  "DRB1*04:359+DRB1*04:284:02"
+)
+dosage <- amino_dosage(genotypes, a$aminos)
+dosage[,1:5]
+}

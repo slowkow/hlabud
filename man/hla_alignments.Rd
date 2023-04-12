@@ -21,3 +21,11 @@ A dataframe.
 \description{
 Get aligned sequences in a dataframe
 }
+\examples{
+\donttest{
+a <- hla_alignments("DRB1")
+head(a$sequences)
+head(a$aminos)
+head(a$onehot)
+}
+}

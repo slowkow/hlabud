@@ -53,6 +53,15 @@ setup_hlabud_dir <- function() {
 #'
 #' @param release Either "latest" or else a release name like "3.51.0"
 #' @param quiet If FALSE, print messages along the way.
+#' @examples
+#' \dontrun{
+#' install_hla()
+#' install_hla("3.51.0")
+#' install_hla("3.51.0", quiet = TRUE)
+#' # Change the install directory
+#' options(hlabud_dir = "path/to/my/dir")
+#' install_hla()
+#' }
 #' @return NULL
 #' @export
 install_hla <- function(release = "latest", quiet = FALSE) {
@@ -108,6 +117,10 @@ install_hla <- function(release = "latest", quiet = FALSE) {
 #'
 #' @return A character vector of release names like "3.51.0"
 #' @param overwrite Overwrite the existing tags.json file with a new one from GitHub
+#' @examples
+#' \donttest{
+#' hla_releases() 
+#' }
 #' @export
 hla_releases <- function(overwrite = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
@@ -129,6 +142,13 @@ hla_releases <- function(overwrite = FALSE) {
 #' @param type The type of sequence, one of "prot", "nuc", "gen"
 #' @param release The name of a release like "3.51.0"
 #' @param quiet If FALSE, print messages along the way.
+#' @examples
+#' \donttest{
+#' a <- hla_alignments("DRB1")
+#' head(a$sequences)
+#' head(a$aminos)
+#' head(a$onehot)
+#' }
 #' @export
 hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE) {
   hlabud_dir <- setup_hlabud_dir()
@@ -184,6 +204,11 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, quiet =
 #' The matrix has a one-hot encoding of the variants among the alleles, with
 #' one row for each allele and one column for each amino acid at each position.
 #' @param prot_file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
+#' @examples
+#' a <- read_prot("https://github.com/ANHIG/IMGTHLA/raw/5f2c562056f8ffa89aeea0631f2a52300ee0de17/alignments/DRB1_prot.txt")
+#' head(a$sequences)
+#' head(a$aminos)
+#' head(a$onehot)
 #' @export
 read_prot <- function(prot_file) {
   my_gene <- str_split_fixed(basename(prot_file), "_", 2)[,1]
@@ -297,6 +322,17 @@ get_onehot <- function(al, n_pre) {
 #' @param drop_constants Filter out constant amino acid positions by default.
 #' @param drop_duplicates Filter out duplicate amino acid positions by default.
 #' @returns A data frame with one row for each input genotype.
+#' @examples
+#' a <- read_prot("https://github.com/ANHIG/IMGTHLA/raw/5f2c562056f8ffa89aeea0631f2a52300ee0de17/alignments/DRB1_prot.txt")
+#' genotypes <- c(
+#'   "DRB1*12:02:02:03+DRB1*12:02:02:03+DRB1*14:54:02",
+#'   "DRB1*04:174+DRB1*15:152",
+#'   "DRB1*04:56:02+DRB1*15:01:48",
+#'   "DRB1*14:172+DRB1*04:160",
+#'   "DRB1*04:359+DRB1*04:284:02"
+#' )
+#' dosage <- amino_dosage(genotypes, a$aminos)
+#' dosage[,1:5]
 #' @export
 amino_dosage <- function(genotypes, aminos, drop_constants = TRUE, drop_duplicates = TRUE) {
   dosages <- matrix(0, ncol = ncol(aminos), nrow = length(genotypes))

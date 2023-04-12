@@ -45,3 +45,13 @@ The release tarball from Github is unpacked into the folder.
 Other functions in the hlabud package will use the unpacked data, or else
 they will automatically download the minimum necessary files.
 }
+\examples{
+\dontrun{
+install_hla()
+install_hla("3.51.0")
+install_hla("3.51.0", quiet = TRUE)
+# Change the install directory
+options(hlabud_dir = "path/to/my/dir")
+install_hla()
+}
+}

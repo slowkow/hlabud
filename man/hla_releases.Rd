@@ -15,3 +15,8 @@ A character vector of release names like "3.51.0"
 \description{
 Get IMGTHLA releases from GitHub
 }
+\examples{
+\donttest{
+hla_releases() 
+}
+}
