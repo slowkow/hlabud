@@ -1,12 +1,7 @@
--   [Introduction](#introduction)
--   [Installation](#installation)
--   [Examples](#examples)
--   [Related work](#related-work)
+hlabud
+======
 
 [![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
-
-Introduction
-============
 
 hlabud is an R package that provides functions to download and analyze
 human leukocyte antigen (HLA) genotypes from

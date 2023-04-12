@@ -3,16 +3,16 @@ title: "hlabud"
 output:
   md_document:
     standalone: true
-    toc: true
+    toc: false
     variant: "markdown_github"
   html_document:
-    toc: true
+    toc: false
     self_contained: true
 ---
 
-[![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
+# hlabud
 
-# Introduction
+[![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
 
 hlabud is an R package that provides functions to download and analyze human
 leukocyte antigen (HLA) genotypes from [IMGTHLA] in a tidy R workflow.
