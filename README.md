@@ -42,6 +42,11 @@ Examples
 See the [usage examples](vignettes/examples.md) to see how hlabud can be
 used in an analysis.
 
+<a href="https://github.com/slowkow/hlabud/tree/main/vignettes/examples.md">
+<img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/glm-volcano-1.png">
+<img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/umap1-1.png">
+</a>
+
 Related work
 ============
 
