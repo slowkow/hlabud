@@ -1,0 +1,409 @@
+---
+title: "hlabud usage examples"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 4
+vignette: >
+  %\VignetteIndexEntry{hlabud usage examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r,include=FALSE}
+options(width=100)
+library(data.table)
+library(dplyr)
+library(parameters)
+library(pbapply)
+library(glue)
+library(scales)
+library(readr)
+library(stringr)
+library(magrittr)
+library(ggplot2)
+library(ggrepel)
+library(ggstance)
+file_size <- function(x) glue("{fs::file_size(x)}B")
+
+#' @importFrom ggplot2 theme_classic theme element_rect element_line
+#'   element_blank element_text
+#' @importFrom grid unit
+theme_kamil <- theme_classic(
+  base_family = "Arial",
+  base_size = 16,
+  base_line_size = 0.3,
+  base_rect_size = 0.3
+) +
+theme(
+  panel.spacing    = unit(2, "lines"),
+  panel.border     = element_rect(linewidth = 0.5, fill = NA),
+  axis.ticks       = element_line(linewidth = 0.4),
+  axis.line        = element_blank(),
+  strip.background = element_blank(),
+  plot.title       = element_text(size = 16),
+  plot.title.position = "plot",
+  plot.subtitle    = element_text(size = 16),
+  plot.caption     = element_text(size = 16),
+  strip.text       = element_text(size = 16),
+  legend.text      = element_text(size = 16),
+  legend.title     = element_text(size = 16),
+  axis.text        = element_text(size = 16),
+  axis.title       = element_text(size = 16)
+)
+theme_set(theme_kamil)
+options(
+  ggplot2.discrete.colour = c(
+    "#666666", "#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7"
+  ),
+  ggplot2.discrete.fill = c(
+    "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#666666"
+  )
+)
+
+mpn65 <- c(
+  '#ff0029', '#377eb8', '#66a61e', '#984ea3', '#00d2d5', '#ff7f00', '#af8d00',
+  '#7f80cd', '#b3e900', '#c42e60', '#a65628', '#f781bf', '#8dd3c7', '#bebada',
+  '#fb8072', '#80b1d3', '#fdb462', '#fccde5', '#bc80bd', '#ffed6f', '#c4eaff',
+  '#cf8c00', '#1b9e77', '#d95f02', '#e7298a', '#e6ab02', '#a6761d', '#0097ff',
+  '#00d067', '#000000', '#252525', '#525252', '#737373', '#969696', '#bdbdbd',
+  '#f43600', '#4ba93b', '#5779bb', '#927acc', '#97ee3f', '#bf3947', '#9f5b00',
+  '#f48758', '#8caed6', '#f2b94f', '#eff26e', '#e43872', '#d9b100', '#9d7a00',
+  '#698cff', '#d9d9d9', '#00d27e', '#d06800', '#009f82', '#c49200', '#cbe8ff',
+  '#fecddf', '#c27eb6', '#8cd2ce', '#c4b8d9', '#f883b0', '#a49100', '#f48800',
+  '#27d0df', '#a04a9b'
+)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(hlabud)
+my_gene <- "DRB1"
+a <- hla_alignments(gene = my_gene, type = "prot")
+n_alleles <- nrow(a$seq)
+
+```
+
+# Examples
+
+The source code for this page is available [here](https://github.com/slowkow/hlabud/tree/main/vignettes/examples.Rmd).
+
+## Get a one-hot encoded matrix for all HLA-`r my_gene` alleles
+
+We can use `hla_alignments("DRB1")` to load the `DRB1_prot.txt` file from the
+latest [IMGTHLA](https://github.com/ANHIG/IMGTHLA/releases) release:
+
+```{r}
+library(hlabud)
+a <- hla_alignments(gene = "DRB1", quiet = FALSE)
+```
+
+The `a` object is a list with three items:
+
+```{r}
+str(a, max.level = 1)
+```
+
+`a$sequences` has amino acid sequence alignments in a data frame:
+
+```{r}
+a$sequences[1:5,]
+```
+
+`a$aminos` has a matrix of amino acids with one column for each position:
+
+```{r}
+a$aminos[1:5,1:10]
+```
+
+`a$onehot` has a one-hot encoded matrix with one column for each amino acid at
+each position:
+
+```{r}
+a$onehot[1:5,1:10]
+```
+
+## Convert genotypes to a dosage matrix
+
+Suppose we have some individuals with the following genotypes:
+
+```{r, eval=FALSE, include=FALSE}
+dput(paste(sample(rownames(a$onehot), 5), sample(rownames(a$onehot), 5), sep = "+"))
+```
+
+```{r}
+genotypes <- c(
+  "DRB1*12:02:02:03+DRB1*12:02:02:03+DRB1*14:54:02",
+  "DRB1*04:174+DRB1*15:152",
+  "DRB1*04:56:02+DRB1*15:01:48",
+  "DRB1*14:172+DRB1*04:160",
+  "DRB1*04:359+DRB1*04:284:02"
+)
+```
+
+If we want to run an association test on the amino acid positions, then we need
+to convert the genotype names to a matrix of allele dosages (e.g., 0, 1, 2).
+
+We can use `amino_dosage()` to convert each individual's genotypes to amino
+acid dosages:
+
+```{r}
+dosage <- amino_dosage(genotypes, a$onehot)
+dosage[,1:10]
+dim(dosage)
+```
+
+**Note:**
+
+* The `dosage` matrix has one row for each individual and one column for each
+  amino acid at each position. By default, `amino_dosage()` will discard the
+  columns where all individuals are identical.
+
+* The first individual has `dosage=3` for `P6_R` (position 6 Arg). That's
+  because we assigned this individual 3 alleles in our input.
+
+Please be careful to check that your data looks the way you expect!
+
+## Logistic regression association for amino acid positions
+
+Let's simulate a dataset with cases and controls to demonstrate one approach
+for testing which amino acid positions might be associated with cases.
+
+```{r}
+set.seed(2)
+n <- 100
+d <- data.frame(
+  geno = paste(
+    sample(rownames(a$onehot), n, replace = TRUE),
+    sample(rownames(a$onehot), n, replace = TRUE),
+    sep = "+"
+  ),
+  age = sample(21:100, n, replace = TRUE),
+  case = sample(0:1, n, replace = TRUE)
+)
+d <- cbind(d, amino_dosage(d$geno, a$onehot))
+d[1:5,1:10]
+```
+
+Our simulated dataset has `r n` individuals, `r sum(d$case == 1)` cases and `r sum(d$case == 0)` controls. We also have one column for each amino acid position that we might want to test for association with the `case` variable.
+
+One possible approach for association testing is to use the `glm()` to fit a
+logistic regression model for each amino acid position. This could reveal if
+any amino acid position might be associated with the `case` variable in our
+simulated dataset.
+
+```{r glm, cache=TRUE, warning=FALSE, message=FALSE}
+
+# select the amino acid positions that have at least 3 people with dosage > 0
+my_as <- names(which(colSums(d[,4:ncol(d)] > 0) >= 3))
+
+# run the association tests
+my_glm <- rbindlist(pblapply(my_as, function(my_a) {
+  f <- sprintf("case ~ %s", my_a)
+  glm(as.formula(f), data = d, family = "binomial") %>%
+    parameters(exponentiate = TRUE)
+}))
+
+# look at the top hits
+my_glm %>%
+  arrange(p) %>%
+  filter(!Parameter %in% c("(Intercept)")) %>%
+  head
+```
+
+The volcano below shows the Odds Ratio and P-value for each amino acid
+position. The top hits with P &lt; 0.05 are labeled.
+
+```{r glm-volcano, fig.width = 6, fig.height = 4, fig.dpi = 300, echo = FALSE}
+
+my_glm_case <- my_glm %>%
+  filter(!Parameter %in% c("(Intercept)")) %>%
+  filter(Coefficient < 10)
+
+p <- ggplot(my_glm_case) +
+  aes(Coefficient, -log10(p)) +
+  geom_vline(xintercept = 1, linewidth = 0.3, alpha = 0.3) +
+  geom_point() +
+  geom_text_repel(
+    data = \(d) d %>% filter(p < 0.05),
+    mapping = aes(label = Parameter)
+  ) +
+  labs(
+    x = "Odds Ratio",
+    y = "-log10 P",
+    title = "Association between amino acid positions and case status",
+    subtitle = glue("{nrow(my_glm_case)} amino acid positions")
+  )
+p
+# ggsave("test.png", p)
+
+```
+
+
+## UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
+
+Here is a UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
+encoded as a one-hot amino acid matrix with `r ncol(a$onehot)` columns, one for each amino
+acid at each position.
+
+```{r, eval=FALSE}
+uamp(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
+```
+
+```{r umap1, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+
+library(uwot)
+
+set.seed(2)
+d <- umap(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
+
+a$umap <- data.frame(allele = rownames(a$onehot), x = d[,1], y = d[,2])
+a$umap %<>% mutate(allele = str_remove(allele, ".+\\*"))
+a$umap %<>% mutate(d4 = str_extract(allele, "^[^:]+:[^:]+"))
+a$umap %<>% mutate(d2 = str_extract(d4, "^[^:]+"))
+a$umap %<>% mutate(m2 = str_extract(d4, "[^:]+$"))
+a$umap$label <- ""
+set.seed(2)
+ix <- sample(1:nrow(a$umap), 40)
+a$umap$label[ix] <- a$umap$d4[ix]
+
+p <- ggplot(a$umap) +
+  aes(x, y, color = d2) +
+  geom_point() +
+  ggrepel::geom_text_repel(aes(label = label), max.overlaps = 100) +
+  scale_color_manual(values = mpn65) + 
+  guides(color = guide_legend(title = "2-digit", override.aes = list(label = "", size = 5))) +
+  labs(
+    title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
+    caption = glue("IMGTHLA {options('hlabud_release')}")
+  ) +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+  )
+p
+# ggsave("test.png", p)
+
+```
+
+We can highlight which alleles have amino acid H at position 13:
+
+```{r umap-P13H, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+my_position <- "P13_H"
+a$umap$color <- as.factor(as.integer(a$onehot[,my_position]))
+p <- ggplot(a$umap) +
+  aes(x, y, color = color) +
+  geom_point() +
+  geom_text_repel(aes(label = label), max.overlaps = 100) +
+  guides(color = guide_legend(title = my_position, override.aes = list(label = "", size = 5))) +
+  labs(
+    title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
+    caption = glue("IMGTHLA {options('hlabud_release')}")
+  ) +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+  )
+p
+# ggsave("test.png", p)
+```
+
+Or we can represent each amino acid at position 13 with a different color:
+
+```{r umap-P13, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+
+my_position <- "P13"
+a$umap$color <- factor(as.character(a$aminos[,my_position]))
+
+p <- ggplot(a$umap) +
+  aes(x, y, color = color) +
+  geom_point() +
+  geom_text_repel(aes(label = label), max.overlaps = 100) +
+  guides(color = guide_legend(title = my_position, override.aes = list(label = "", size = 5))) +
+  scale_color_manual(values = mpn65) +
+  labs(
+    title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
+    caption = glue("IMGTHLA {options('hlabud_release')}")
+  ) +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+  )
+p
+# ggsave("test.png", p)
+
+```
+
+## Download and unpack all data from the latest IMGTHLA release
+
+If you only want to use `hla_alignments()`, then you don't need
+`install_hla()`. The data files are automatically downloaded automatically as
+needed.
+
+But some users might need to access the additional files that are present in
+the full data release.
+
+Run `install_hla()` to download and unpack the [latest IMGTHLA
+release](https://github.com/ANHIG/IMGTHLA/releases). The destination folder for
+the downloaded data files is `getOption("hlabud_dir")`, which is automatically
+set with the [rappdirs](https://github.com/r-lib/rappdirs) package.o
+
+Here are a few examples of how to download releases or get a list of release
+names.
+
+Download the latest release (default) or a specific release:
+
+```{r, eval=FALSE}
+# Download all of the data (120MB) for the latest IMGTHLA release
+install_hla(release = "latest")
+
+# Download a specific release
+install_hla(release = "3.51.0")
+```
+
+Optionally, get or set the directory hlabud uses to store the data:
+
+```{r, eval=FALSE}
+getOption("hlabud_dir")
+#> [1] "/home/username/.local/share/hlabud"
+
+# Manually override the directory for hlabud to use
+options(hlabud_dir = "/path/to/my/dir")
+```
+
+Check which release hlabud is using, or choose a release:
+
+```{r, eval=FALSE}
+getOption("hlabud_release")
+#> [1] "3.51.0"
+
+# Use a specific release
+options(hlabud_release = "3.51.0")
+
+# List all releases
+hla_releases()
+#>  [1] "3.51.0"   "3.50.0"   "3.49.0"   "3.48.0"   "3.47.0"   "3.46.0"   "3.45.1"   "3.45.01"
+#>  [9] "3.45.0.1" "3.45.0"   "3.44.1"   "3.44.0"   "3.43.0"   "3.42.0"   "3.41.2"   "3.41.0"
+#> [17] "3.40.0"   "3.39.0"   "3.38.0"   "3.37.0"   "3.36.0"   "3.35.0"   "3.34.0"   "3.33.0"
+#> [25] "3.32.0"   "3.31.0"   "3.30.0"   "3.29.0"   "3.28.0"   "3.27.0"
+```
+
+After installing a few releases, this is what the hlabud folder might look
+like:
+
+```bash
+❯ ls -lah "/home/user/.local/share/hlabud"
+total 207M
+drwxrwxr-x  3 user user      32 Apr  5 01:19 3.30.0
+drwxrwxr-x 11 user user    4.0K Apr  7 19:31 3.40.0
+drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
+-rw-rw-r--  1 user user     15K Apr  7 19:23 tags.json
+-rw-rw-r--  1 user user     79M Apr  7 19:28 v3.40.0-alpha.tar.gz
+-rw-rw-r--  1 user user    129M Apr  4 20:07 v3.51.0-alpha.tar.gz
+```
+

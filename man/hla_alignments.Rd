@@ -19,7 +19,22 @@ hla_alignments(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE)
 A dataframe.
 }
 \description{
-Get aligned sequences in a dataframe
+Here are the conventions used for alignments:
+\itemize{
+\item The entry for each allele is displayed in respect to the reference sequences.
+\item Where identity to the reference sequence is present the base will be displayed as a hyphen (-).
+\item Non-identity to the reference sequence is shown by displaying the appropriate base at that position.
+\item Where an insertion or deletion has occurred this will be represented by a period (.).
+\item If the sequence is unknown at any point in the alignment, this will be represented by an asterisk (*).
+\item In protein alignments for null alleles, the 'Stop' codons will be represented by a hash (X).
+\item In protein alignments, sequence following the termination codon, will not be marked and will appear blank.
+\item These conventions are used for both nucleotide and protein alignments.
+}
+}
+\details{
+This information about conventions was copied from the following URL:
+
+https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/
 }
 \examples{
 \donttest{

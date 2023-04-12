@@ -22,7 +22,12 @@ one row for each allele and one column for each amino acid at each position.
 Read a \verb{*_prot.txt} file from IMGTHLA.
 }
 \examples{
-a <- read_prot("https://github.com/ANHIG/IMGTHLA/raw/5f2c562056f8ffa89aeea0631f2a52300ee0de17/alignments/DRB1_prot.txt")
+DRB1_file <- file.path(
+  "https://github.com/ANHIG/IMGTHLA/raw",
+  "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
+  "alignments/DRB1_prot.txt"
+)
+a <- read_prot(DRB1_file)
 head(a$sequences)
 head(a$aminos)
 head(a$onehot)

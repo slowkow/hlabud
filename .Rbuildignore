@@ -1,9 +1,12 @@
 ^LICENSE\.md$
+^Makefile$
 ^data-raw$
 ^README.Rmd$
 ^README.html$
-^Makefile$
 ^README_cache
 ^README_files
+^.github
 ^test.R$
 ^test.png$
+^doc$
+^Meta$

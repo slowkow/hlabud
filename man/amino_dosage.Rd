@@ -33,7 +33,12 @@ By default, the returned data frame is filtered to exclude:
 }
 }
 \examples{
-a <- read_prot("https://github.com/ANHIG/IMGTHLA/raw/5f2c562056f8ffa89aeea0631f2a52300ee0de17/alignments/DRB1_prot.txt")
+DRB1_file <- file.path(
+  "https://github.com/ANHIG/IMGTHLA/raw",
+  "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
+  "alignments/DRB1_prot.txt"
+)
+a <- read_prot(DRB1_file)
 genotypes <- c(
   "DRB1*12:02:02:03+DRB1*12:02:02:03+DRB1*14:54:02",
   "DRB1*04:174+DRB1*15:152",

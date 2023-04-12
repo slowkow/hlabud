@@ -219,7 +219,12 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, quiet =
 #' one row for each allele and one column for each amino acid at each position.
 #' @param prot_file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
 #' @examples
-#' a <- read_prot("https://github.com/ANHIG/IMGTHLA/raw/5f2c562056f8ffa89aeea0631f2a52300ee0de17/alignments/DRB1_prot.txt")
+#' DRB1_file <- file.path(
+#'   "https://github.com/ANHIG/IMGTHLA/raw",
+#'   "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
+#'   "alignments/DRB1_prot.txt"
+#' )
+#' a <- read_prot(DRB1_file)
 #' head(a$sequences)
 #' head(a$aminos)
 #' head(a$onehot)
@@ -260,7 +265,7 @@ read_prot <- function(prot_file) {
   # al <- al %>% group_by(d4) %>% filter(row_number() == 1) %>%
   #   select(d4, allele, seq)
   oh <- get_onehot(al, n_pre)
-  return(list(sequences = al, aminos = oh$aminos, onehot = oh$onehot))
+  return(list(sequences = as.data.frame(al), aminos = oh$aminos, onehot = oh$onehot))
 }
 
 #' Make a one-hot encoded matrix from a dataframe of amino acid
@@ -337,7 +342,12 @@ get_onehot <- function(al, n_pre) {
 #' @param drop_duplicates Filter out duplicate amino acid positions by default.
 #' @returns A data frame with one row for each input genotype.
 #' @examples
-#' a <- read_prot("https://github.com/ANHIG/IMGTHLA/raw/5f2c562056f8ffa89aeea0631f2a52300ee0de17/alignments/DRB1_prot.txt")
+#' DRB1_file <- file.path(
+#'   "https://github.com/ANHIG/IMGTHLA/raw",
+#'   "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
+#'   "alignments/DRB1_prot.txt"
+#' )
+#' a <- read_prot(DRB1_file)
 #' genotypes <- c(
 #'   "DRB1*12:02:02:03+DRB1*12:02:02:03+DRB1*14:54:02",
 #'   "DRB1*04:174+DRB1*15:152",
@@ -357,7 +367,7 @@ amino_dosage <- function(genotypes, aminos, drop_constants = TRUE, drop_duplicat
       # Find the first row in aminos where the prefix matches our genotype
       ix <- which(str_starts(rownames(aminos), fixed(my_a)))
       if (length(ix) > 0) {
-        dosages[i,] <- dosages[i,] + aminos[ix[1],]
+        dosages[i,] <- dosages[i,] + as.numeric(aminos[ix[1],])
       }
     }
   }
