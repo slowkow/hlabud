@@ -17,7 +17,8 @@ leukocyte antigen (HLA) genotypes from [IMGTHLA] in a tidy R workflow.
 
 [IMGTHLA]: https://github.com/ANHIG/IMGTHLA
 
-What amino acid positions are different between the DRB1\*04:174 and DRB1\*15:152 genotypes?
+For example, let's consider a question about two HLA genotypes. What amino acid
+positions are different between DRB1\*04:174 and DRB1\*15:152?
 
 ```{r}
 
@@ -45,7 +46,7 @@ devtools::install_github("slowkow/hlabud")
 
 # Examples
 
-See the [usage examples](vignettes/examples.Rmd) to see how hlabud can be used
+See the [usage examples](vignettes/examples.md) to see how hlabud can be used
 in an analysis.
 
 

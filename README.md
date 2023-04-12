@@ -10,8 +10,9 @@ hlabud is an R package that provides functions to download and analyze
 human leukocyte antigen (HLA) genotypes from
 [IMGTHLA](https://github.com/ANHIG/IMGTHLA) in a tidy R workflow.
 
-What amino acid positions are different between the DRB1\*04:174 and
-DRB1\*15:152 genotypes?
+For example, let’s consider a question about two HLA genotypes. What
+amino acid positions are different between DRB1\*04:174 and
+DRB1\*15:152?
 
 ``` r
 library(hlabud)
@@ -41,8 +42,8 @@ devtools::install_github("slowkow/hlabud")
 Examples
 ========
 
-See the [usage examples](vignettes/examples.Rmd) to see how hlabud can
-be used in an analysis.
+See the [usage examples](vignettes/examples.md) to see how hlabud can be
+used in an analysis.
 
 Related work
 ============
