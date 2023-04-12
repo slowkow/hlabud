@@ -33,6 +33,7 @@ Suggests:
     knitr,
     parameters,
     pbapply,
+    prettydoc,
     readr,
     rmarkdown,
     scales,
