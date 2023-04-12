@@ -216,7 +216,7 @@ my_glm %>%
 The volcano below shows the Odds Ratio and P-value for each amino acid
 position. The top hits with P &lt; 0.05 are labeled.
 
-```{r, fig.width = 6, fig.height = 4, echo = FALSE}
+```{r, fig.width = 6, fig.height = 4, fig.dpi = 300, echo = FALSE}
 
 my_glm_case <- my_glm %>%
   filter(!Parameter %in% c("(Intercept)")) %>%
@@ -252,7 +252,7 @@ acid at each position.
 uamp(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
 ```
 
-```{r, cache=TRUE, echo = FALSE, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
 library(uwot)
 
@@ -291,7 +291,7 @@ p
 
 We can highlight which alleles have amino acid H at position 13:
 
-```{r, cache=TRUE, echo = FALSE, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 my_position <- "P13_H"
 a$umap$color <- as.factor(as.integer(a$onehot[,my_position]))
 p <- ggplot(a$umap) +
@@ -314,7 +314,7 @@ p
 
 Or we can represent each amino acid at position 13 with a different color:
 
-```{r, cache=TRUE, echo = FALSE, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
 my_position <- "P13"
 a$umap$color <- factor(as.character(a$aminos[,my_position]))
