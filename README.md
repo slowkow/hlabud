@@ -3,6 +3,9 @@
 -   [Examples](#examples)
 -   [Related work](#related-work)
 
+[![Build
+Status](https://github.com/slowkow/hlabud/workflows/R-CMD-check/badge.svg)](https://github.com/slowkow/hlabud/actions?query=workflow%3AR-CMD-check)
+
 Introduction
 ============
 

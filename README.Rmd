@@ -10,6 +10,11 @@ output:
     self_contained: true
 ---
 
+[![Build Status][bb]][githubactions] 
+
+[bb]: https://github.com/slowkow/hlabud/workflows/R-CMD-check/badge.svg
+[githubactions]: https://github.com/slowkow/hlabud/actions?query=workflow%3AR-CMD-check
+
 # Introduction
 
 hlabud is an R package that provides functions to download and analyze human
