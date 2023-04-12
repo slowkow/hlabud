@@ -64,19 +64,32 @@ a$sequences[1:5,]
     ## 4 DRB1*01:01:01:04 ------------------------------------------------------.-----------.-------------…
     ## 5 DRB1*01:01:01:05 ------------------------------------------------------.-----------.-------------…
 
+And a matrix:
+
+``` r
+a$aminos[1:5,1:10]
+```
+
+    ##                  Pn29 Pn28 Pn27 Pn26 Pn25 Pn24 Pn23 Pn22 Pn21 Pn20
+    ## DRB1*01:01:01:01    M    V    C    L    K    L    P    G    G    S
+    ## DRB1*01:01:01:02    M    V    C    L    K    L    P    G    G    S
+    ## DRB1*01:01:01:03    M    V    C    L    K    L    P    G    G    S
+    ## DRB1*01:01:01:04    M    V    C    L    K    L    P    G    G    S
+    ## DRB1*01:01:01:05    M    V    C    L    K    L    P    G    G    S
+
 And we get a one-hot encoded matrix with one column for each amino acid
 at each position:
 
 ``` r
-a$onehot[1:5,1:5]
+a$onehot[1:5,1:10]
 ```
 
-    ##                  Pn29_M Pn28_V Pn27_C Pn26_L Pn25_K
-    ## DRB1*01:01:01:01      1      1      1      1      1
-    ## DRB1*01:01:01:02      1      1      1      1      1
-    ## DRB1*01:01:01:03      1      1      1      1      1
-    ## DRB1*01:01:01:04      1      1      1      1      1
-    ## DRB1*01:01:01:05      1      1      1      1      1
+    ##                  Pn29_M Pn28_V Pn27_C Pn26_L Pn25_K Pn25_R Pn24_F Pn24_L Pn23_P Pn22_G
+    ## DRB1*01:01:01:01      1      1      1      1      1      0      0      1      1      1
+    ## DRB1*01:01:01:02      1      1      1      1      1      0      0      1      1      1
+    ## DRB1*01:01:01:03      1      1      1      1      1      0      0      1      1      1
+    ## DRB1*01:01:01:04      1      1      1      1      1      0      0      1      1      1
+    ## DRB1*01:01:01:05      1      1      1      1      1      0      0      1      1      1
 
 Now, suppose we have some individuals with the following genotypes:
 
@@ -197,7 +210,7 @@ my_glm %>%
 The volcano below shows the Odds Ratio and P-value for each amino acid
 position. The top hits with P &lt; 0.05 are labeled.
 
-![](README_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 UMAP embedding of 3,486 HLA-DRB1 alleles
 ----------------------------------------
@@ -210,11 +223,16 @@ position.
 uamp(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 We can highlight which alleles have amino acid H at position 13:
 
-![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
+
+Or we can represent each amino acid at position 13 with a different
+color:
+
+![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 Download and unpack the latest release from IMGTHLA
 ---------------------------------------------------

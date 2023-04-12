@@ -207,7 +207,8 @@ read_prot <- function(prot_file) {
   # al <- unique(al[,c("d4", "seq")])
   # al <- al %>% group_by(d4) %>% filter(row_number() == 1) %>%
   #   select(d4, allele, seq)
-  return(list(sequences = al, onehot = get_onehot(al, n_pre)))
+  oh <- get_onehot(al, n_pre)
+  return(list(sequences = al, aminos = oh$aminos, onehot = oh$onehot))
 }
 
 #' Make a one-hot encoded matrix from a dataframe of amino acid
@@ -220,22 +221,19 @@ get_onehot <- function(al, n_pre) {
   seq_chars <- str_split(al$seq, "")
   ref_chars <- seq_chars[[1]]
   max_chars <- max(sapply(seq_chars, length))
+  min_chars <- min(sapply(seq_chars, length))
   for (i in 2:length(seq_chars)) {
     ix <- which(seq_chars[[i]] == "-")
     ix <- ix[ix < length(ref_chars)]
     seq_chars[[i]][ix] <- ref_chars[ix]
-    if (length(seq_chars[[i]]) < max_chars) {
-      seq_chars[[i]] <- c(
-        seq_chars[[i]],
-        rep(NA, max_chars - length(seq_chars[[i]]))
-      )
+    seq_len <- length(seq_chars[[i]])
+    if (seq_len < max_chars) {
+      seq_chars[[i]] <- c(seq_chars[[i]], rep("*", max_chars - seq_len))
     }
   }
-  if (length(seq_chars[[1]]) < max_chars) {
-    seq_chars[[1]] <- c(
-      seq_chars[[1]],
-      rep(NA, max_chars - length(seq_chars[[1]]))
-    )
+  if (length(ref_chars) < max_chars) {
+    ref_chars <- c(ref_chars, rep("*", max_chars - length(ref_chars)))
+    seq_chars[[1]] <- ref_chars
   }
   # Create a one-hot-encoded matrix
   # with allele names (rows) and positions (columns)
@@ -261,12 +259,12 @@ get_onehot <- function(al, n_pre) {
     aminos[,i] <- as.factor(aminos[,i])
   }
   p <- onehot(aminos, max_levels = 20)
-  aminos <- predict(p, aminos)
-  rownames(aminos) <- al$allele
+  retval <- predict(p, aminos)
+  rownames(retval) <- al$allele
   # Discard positions where we don't know the allele
-  aminos <- aminos[,!str_detect(colnames(aminos), "\\*")]
-  colnames(aminos) <- str_replace(colnames(aminos), "=", "_")
-  return(aminos)
+  retval <- retval[,!str_detect(colnames(retval), "\\*")]
+  colnames(retval) <- str_replace(colnames(retval), "=", "_")
+  return(list(aminos = aminos, onehot = retval))
 }
 
 #' Amino acid dosage
@@ -288,13 +286,17 @@ get_onehot <- function(al, n_pre) {
 #' @returns A data frame with one row for each input genotype.
 #' @export
 amino_dosage <- function(genotypes, aminos, drop_constants = TRUE, drop_duplicates = TRUE) {
-  dosages <- matrix(NA, ncol = ncol(aminos), nrow = length(genotypes))
+  dosages <- matrix(0, ncol = ncol(aminos), nrow = length(genotypes))
   for (i in seq_along(genotypes)) {
+    # Split a string of genotypes like "HLA-A*01:01+HLA-A*01:01"
     a <- str_split(genotypes[i], "\\+")[[1]]
-    if (!all(a %in% rownames(aminos))) {
-      stop(glue("allele not found in rownames(aminos): {a}"))
+    for (my_a in a) {
+      # Find the first row in aminos where the prefix matches our genotype
+      ix <- which(str_starts(rownames(aminos), fixed(my_a)))
+      if (length(ix) > 0) {
+        dosages[i,] <- dosages[i,] + aminos[ix[1],]
+      }
     }
-    dosages[i,] <- colSums(aminos[a,], na.rm = TRUE)
   }
   rownames(dosages) <- genotypes
   colnames(dosages) <- colnames(aminos)

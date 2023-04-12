@@ -120,11 +120,17 @@ The amino acid sequence alignments are in a data frame:
 a$sequences[1:5,]
 ```
 
+And a matrix:
+
+```{r}
+a$aminos[1:5,1:10]
+```
+
 And we get a one-hot encoded matrix with one column for each amino acid at each
 position:
 
 ```{r}
-a$onehot[1:5,1:5]
+a$onehot[1:5,1:10]
 ```
 
 Now, suppose we have some individuals with the following genotypes:
@@ -304,6 +310,33 @@ p <- ggplot(a$umap) +
   )
 p
 # ggsave("test.png", p)
+```
+
+Or we can represent each amino acid at position 13 with a different color:
+
+```{r, cache=TRUE, echo = FALSE, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+
+my_position <- "P13"
+a$umap$color <- factor(as.character(a$aminos[,my_position]))
+
+p <- ggplot(a$umap) +
+  aes(x, y, color = color) +
+  geom_point() +
+  ggrepel::geom_text_repel(aes(label = label), max.overlaps = 100) +
+  guides(color = guide_legend(title = my_position, override.aes = list(label = "", size = 5))) +
+  scale_color_manual(values = mpn65) +
+  labs(
+    title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
+    caption = glue("IMGTHLA {options('hlabud_release')}")
+  ) +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+  )
+p
+# ggsave("test.png", p)
+
 ```
 
 ## Download and unpack the latest release from IMGTHLA
