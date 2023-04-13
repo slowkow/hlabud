@@ -1,7 +1,4 @@
-hlabud
-======
-
-[![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
+# 🐶 hlabud: tidy HLA amino acid analysis
 
 hlabud is an R package that provides functions to download and analyze
 human leukocyte antigen (HLA) genotypes from
@@ -11,15 +8,17 @@ For example, let’s consider a simple question about two HLA genotypes
 DRB1\*04:174 and DRB1\*15:152. What amino acid positions are different
 between these two genotypes?
 
-``` r
+```r
 library(hlabud)
 a <- hla_alignments("DRB1")
 amino_dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
 ```
 
-    ##             P9_E P9_W
-    ## DRB1*04:174    1    0
-    ## DRB1*15:152    0    1
+```
+            P9_E P9_W
+DRB1*04:174    1    0
+DRB1*15:152    0    1
+```
 
 From this output, we can see that the two genotypes are nearly
 identical, but they differ at position 9:
@@ -32,7 +31,7 @@ Installation
 
 The quickest way to get hlabud is to install from GitHub:
 
-``` r
+```r
 # install.packages("devtools")
 devtools::install_github("slowkow/hlabud")
 ```
@@ -44,19 +43,19 @@ See the [usage examples](vignettes/examples.md) to get some ideas for
 how to use hlabud in your analyses.
 
 -   [Get a one-hot encoded matrix for all HLA-DRB1
-    alleles](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#get-a-one-hot-encoded-matrix-for-all-hla-drb1-alleles)
+    alleles](articles/examples.html#get-a-one-hot-encoded-matrix-for-all-hla-drb1-alleles)
 -   [Convert genotypes to a dosage
-    matrix](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#convert-genotypes-to-a-dosage-matrix)
+    matrix](articles/examples.html#convert-genotypes-to-a-dosage-matrix)
 -   [Logistic regression association for amino acid
-    positions](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#logistic-regression-association-for-amino-acid-positions)
+    positions](articles/examples.html#logistic-regression-association-for-amino-acid-positions)
 -   [UMAP embedding of 3,486 HLA-DRB1
-    alleles](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#umap-embedding-of-3486-hla-drb1-alleles)
+    alleles](articles/examples.html#umap-embedding-of-3486-hla-drb1-alleles)
 -   [Download and unpack all data from the latest IMGTHLA
-    release](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#download-and-unpack-all-data-from-the-latest-imgthla-release)
+    release](articles/examples.html#download-and-unpack-all-data-from-the-latest-imgthla-release)
 
-<a href="https://github.com/slowkow/hlabud/tree/main/vignettes/examples.md">
-<img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/glm-volcano-1.png">
-<img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/umap1-1.png">
+<a href="articles/examples.html">
+<img width="49%" src="articles/examples_files/figure-html/glm-volcano-1.png">
+<img width="49%" src="articles/examples_files/figure-html/umap1-1.png">
 </a>
 
 Related work

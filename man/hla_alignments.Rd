@@ -19,7 +19,7 @@ hla_alignments(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE)
 A dataframe.
 }
 \description{
-Here are the conventions used for alignments:
+Here are the conventions used for alignments (\href{https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/}{EBI IMGT-HLA}):
 \itemize{
 \item The entry for each allele is displayed in respect to the reference sequences.
 \item Where identity to the reference sequence is present the base will be displayed as a hyphen (-).
@@ -30,11 +30,6 @@ Here are the conventions used for alignments:
 \item In protein alignments, sequence following the termination codon, will not be marked and will appear blank.
 \item These conventions are used for both nucleotide and protein alignments.
 }
-}
-\details{
-This information about conventions was copied from the following URL:
-
-https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/
 }
 \examples{
 \donttest{

@@ -1,0 +1,21 @@
+url: https://slowkow.github.io/hlabud
+template:
+  bootstrap: 5
+  opengraph:
+    twitter:
+      creator: "@slowkow"
+      site: "@slowkow"
+      card: summary_large_image
+
+navbar:
+  title: "hlabud"
+  left:
+    - text: "Examples"
+      href: articles/examples.html
+    - text: "Reference"
+      href: reference/index.html
+  right:
+    - icon: fa-github
+      text: GitHub
+      href: https://github.com/slowkow/hlabud
+

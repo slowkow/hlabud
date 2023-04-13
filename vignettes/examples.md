@@ -19,7 +19,7 @@ vignette: >
 
 Kamil Slowikowski
 
-2023-04-12
+2023-04-13
 
 [hlabud] is an R package that provides functions to download and analyze human leukocyte antigen (HLA) genotypes from [IMGTHLA] in a tidy R workflow.
 
@@ -262,13 +262,20 @@ my_glm %>%
   arrange(p) %>%
   filter(!Parameter %in% c("(Intercept)")) %>%
   head
-#>    Parameter Coefficient        SE   CI    CI_low    CI_high         z df_error          p
-#> 1:     P62_Y   0.3941101 0.1616955 0.95 0.1689189  0.8533865 -2.269486      Inf 0.02323880
-#> 2:     P13_G   4.0243902 2.7614898 0.95 1.1612170 18.7172101  2.029142      Inf 0.04244386
-#> 3:     P49_Y   1.8181911 0.5670185 0.95 0.9999588  3.4287965  1.917030      Inf 0.05523418
-#> 4:     P72_R   2.3127447 1.0221532 0.95 1.0163649  5.8789932  1.897060      Inf 0.05782000
-#> 5:     P76_A   0.5331945 0.1773077 0.95 0.2713305  1.0083553 -1.891117      Inf 0.05860878
-#> 6:     P16_H   0.3488372 0.1991184 0.95 0.1040766  1.0169353 -1.845022      Inf 0.06503428
+#>    Parameter Coefficient        SE   CI    CI_low    CI_high         z df_error
+#> 1:     P62_Y   0.3941101 0.1616955 0.95 0.1689189  0.8533865 -2.269486      Inf
+#> 2:     P13_G   4.0243902 2.7614898 0.95 1.1612170 18.7172101  2.029142      Inf
+#> 3:     P49_Y   1.8181911 0.5670185 0.95 0.9999588  3.4287965  1.917030      Inf
+#> 4:     P72_R   2.3127447 1.0221532 0.95 1.0163649  5.8789932  1.897060      Inf
+#> 5:     P76_A   0.5331945 0.1773077 0.95 0.2713305  1.0083553 -1.891117      Inf
+#> 6:     P16_H   0.3488372 0.1991184 0.95 0.1040766  1.0169353 -1.845022      Inf
+#>             p
+#> 1: 0.02323880
+#> 2: 0.04244386
+#> 3: 0.05523418
+#> 4: 0.05782000
+#> 5: 0.05860878
+#> 6: 0.06503428
 ```
 
 The volcano below shows the Odds Ratio and P-value for each amino acid
@@ -353,7 +360,7 @@ hla_releases()
 
 After installing a few releases, the hlabud folder might look like this:
 
-```bash
+```
 ❯ ls -lah "/home/user/.local/share/hlabud"
 total 207M
 drwxrwxr-x  3 user user      32 Apr  5 01:19 3.30.0

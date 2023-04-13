@@ -24,7 +24,7 @@ For each genotype, return the the dosage for each amino acid at each
 position.
 }
 \details{
-Each genotype should be represented like \code{"HLA-A*01:01+HLA-A*01:01"}
+Each genotype should be represented like \code{"HLA-A*01:01,HLA-A*01:01"}
 
 By default, the returned data frame is filtered to exclude:
 \itemize{
@@ -46,6 +46,6 @@ genotypes <- c(
   "DRB1*14:172,DRB1*04:160",
   "DRB1*04:359,DRB1*04:284:02"
 )
-dosage <- amino_dosage(genotypes, a$aminos)
+dosage <- amino_dosage(genotypes, a$onehot)
 dosage[,1:5]
 }

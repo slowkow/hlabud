@@ -43,9 +43,11 @@ setup_hlabud_dir <- function() {
 #' 
 #' We can get or set the folder with the `hlabud_dir` option:
 #'
-#'     my_dir <- getOption("hlabud_dir")
-#'     options(hlabud_dir = my_dir)
-#'
+#' ```
+#' my_dir <- getOption("hlabud_dir")
+#' options(hlabud_dir = my_dir)
+#' ```
+#' 
 #' The release tarball from Github is unpacked into the folder.
 #'
 #' Other functions in the hlabud package will use the unpacked data, or else
@@ -137,7 +139,7 @@ hla_releases <- function(overwrite = FALSE) {
 
 #' Get aligned sequences in a dataframe
 #'
-#' Here are the conventions used for alignments:
+#' Here are the conventions used for alignments ([EBI IMGT-HLA](https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/)):
 #' * The entry for each allele is displayed in respect to the reference sequences.
 #' * Where identity to the reference sequence is present the base will be displayed as a hyphen (-).
 #' * Non-identity to the reference sequence is shown by displaying the appropriate base at that position.
@@ -146,10 +148,6 @@ hla_releases <- function(overwrite = FALSE) {
 #' * In protein alignments for null alleles, the 'Stop' codons will be represented by a hash (X).
 #' * In protein alignments, sequence following the termination codon, will not be marked and will appear blank.
 #' * These conventions are used for both nucleotide and protein alignments.
-#'
-#' This information about conventions was copied from the following URL:
-#'
-#' https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/
 #'
 #' @return A dataframe.
 #' @param gene The name of a gene like "DRB1"
@@ -329,7 +327,7 @@ get_onehot <- function(al, n_pre) {
 #' For each genotype, return the the dosage for each amino acid at each
 #' position.
 #'
-#' Each genotype should be represented like `"HLA-A*01:01+HLA-A*01:01"`
+#' Each genotype should be represented like `"HLA-A*01:01,HLA-A*01:01"`
 #'
 #' By default, the returned data frame is filtered to exclude:
 #' * amino acid positions where all input genotypes have the same allele
@@ -355,7 +353,7 @@ get_onehot <- function(al, n_pre) {
 #'   "DRB1*14:172,DRB1*04:160",
 #'   "DRB1*04:359,DRB1*04:284:02"
 #' )
-#' dosage <- amino_dosage(genotypes, a$aminos)
+#' dosage <- amino_dosage(genotypes, a$onehot)
 #' dosage[,1:5]
 #' @export
 amino_dosage <- function(genotypes, aminos, drop_constants = TRUE, drop_duplicates = TRUE) {

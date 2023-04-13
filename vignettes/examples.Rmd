@@ -449,7 +449,7 @@ hla_releases()
 
 After installing a few releases, the hlabud folder might look like this:
 
-```bash
+```
 ❯ ls -lah "/home/user/.local/share/hlabud"
 total 207M
 drwxrwxr-x  3 user user      32 Apr  5 01:19 3.30.0

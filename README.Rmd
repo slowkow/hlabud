@@ -64,15 +64,15 @@ See the [usage examples](vignettes/examples.md) to get some ideas for how to use
 I recommend this article for anyone new to HLA, because the beautiful figures
 help to build intuition:
 
-- La Gruta NL, Gras S, Daley SR, Thomas PG, Rossjohn J. [Understanding the drivers of MHC restriction of T cell receptors.](https://www.ncbi.nlm.nih.gov/pubmed/29636542) Nat Rev Immunol. 2018;18: 467–478. doi:10.1038/s41577-018-0007-5
+- La Gruta NL, Gras S, Daley SR, Thomas PG, Rossjohn J. [Understanding the drivers of MHC restriction of T cell receptors.](https://www.ncbi.nlm.nih.gov/pubmed/29636542) Nat Rev Immunol. 2018;18: 467–478.
 
 Learn about the conventions for HLA nomenclature:
 
-- Marsh SGE, Albert ED, Bodmer WF, Bontrop RE, Dupont B, Erlich HA, et al.  [Nomenclature for factors of the HLA system, 2010.](https://www.ncbi.nlm.nih.gov/pubmed/20356336) Tissue Antigens.  2010;75: 291–455. doi:10.1111/j.1399-0039.2010.01466.x
+- Marsh SGE, Albert ED, Bodmer WF, Bontrop RE, Dupont B, Erlich HA, et al.  [Nomenclature for factors of the HLA system, 2010.](https://www.ncbi.nlm.nih.gov/pubmed/20356336) Tissue Antigens.  2010;75: 291–455.
 
 For case-control analysis of HLA genotype data, consider the
 [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package available on
 CRAN. Here is the related article:
 
-- Pappas DJ, Marin W, Hollenbach JA, Mack SJ. [Bridging ImmunoGenomic Data Analysis Workflow Gaps (BIGDAWG): An integrated case-control analysis pipeline.](https://pubmed.ncbi.nlm.nih.gov/26708359) Hum Immunol. 2016;77: 283–287. doi:10.1016/j.humimm.2015.12.006
+- Pappas DJ, Marin W, Hollenbach JA, Mack SJ. [Bridging ImmunoGenomic Data Analysis Workflow Gaps (BIGDAWG): An integrated case-control analysis pipeline.](https://pubmed.ncbi.nlm.nih.gov/26708359) Hum Immunol. 2016;77: 283–287.
 

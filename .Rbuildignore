@@ -12,3 +12,6 @@ _files/
 ^README.Rmd$
 ^test.png$
 ^test.R$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
