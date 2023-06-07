@@ -54,8 +54,8 @@ how to use hlabud in your analyses.
     release](articles/examples.html#download-and-unpack-all-data-from-the-latest-imgthla-release)
 
 <a href="articles/examples.html">
-<img width="49%" src="articles/examples_files/figure-html/glm-volcano-1.png">
-<img width="49%" src="articles/examples_files/figure-html/umap1-1.png">
+<img width="49%" src="vignettes/examples_files/figure-html/glm-volcano-1.png">
+<img width="49%" src="vignettes/examples_files/figure-html/umap1-1.png">
 </a>
 
 Related work
