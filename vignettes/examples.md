@@ -19,7 +19,7 @@ vignette: >
 
 Kamil Slowikowski
 
-2023-04-13
+2023-05-16
 
 [hlabud] is an R package that provides functions to download and analyze human leukocyte antigen (HLA) genotypes from [IMGTHLA] in a tidy R workflow.
 
@@ -72,8 +72,8 @@ latest [IMGTHLA](https://github.com/ANHIG/IMGTHLA/releases) release:
 ```r
 library(hlabud)
 a <- hla_alignments(gene = "DRB1", quiet = FALSE)
-#> hlabud is using IMGTHLA release 3.51.0
-#> Reading /projects/home/ks38/.local/share/hlabud/3.51.0/alignments/DRB1_prot.txt
+#> hlabud is using IMGTHLA release 3.52.0
+#> Reading /Users/ks38/Library/Application Support/hlabud/3.52.0/alignments/DRB1_prot.txt
 ```
 
 The `a` object is a list with three items:
@@ -82,9 +82,9 @@ The `a` object is a list with three items:
 ```r
 str(a, max.level = 1)
 #> List of 3
-#>  $ sequences:'data.frame':	3486 obs. of  2 variables:
-#>  $ aminos   :'data.frame':	3486 obs. of  288 variables:
-#>  $ onehot   : num [1:3486, 1:1334] 1 1 1 1 1 1 1 1 1 1 ...
+#>  $ sequences:'data.frame':	3516 obs. of  2 variables:
+#>  $ aminos   :'data.frame':	3516 obs. of  288 variables:
+#>  $ onehot   : num [1:3516, 1:1482] 1 1 1 1 1 1 1 1 1 1 ...
 #>   ..- attr(*, "dimnames")=List of 2
 ```
 
@@ -141,12 +141,12 @@ each position:
 
 ```r
 a$onehot[1:5,1:8]
-#>                  Pn29_M Pn28_V Pn27_C Pn26_L Pn25_K Pn25_R Pn24_F Pn24_L
-#> DRB1*01:01:01:01      1      1      1      1      1      0      0      1
-#> DRB1*01:01:01:02      1      1      1      1      1      0      0      1
-#> DRB1*01:01:01:03      1      1      1      1      1      0      0      1
-#> DRB1*01:01:01:04      1      1      1      1      1      0      0      1
-#> DRB1*01:01:01:05      1      1      1      1      1      0      0      1
+#>                  Pn29_M Pn28_L Pn28_V Pn27_C Pn26_L Pn25_K Pn25_R Pn24_F
+#> DRB1*01:01:01:01      1      0      1      1      1      1      0      0
+#> DRB1*01:01:01:02      1      0      1      1      1      1      0      0
+#> DRB1*01:01:01:03      1      0      1      1      1      1      0      0
+#> DRB1*01:01:01:04      1      0      1      1      1      1      0      0
+#> DRB1*01:01:01:05      1      0      1      1      1      1      0      0
 ```
 
 ## Convert genotypes to a dosage matrix
@@ -223,18 +223,18 @@ d <- data.frame(
 )
 d <- cbind(d, amino_dosage(d$geno, a$onehot))
 d[1:5,1:6]
-#>                                                geno age case Pn29_M Pn25_K
-#> DRB1*04:271,DRB1*01:02:12 DRB1*04:271,DRB1*01:02:12  72    0      0      0
-#> DRB1*04:19,DRB1*15:07:01   DRB1*04:19,DRB1*15:07:01  22    1      2      2
-#> DRB1*14:54:08,DRB1*04:292 DRB1*14:54:08,DRB1*04:292  34    0      0      0
-#> DRB1*03:98,DRB1*03:108       DRB1*03:98,DRB1*03:108  76    0      0      0
-#> DRB1*03:74,DRB1*13:71         DRB1*03:74,DRB1*13:71  96    1      0      0
-#>                           Pn25_R
-#> DRB1*04:271,DRB1*01:02:12      0
-#> DRB1*04:19,DRB1*15:07:01       0
-#> DRB1*14:54:08,DRB1*04:292      0
-#> DRB1*03:98,DRB1*03:108         0
-#> DRB1*03:74,DRB1*13:71          0
+#>                                                  geno age case Pn29_M Pn25_K
+#> DRB1*04:267N,DRB1*01:02:12 DRB1*04:267N,DRB1*01:02:12  73    1      0      0
+#> DRB1*04:16,DRB1*15:02:06     DRB1*04:16,DRB1*15:02:06  72    0      1      1
+#> DRB1*14:50:02,DRB1*04:288   DRB1*14:50:02,DRB1*04:288  22    1      0      0
+#> DRB1*03:96,DRB1*03:106         DRB1*03:96,DRB1*03:106  34    0      0      0
+#> DRB1*03:72,DRB1*13:51           DRB1*03:72,DRB1*13:51  76    0      0      0
+#>                            Pn25_R
+#> DRB1*04:267N,DRB1*01:02:12      0
+#> DRB1*04:16,DRB1*15:02:06        0
+#> DRB1*14:50:02,DRB1*04:288       0
+#> DRB1*03:96,DRB1*03:106          0
+#> DRB1*03:72,DRB1*13:51           0
 ```
 
 Our simulated dataset has 100 individuals, 52 cases and 48 controls. We also have one column for each amino acid position that we might want to test for association with the `case` variable.
@@ -263,19 +263,19 @@ my_glm %>%
   filter(!Parameter %in% c("(Intercept)")) %>%
   head
 #>    Parameter Coefficient        SE   CI    CI_low    CI_high         z df_error
-#> 1:     P62_Y   0.3941101 0.1616955 0.95 0.1689189  0.8533865 -2.269486      Inf
-#> 2:     P13_G   4.0243902 2.7614898 0.95 1.1612170 18.7172101  2.029142      Inf
-#> 3:     P49_Y   1.8181911 0.5670185 0.95 0.9999588  3.4287965  1.917030      Inf
-#> 4:     P72_R   2.3127447 1.0221532 0.95 1.0163649  5.8789932  1.897060      Inf
-#> 5:     P76_A   0.5331945 0.1773077 0.95 0.2713305  1.0083553 -1.891117      Inf
-#> 6:     P16_H   0.3488372 0.1991184 0.95 0.1040766  1.0169353 -1.845022      Inf
-#>             p
-#> 1: 0.02323880
-#> 2: 0.04244386
-#> 3: 0.05523418
-#> 4: 0.05782000
-#> 5: 0.05860878
-#> 6: 0.06503428
+#> 1:    P101_E   4.7492150 2.8141197 0.95 1.6324022 17.5185505  2.629305      Inf
+#> 2:     P34_H   3.0945832 1.3884885 0.95 1.3489859  7.9635257  2.517706      Inf
+#> 3:     P13_H   2.7384213 1.1831088 0.95 1.2237664  6.7577338  2.331683      Inf
+#> 4:     P34_N   0.3651739 0.1577699 0.95 0.1479786  0.8171494 -2.331683      Inf
+#> 5:     P11_V   2.3962994 0.9557534 0.95 1.1336182  5.4854153  2.191138      Inf
+#> 6:     P11_P   0.3636364 0.1786921 0.95 0.1329654  0.9307394 -2.058596      Inf
+#>              p
+#> 1: 0.008555961
+#> 2: 0.011812185
+#> 3: 0.019717351
+#> 4: 0.019717351
+#> 5: 0.028441812
+#> 6: 0.039532948
 ```
 
 The volcano below shows the Odds Ratio and P-value for each amino acid
@@ -283,14 +283,14 @@ position. The top hits with P &lt; 0.05 are labeled.
 
 ![](examples_files/figure-html/glm-volcano-1.png)<!-- -->
 
-In this simulation, the `case` variable is associated with P62_Y (P = 0.023, OR = 0.39, 95% CI 0.17 to 0.85).
+In this simulation, the `case` variable is associated with P101_E (P = 0.0086, OR = 4.7, 95% CI 1.6 to 18).
 
 
-## UMAP embedding of 3,486 HLA-DRB1 alleles
+## UMAP embedding of 3,516 HLA-DRB1 alleles
 
 There are many things we might do with a one-hot encoding of HLA-DRB1 alleles.
 
-For example, here is a UMAP embedding of 3,486 HLA-DRB1 alleles encoded as a one-hot amino acid matrix with 1334 columns, one for each amino acid at each position.
+For example, here is a UMAP embedding of 3,516 HLA-DRB1 alleles encoded as a one-hot amino acid matrix with 1482 columns, one for each amino acid at each position.
 
 
 ```r

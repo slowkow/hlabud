@@ -6,6 +6,7 @@ clean:
 	rm -rf README_{files,cache} README.{md,html} vignettes/examples_* vignettes/examples.{md,html} docs/
 
 README.md: README.Rmd
+	R -e 'devtools::install_deps(".", TRUE)'
 	R -e 'rmarkdown::render("README.Rmd", "all")'
 
 vignettes/examples.md: vignettes/examples.Rmd

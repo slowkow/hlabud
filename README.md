@@ -1,5 +1,4 @@
-hlabud
-======
+# hlabud
 
 [![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
 
@@ -24,11 +23,10 @@ amino_dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
 From this output, we can see that the two genotypes are nearly
 identical, but they differ at position 9:
 
--   DRB1\*04:174 has P9\_E (Glu)
--   DRB1\*15:152 has P9\_W (Trp)
+-   DRB1\*04:174 has P9_E (Glu)
+-   DRB1\*15:152 has P9_W (Trp)
 
-Installation
-============
+# Installation
 
 The quickest way to get hlabud is to install from GitHub:
 
@@ -37,8 +35,7 @@ The quickest way to get hlabud is to install from GitHub:
 devtools::install_github("slowkow/hlabud")
 ```
 
-Examples
-========
+# Examples
 
 See the [usage examples](vignettes/examples.md) to get some ideas for
 how to use hlabud in your analyses.
@@ -59,8 +56,7 @@ how to use hlabud in your analyses.
 <img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/umap1-1.png">
 </a>
 
-Related work
-============
+# Related work
 
 I recommend this article for anyone new to HLA, because the beautiful
 figures help to build intuition:
@@ -73,8 +69,8 @@ figures help to build intuition:
 Learn about the conventions for HLA nomenclature:
 
 -   Marsh SGE, Albert ED, Bodmer WF, Bontrop RE, Dupont B, Erlich HA, et
-    al. [Nomenclature for factors of the HLA
-    system, 2010.](https://www.ncbi.nlm.nih.gov/pubmed/20356336) Tissue
+    al. [Nomenclature for factors of the HLA system,
+    2010.](https://www.ncbi.nlm.nih.gov/pubmed/20356336) Tissue
     Antigens. 2010;75: 291–455.
 
 For case-control analysis of HLA genotype data, consider the
