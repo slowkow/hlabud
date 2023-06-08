@@ -1,4 +1,4 @@
-# hlabud <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/581d29f3-7a98-452d-9955-5cb3c73fc8ee"></img>
+# hlabud <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/8fd7874d-7773-42d1-858e-79c56dc5d94f"></img>
 
 [![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
 
