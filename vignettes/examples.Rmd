@@ -1,12 +1,5 @@
 ---
 title: "hlabud usage examples"
-output:
-  prettydoc::html_pretty:
-    css: custom.css
-    theme: hpstr
-    highlight: github
-    toc: true
-    keep_md: true
 vignette: >
   %\VignetteIndexEntry{hlabud usage examples}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,6 +7,13 @@ vignette: >
 ---
 
 ```{r,include=FALSE}
+#output:
+#  prettydoc::html_pretty:
+#    css: custom.css
+#    theme: hpstr
+#    highlight: github
+#    toc: true
+#    keep_md: true
 options(width=80)
 library(data.table)
 library(dplyr)
@@ -130,9 +130,7 @@ The source code for this page is available [here](https://github.com/slowkow/hla
 Thank you for [reporting issues](https://github.com/slowkow/hlabud/issues) with hlabud.
 
 
-# Examples
-
-## Get a one-hot encoded matrix for all HLA-`r my_gene` alleles
+# Get a one-hot encoded matrix for all HLA-`r my_gene` alleles
 
 We can use `hla_alignments("DRB1")` to load the `DRB1_prot.txt` file from the
 latest [IMGTHLA](https://github.com/ANHIG/IMGTHLA/releases) release:
@@ -182,7 +180,7 @@ each position:
 a$onehot[1:5,1:8]
 ```
 
-## Convert genotypes to a dosage matrix
+# Convert genotypes to a dosage matrix
 
 Suppose we have some individuals with the following genotypes:
 
@@ -223,7 +221,7 @@ dim(dosage)
 
 Please be careful to check that your data looks the way you expect!
 
-## Logistic regression association for amino acid positions
+# Logistic regression association for amino acid positions
 
 Let's simulate a dataset with cases and controls to demonstrate one approach
 for testing which amino acid positions might be associated with cases.
@@ -302,7 +300,7 @@ p
 In this simulation, the `case` variable is associated with `r my_glm_case$Parameter[1]` `r with(my_glm_case[1,], glue("(P = {signif(p, 2)}, OR = {signif(Coefficient, 2)}, 95% CI {signif(CI_low, 2)} to {signif(CI_high, 2)})"))`.
 
 
-## UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
+# UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
 
 There are many things we might do with a one-hot encoding of HLA-`r my_gene` alleles.
 
@@ -399,7 +397,7 @@ p
 
 ```
 
-## Download and unpack all data from the latest IMGTHLA release
+# Download and unpack all data from the latest IMGTHLA release
 
 If you only want to use `hla_alignments()`, then you don't need `install_hla()` because data files are automatically downloaded automatically as needed.
 
