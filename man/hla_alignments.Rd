@@ -11,7 +11,7 @@ hla_alignments(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE)
 
 \item{type}{The type of sequence, one of "prot", "nuc", "gen"}
 
-\item{release}{The name of a release like "3.51.0"}
+\item{release}{The name of a release like "3.51.0" (optional)}
 
 \item{quiet}{If FALSE, print messages along the way.}
 }

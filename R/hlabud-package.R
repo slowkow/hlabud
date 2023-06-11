@@ -30,5 +30,6 @@
 #' @importFrom tidyr unite
 #' @importFrom utils download.file
 #' @importFrom utils untar
+#' @importFrom utils read.table
 ## usethis namespace: end
 NULL
