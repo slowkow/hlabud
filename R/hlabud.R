@@ -115,6 +115,81 @@ install_hla <- function(release = "latest", quiet = FALSE) {
   # prot_files <- Sys.glob(glue("{dirname(tar_file)}/*/alignments/*_prot.txt"))
 }
 
+#' Get IMGTHLA gene names
+#'
+#' @return A character vector of HLA gene names like "DRB1"
+#' @param overwrite Overwrite the existing `genes.json` file with a new one from GitHub
+#' @examples
+#' \donttest{
+#' hla_genes() 
+#' }
+#' @export
+hla_genes <- function(overwrite = FALSE) {
+  hlabud_dir <- setup_hlabud_dir()
+  genes_file <- file.path(hlabud_dir, "genes.json")
+  if (overwrite || !file.exists(genes_file)) {
+    j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/contents/alignments")
+    writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), genes_file)
+  }
+  j <- read_json(genes_file)
+  genes <- sapply(j, function(x) x$name)
+  genes <- unique(str_extract(genes, "^[^_]+"))
+  return(genes)
+}
+
+#' Get a table of allele names for a particular IMGTHLA release
+#'
+#' @return A data frame with HLA allele ids and names
+#' @param release The name of a release like "3.51.0" (optional)
+#' @param overwrite Overwrite the existing `alleles.json` file and `Allelelist.{version}.txt` file
+#' @examples
+#' \donttest{
+#' hla_alleles() 
+#' }
+#' @export
+hla_alleles <- function(release = NULL, overwrite = FALSE) {
+  hlabud_dir <- setup_hlabud_dir()
+  alleles_file <- file.path(hlabud_dir, "alleles.json")
+  releases <- hla_releases()
+  if (is.null(release)) {
+    release <- getOption("hlabud_release")
+  }
+  if (is.null(release)) {
+    release <- releases[1]
+    options(hlabud_release = release)
+  }
+  if (!release %in% releases) {
+    stop("Unrecognized release '{release}' not in releases: {paste(releases, collapse=' ')}")
+  }
+  if (overwrite || !file.exists(alleles_file)) {
+    j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/contents/allelelist")
+    writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), alleles_file)
+  }
+  j <- read_json(alleles_file)
+  #
+  # Convert a release like "3.51.0" to a slug like "3510"
+  my_slug <- str_replace_all(release, "\\.", "")
+  my_name <- glue("Allelelist.{my_slug}.txt")
+  #
+  my_names <- sapply(j, function(x) x$name)
+  if (!(my_name %in% my_names)) {
+    warning(glue("unrecognized release name '{my_name}'"))
+    return(NULL)
+  }
+  #
+  out_dir <- file.path(hlabud_dir, "allelelist")
+  dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+  out_file <- file.path(out_dir, my_name)
+  if (overwrite || !file.exists(out_file)) {
+    curl_download(
+      glue("https://github.com/ANHIG/IMGTHLA/raw/Latest/allelelist/{my_name}"),
+      out_file
+    )
+  }
+  alleles <- read.table(out_file, comment.char = "#", sep = ",", header = TRUE)
+  return(alleles)
+}
+
 #' Get IMGTHLA releases from GitHub
 #'
 #' @return A character vector of release names like "3.51.0"
@@ -152,7 +227,7 @@ hla_releases <- function(overwrite = FALSE) {
 #' @return A dataframe.
 #' @param gene The name of a gene like "DRB1"
 #' @param type The type of sequence, one of "prot", "nuc", "gen"
-#' @param release The name of a release like "3.51.0"
+#' @param release The name of a release like "3.51.0" (optional)
 #' @param quiet If FALSE, print messages along the way.
 #' @examples
 #' \donttest{
