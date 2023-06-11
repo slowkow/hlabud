@@ -144,7 +144,7 @@ hla_genes <- function(overwrite = FALSE) {
 #' @param overwrite Overwrite the existing `alleles.json` file and `Allelelist.{version}.txt` file
 #' @examples
 #' \donttest{
-#' hla_alleles() 
+#' head(hla_alleles())
 #' }
 #' @export
 hla_alleles <- function(release = NULL, overwrite = FALSE) {
@@ -233,8 +233,8 @@ hla_releases <- function(overwrite = FALSE) {
 #' \donttest{
 #' a <- hla_alignments("DRB1")
 #' head(a$sequences)
-#' head(a$aminos)
-#' head(a$onehot)
+#' a$aminos[1:6,1:6]
+#' a$onehot[1:6,1:6]
 #' }
 #' @export
 hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE) {
@@ -299,8 +299,8 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, quiet =
 #' )
 #' a <- read_prot(DRB1_file)
 #' head(a$sequences)
-#' head(a$aminos)
-#' head(a$onehot)
+#' a$aminos[1:5,1:5]
+#' a$onehot[1:5,1:5]
 #' @export
 read_prot <- function(prot_file) {
   my_gene <- str_split_fixed(basename(prot_file), "_", 2)[,1]

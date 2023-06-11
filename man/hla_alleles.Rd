@@ -19,6 +19,6 @@ Get a table of allele names for a particular IMGTHLA release
 }
 \examples{
 \donttest{
-hla_alleles() 
+head(hla_alleles())
 }
 }

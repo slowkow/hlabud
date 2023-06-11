@@ -35,7 +35,7 @@ Here are the conventions used for alignments (\href{https://www.ebi.ac.uk/ipd/im
 \donttest{
 a <- hla_alignments("DRB1")
 head(a$sequences)
-head(a$aminos)
-head(a$onehot)
+a$aminos[1:6,1:6]
+a$onehot[1:6,1:6]
 }
 }

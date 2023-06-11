@@ -4,9 +4,9 @@
 \name{hlabud-package}
 \alias{hlabud}
 \alias{hlabud-package}
-\title{hlabud: Amino Acid Association Methods for the Human Leukocyte Antigen (HLA) Genes}
+\title{hlabud: Tidy Methods for Analysis of the Human Leukocyte Antigen (HLA) Genes from IMGTHLA}
 \description{
-Methods for analysis of HLA genes at the amino acid level.
+Methods for analysis of HLA genes at the amino acid level, using data from IMGTHLA. The functions return simple lists and matrices ready for downstream analysis with packages like `lme4` and `uwot`.
 }
 \author{
 \strong{Maintainer}: Kamil Slowikowski \email{kslowikowski@gmail.com} (\href{https://orcid.org/0000-0002-2843-6370}{ORCID})

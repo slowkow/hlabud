@@ -1,4 +1,4 @@
-# 🐶 hlabud: tidy HLA amino acid analysis
+# hlabud: tidy HLA analysis in R <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/8fd7874d-7773-42d1-858e-79c56dc5d94f"></img>
 
 hlabud is an R package that provides functions to download and analyze
 human leukocyte antigen (HLA) genotypes from

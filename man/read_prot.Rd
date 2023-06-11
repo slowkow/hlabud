@@ -29,6 +29,6 @@ DRB1_file <- file.path(
 )
 a <- read_prot(DRB1_file)
 head(a$sequences)
-head(a$aminos)
-head(a$onehot)
+a$aminos[1:5,1:5]
+a$onehot[1:5,1:5]
 }

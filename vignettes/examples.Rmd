@@ -486,7 +486,7 @@ d
 
 And plot the number of alleles as a line plot:
 
-```{r}
+```{r, fig.height = 6}
 ggplot(d) +
   aes(x = release, y = n, group = 1) +
   geom_line() +
@@ -499,3 +499,27 @@ ggplot(d) +
   )
 ```
 
+```{r, fig.height = 12}
+d2 <- my_alleles %>% mutate(gene = str_split_fixed(Allele, "\\*", 2)[,1]) %>% count(release, gene)
+ggplot() +
+  aes(x = release, y = n) +
+  geom_line(
+    data = d2,
+    aes(group = gene, color = gene)
+  ) +
+  scale_color_discrete(guide = "none") +
+  geom_text(
+    data = d2 %>% filter(release == "3.52.0"),
+    mapping = aes(label = gene),
+    hjust = 0
+  ) +
+  labs(x = NULL, y = "Number of alleles",
+  title = "Number of alleles per release and gene") +
+  scale_x_discrete(expand = expansion(mult = c(0.01, 0.1))) +
+  scale_y_log10() +
+  theme(
+    panel.grid.major.y = element_line(), 
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+  )
+```
