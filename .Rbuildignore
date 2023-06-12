@@ -17,3 +17,5 @@ _files/
 ^docs$
 ^pkgdown$
 ^\.github$
+^paper.md$
+^paper.bib$
