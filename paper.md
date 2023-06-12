@@ -9,8 +9,8 @@ authors:
   - name: Kamil Slowikowski
 	orcid: 0000-0002-2843-6370
 	corresponding: true
-    affiliation: "1, 2, 3, 4, 5"
-  - name: Alexandra-Chloe Villani
+    affiliation: "1, 2, 3, 4"
+  - name: Alexandra-Chloé Villani
     affiliation: "1, 2, 3, 4, 5"
 affiliations:
   - name: Center for Immunology and Inflammatory Diseases, Department of Medicine, Massachusetts General Hospital, Boston, MA, USA 
@@ -21,7 +21,7 @@ affiliations:
     index: 3
   - name: Harvard Medical School, Boston, MA, USA
 	index: 4
-  - name: Harvard Medical School, Boston, MA, USA
+  - name: Division of Rheumatology, North Shore Physicians Group, Department of Medicine, Mass General Brigham Healthcare Center, Lynn, MA, USA
 	index: 5
 date: 12 June 2023
 bibliography: paper.bib
