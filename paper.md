@@ -11,6 +11,7 @@ authors:
 	corresponding: true
     affiliation: "1, 2, 3, 4"
   - name: Alexandra-Chloé Villani
+	orcid: 0000-0001-7461-0408
     affiliation: "1, 2, 3, 4, 5"
 affiliations:
   - name: Center for Immunology and Inflammatory Diseases, Department of Medicine, Massachusetts General Hospital, Boston, MA, USA 
