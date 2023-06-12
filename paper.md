@@ -48,6 +48,8 @@ The documentation includes usage examples such as logistic regression associatio
 HLA genotype data is downloaded lazily, as-needed, and cached in a user-configurable directory.
 
 `hlabud` was designed to be used by biomedical researchers and by students in courses on genetics and bioinformatics.
+The BIGDAWG [Pappas2016] R package for HLA analysis provides a comprehensive set of functions designed specifically for case-control analyses.
+In contrast, `hlabud` is designed to be a minimal package that provides flexible functions for any downstream HLA analyses.
 
 
 # References
