@@ -31,7 +31,7 @@ bibliography: paper.bib
 
 # Summary
 
-Human leukocyte antigen (HLA) genes encode the proteins that display peptides from pathogens such as bacteria and viruses.
+Human leukocyte antigen (HLA) genes encode the proteins that display antigens for the immune system to recognize pathogens like bacteria and viruses.
 Genes in the HLA locus on chromosome 6 in the human genome have thousands of different alleles in the human population.
 The single-nucleotide polymorphisms (SNPs) encoding different amino acids in HLA genes are the genetic variants with the largest effect sizes, and they are associated with risk of developing autoimmune disease [@Kennedy2017].
 The fields of immunology and genomics aim to discover molecular factors, such as HLA genotypes, that explain the functions of the human immune system in health and disease.
