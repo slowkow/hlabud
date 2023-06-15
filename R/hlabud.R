@@ -263,7 +263,7 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, verbose
   my_url <- glue("{repo_url}/raw/{sha}/alignments/{gene}_{type}.txt")
   if (!file.exists(my_file)) {
     if (verbose) { message(glue("Downloading {my_url}")) }
-    lines <- readLines(prot_url)
+    lines <- readLines(my_url)
     mkdir(dirname(my_file))
     if (verbose) { message(glue("Writing {my_file}")) }
     writeLines(lines, my_file)
