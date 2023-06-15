@@ -19,6 +19,7 @@
 #' @importFrom stringr str_detect
 #' @importFrom stringr str_extract
 #' @importFrom stringr str_locate
+#' @importFrom stringr str_remove
 #' @importFrom stringr str_replace
 #' @importFrom stringr str_replace_all
 #' @importFrom stringr str_split

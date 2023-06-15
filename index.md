@@ -58,6 +58,18 @@ how to use hlabud in your analyses.
 <img width="49%" src="vignettes/examples_files/figure-html/umap1-1.png">
 </a>
 
+Citation
+========
+
+`hlabud` provides access to the data in IMGT/HLA database. Therefore, if you
+use `hlabud` then please cite the IMGT/HLA paper:
+
+- Robinson J, Barker DJ, Georgiou X, Cooper MA, Flicek P, Marsh SGE. [IPD-IMGT/HLA Database.](https://www.ncbi.nlm.nih.gov/pubmed/31667505) Nucleic Acids Res. 2020;48: D948–D955. doi:10.1093/nar/gkz950
+
+You can also cite `hlabud` like this:
+
+- Slowikowski K. hlabud: tidy methods for analysis of the human leukocyte antigen (HLA) genes from IMGT/HLA. R package version 1.0.0.
+
 Related work
 ============
 
@@ -84,3 +96,4 @@ available on CRAN. Here is the related article:
     Data Analysis Workflow Gaps (BIGDAWG): An integrated case-control
     analysis pipeline.](https://pubmed.ncbi.nlm.nih.gov/26708359) Hum
     Immunol. 2016;77: 283–287.
+

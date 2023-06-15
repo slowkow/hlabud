@@ -1,4 +1,4 @@
-# hlabud <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/8fd7874d-7773-42d1-858e-79c56dc5d94f"></img>
+# hlabud
 
 [![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
 
@@ -13,7 +13,7 @@ between these two genotypes?
 ``` r
 library(hlabud)
 a <- hla_alignments("DRB1")
-amino_dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
+dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
 ```
 
     ##             P9_E P9_W
@@ -55,6 +55,22 @@ how to use hlabud in your analyses.
 <img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/glm-volcano-1.png">
 <img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/umap1-1.png">
 </a>
+
+# Citation
+
+`hlabud` provides access to the data in IMGT/HLA database. Therefore, if
+you use `hlabud` then please cite the IMGT/HLA paper:
+
+-   Robinson J, Barker DJ, Georgiou X, Cooper MA, Flicek P, Marsh SGE.
+    [IPD-IMGT/HLA
+    Database.](https://www.ncbi.nlm.nih.gov/pubmed/31667505) Nucleic
+    Acids Res. 2020;48: D948–D955. <doi:10.1093/nar/gkz950>
+
+You can also cite `hlabud` like this:
+
+-   Slowikowski K. hlabud: tidy methods for analysis of the human
+    leukocyte antigen (HLA) genes from IMGT/HLA. R package version
+    1.0.0.
 
 # Related work
 

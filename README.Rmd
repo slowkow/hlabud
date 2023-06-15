@@ -25,7 +25,7 @@ What amino acid positions are different between these two genotypes?
 ```{r}
 library(hlabud)
 a <- hla_alignments("DRB1")
-amino_dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
+dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
 ```
 
 From this output, we can see that the two genotypes are nearly identical, but they differ at position 9:
@@ -58,6 +58,15 @@ See the [usage examples](vignettes/examples.md) to get some ideas for how to use
 <img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/glm-volcano-1.png"> <img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/umap1-1.png">
 </a>
 
+# Citation
+
+`hlabud` provides access to the data in IMGT/HLA database. Therefore, if you use `hlabud` then please cite the IMGT/HLA paper:
+
+- Robinson J, Barker DJ, Georgiou X, Cooper MA, Flicek P, Marsh SGE. [IPD-IMGT/HLA Database.](https://www.ncbi.nlm.nih.gov/pubmed/31667505) Nucleic Acids Res. 2020;48: D948–D955. doi:10.1093/nar/gkz950
+
+You can also cite `hlabud` like this:
+
+- Slowikowski K. hlabud: tidy methods for analysis of the human leukocyte antigen (HLA) genes from IMGT/HLA. R package version 1.0.0.
 
 # Related work
 

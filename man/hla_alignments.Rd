@@ -4,7 +4,7 @@
 \alias{hla_alignments}
 \title{Get aligned sequences in a dataframe}
 \usage{
-hla_alignments(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE)
+hla_alignments(gene = "DRB1", type = "prot", release = NULL, verbose = FALSE)
 }
 \arguments{
 \item{gene}{The name of a gene like "DRB1"}
@@ -13,7 +13,7 @@ hla_alignments(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE)
 
 \item{release}{The name of a release like "3.51.0" (optional)}
 
-\item{quiet}{If FALSE, print messages along the way.}
+\item{verbose}{If TRUE, print messages along the way.}
 }
 \value{
 A dataframe.
@@ -35,7 +35,7 @@ Here are the conventions used for alignments (\href{https://www.ebi.ac.uk/ipd/im
 \donttest{
 a <- hla_alignments("DRB1")
 head(a$sequences)
-a$aminos[1:6,1:6]
+a$alleles[1:6,1:6]
 a$onehot[1:6,1:6]
 }
 }

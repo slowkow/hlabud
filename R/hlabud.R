@@ -228,16 +228,16 @@ hla_releases <- function(overwrite = FALSE) {
 #' @param gene The name of a gene like "DRB1"
 #' @param type The type of sequence, one of "prot", "nuc", "gen"
 #' @param release The name of a release like "3.51.0" (optional)
-#' @param quiet If FALSE, print messages along the way.
+#' @param verbose If TRUE, print messages along the way.
 #' @examples
 #' \donttest{
 #' a <- hla_alignments("DRB1")
 #' head(a$sequences)
-#' a$aminos[1:6,1:6]
+#' a$alleles[1:6,1:6]
 #' a$onehot[1:6,1:6]
 #' }
 #' @export
-hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, quiet = TRUE) {
+hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, verbose = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   releases <- hla_releases()
@@ -254,67 +254,64 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, quiet =
   if (!type %in% c("nuc", "gen", "prot")) {
     stop("Unrecognized type '{type}' not in: nuc gen prot")
   }
-  if (!quiet) {
-    message(glue("hlabud is using IMGTHLA release {release}"))
+  if (verbose) { message(glue("hlabud is using IMGTHLA release {release}")) }
+  my_file <- file.path(hlabud_dir, release, "alignments", glue("{gene}_{type}.txt"))
+  ix <- which(releases == release)
+  j <- read_json(tags_file)
+  sha <- j[[ix]]$commit$sha
+  repo_url <- "https://github.com/ANHIG/IMGTHLA"
+  my_url <- glue("{repo_url}/raw/{sha}/alignments/{gene}_{type}.txt")
+  if (!file.exists(my_file)) {
+    if (verbose) { message(glue("Downloading {my_url}")) }
+    lines <- readLines(prot_url)
+    mkdir(dirname(my_file))
+    if (verbose) { message(glue("Writing {my_file}")) }
+    writeLines(lines, my_file)
   }
-  if (type == "prot") {
-    prot_file <- file.path(hlabud_dir, release, "alignments", glue("{gene}_{type}.txt"))
-    if (!file.exists(prot_file)) {
-      ix <- which(releases == release)
-      j <- read_json(tags_file)
-      sha <- j[[ix]]$commit$sha
-      repo_url <- "https://github.com/ANHIG/IMGTHLA"
-      prot_url <- glue("{repo_url}/raw/{sha}/alignments/{gene}_{type}.txt")
-      if (!quiet) {
-        message(glue("Downloading {prot_url}"))
-      }
-      lines <- readLines(prot_url)
-      mkdir(dirname(prot_file))
-      if (!quiet) {
-        message(glue("Writing {prot_file}"))
-      }
-      writeLines(lines, prot_file)
-    }
-    if (!quiet) {
-      message(glue("Reading {prot_file}"))
-    }
-    return(read_prot(prot_file))
-  }
-  stop("not implemented yet")
+  if (verbose) { message(glue("Reading {my_file}")) }
+  return(read_alignment(my_file))
 }
 
-#' Read a `*_prot.txt` file from IMGTHLA.
+#' Read an alignment file `*_prot.txt` file from IMGTHLA.
+#'
+#' The prot file has the amino acid sequence for each HLA allele.
 #'
 #' @return A list with a dataframe and a matrix. The dataframe has two columns:
 #' * allele: the name of the allele, e.g., `DQB*01:01`
 #' * seq: the amino acid sequence
 #' The matrix has a one-hot encoding of the variants among the alleles, with
 #' one row for each allele and one column for each amino acid at each position.
-#' @param prot_file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
+#' @param my_file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
 #' @examples
-#' DRB1_file <- file.path(
+#' my_file <- file.path(
 #'   "https://github.com/ANHIG/IMGTHLA/raw",
 #'   "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
 #'   "alignments/DRB1_prot.txt"
 #' )
-#' a <- read_prot(DRB1_file)
+#' a <- read_alignment(my_file)
 #' head(a$sequences)
-#' a$aminos[1:5,1:5]
+#' a$alleles[1:5,1:5]
 #' a$onehot[1:5,1:5]
 #' @export
-read_prot <- function(prot_file) {
-  my_gene <- str_split_fixed(basename(prot_file), "_", 2)[,1]
-  al <- readLines(prot_file)
-  # Many amino acids are located before the position labeled as "1"
+read_alignment <- function(my_file) {
+  my_type <- str_remove(str_split_fixed(basename(my_file), "_", 2)[,2], ".txt")
+  my_gene <- str_split_fixed(basename(my_file), "_", 2)[,1]
+  lines <- readLines(my_file)
   #
-  al_i <- which(str_detect(al, "Prot.+ 1$"))
-  pre <- al[al_i]
-  pre_i <- str_locate(pre, "-")[1,1]
-  pre_j <- str_locate(pre, "1")[1,1]
-  n_pre <- nchar(str_replace_all(substr(al[al_i + 2], pre_i, pre_j - 1), " ", ""))
-  #
+  if (my_type == "prot") {
+    # Many amino acids are located before the position labeled as "1"
+    al_i <- which(str_detect(lines, "Prot.+ 1$"))
+    pre <- lines[al_i]
+    pre_i <- str_locate(pre, "-")[1,1]
+    pre_j <- str_locate(pre, "1")[1,1]
+    n_pre <- nchar(str_replace_all(substr(lines[al_i + 2], pre_i, pre_j - 1), " ", ""))
+  } else if (my_type == "nuc") {
+    al_i <- which(str_detect(lines, "AA codon"))
+    n_pre <- abs(as.numeric(str_remove(lines[al_i][1], " *AA codon +")))
+  }
+  # Convert lines to a simple data frame
   my_regex <- glue("^ {my_gene}\\\\*")
-  al <- al[str_detect(al, my_regex)]
+  al <- lines[str_detect(lines, my_regex)]
   al <- str_split_fixed(al, " +", 3)
   al <- al[,2:3]
   colnames(al) <- c("allele", "seq")
@@ -324,21 +321,12 @@ read_prot <- function(prot_file) {
   al <- al %>% unite("seq", starts_with("V"), sep = "")
   al$seq <- str_replace_all(al$seq, " ", "")
   #
-  # if (digits == 4) {
-  #   # keep 4 digits
-  #   my_allele_regex <- "[^: ]+:[^: ]+"
-  # } else if (digits == 6) {
-  #   # keep 6 digits
-  #   my_allele_regex <- "[^: ]+:[^: ]+(:[^: ]+){0,1}"
-  # } else {
-  #   stop("digits must be 4 or 6")
-  # }
-  # al$d4 <- str_extract(al$allele, my_allele_regex)
-  # al <- unique(al[,c("d4", "seq")])
-  # al <- al %>% group_by(d4) %>% filter(row_number() == 1) %>%
-  #   select(d4, allele, seq)
   oh <- get_onehot(al, n_pre)
-  return(list(sequences = as.data.frame(al), aminos = oh$aminos, onehot = oh$onehot))
+  return(list(
+    sequences = as.data.frame(al),
+    alleles = oh$alleles,
+    onehot = oh$onehot
+  ))
 }
 
 #' Make a one-hot encoded matrix from a dataframe of amino acid
@@ -368,7 +356,7 @@ get_onehot <- function(al, n_pre) {
   # Create a one-hot-encoded matrix
   # with allele names (rows) and positions (columns)
   # 
-  #         P1=* P1=M P2=* P2=A P3=*
+  #         P1_* P1_M P2_* P2_A P3_*
   # A*01:01    0    1    0    1    0
   # A*01:02    0    1    0    1    0
   # A*02:01    0    1    0    1    0
@@ -376,41 +364,41 @@ get_onehot <- function(al, n_pre) {
   # A*02:03    0    1    0    1    0
   # 
   #######################################################################
-  aminos <- do.call(rbind, seq_chars)
-  rownames(aminos) <- al$allele
-  colnames(aminos) <- str_replace_all(
-    sprintf("P%s", c(-n_pre:-1, 1:(ncol(aminos) - n_pre))), "-", "n"
+  alleles <- do.call(rbind, seq_chars)
+  rownames(alleles) <- al$allele
+  colnames(alleles) <- str_replace_all(
+    sprintf("P%s", c(-n_pre:-1, 1:(ncol(alleles) - n_pre))), "-", "n"
   )
-  # colnames(aminos) <- sprintf("P%s", seq(ncol(aminos)))
+  # colnames(alleles) <- sprintf("P%s", seq(ncol(alleles)))
   # keep positions with more than 1 allele
-  aminos <- aminos[,apply(aminos, 2, function(x) length(unique(x))) > 1, drop = FALSE]
-  aminos <- as.data.frame(aminos)
-  for (i in seq(ncol(aminos))) {
-    aminos[,i] <- as.factor(aminos[,i])
+  alleles <- alleles[,apply(alleles, 2, function(x) length(unique(x))) > 1, drop = FALSE]
+  alleles <- as.data.frame(alleles)
+  for (i in seq(ncol(alleles))) {
+    alleles[,i] <- as.factor(alleles[,i])
   }
-  p <- onehot(aminos, max_levels = 20)
-  retval <- predict(p, aminos)
+  p <- onehot(alleles, max_levels = 20)
+  retval <- predict(p, alleles)
   rownames(retval) <- al$allele
   # Discard positions where we don't know the allele
   retval <- retval[,!str_detect(colnames(retval), "\\*")]
   colnames(retval) <- str_replace(colnames(retval), "=", "_")
-  return(list(aminos = aminos, onehot = retval))
+  return(list(alleles = alleles, onehot = retval))
 }
 
-#' Amino acid dosage
+#' Dosage
 #'
-#' For each genotype, return the the dosage for each amino acid at each
-#' position.
+#' For each genotype, return the the dosage for each amino acid (or nucleotide)
+#' at each position.
 #'
 #' Each genotype should be represented like `"HLA-A*01:01,HLA-A*01:01"`
 #'
 #' By default, the returned data frame is filtered to exclude:
-#' * amino acid positions where all input genotypes have the same allele
-#' * amino acid positions that are identical to previous positions
+#' * positions where all input genotypes have the same allele
+#' * positions that are identical to previous positions
 #'
 #' @param genotypes Input character vector with one genotype for each individual.
-#' @param aminos A one-hot encoded matrix with one row per allele and one
-#' column per amino acid position.
+#' @param alleles A one-hot encoded matrix with one row per allele and one
+#' column per amino acid position (or nucleotide position).
 #' @param drop_constants Filter out constant amino acid positions by default.
 #' @param drop_duplicates Filter out duplicate amino acid positions by default.
 #' @returns A data frame with one row for each input genotype.
@@ -428,24 +416,24 @@ get_onehot <- function(al, n_pre) {
 #'   "DRB1*14:172,DRB1*04:160",
 #'   "DRB1*04:359,DRB1*04:284:02"
 #' )
-#' dosage <- amino_dosage(genotypes, a$onehot)
+#' dosage <- dosage(genotypes, a$onehot)
 #' dosage[,1:5]
 #' @export
-amino_dosage <- function(genotypes, aminos, drop_constants = TRUE, drop_duplicates = TRUE) {
-  dosages <- matrix(0, ncol = ncol(aminos), nrow = length(genotypes))
+dosage <- function(genotypes, alleles, drop_constants = TRUE, drop_duplicates = TRUE) {
+  dosages <- matrix(0, ncol = ncol(alleles), nrow = length(genotypes))
   for (i in seq_along(genotypes)) {
     # Split a string of genotypes like "HLA-A*01:01,HLA-A*01:01"
     a <- str_split(genotypes[i], ",")[[1]]
     for (my_a in a) {
-      # Find the first row in aminos where the prefix matches our genotype
-      ix <- which(str_starts(rownames(aminos), fixed(my_a)))
+      # Find the first row in alleles where the prefix matches our genotype
+      ix <- which(str_starts(rownames(alleles), fixed(my_a)))
       if (length(ix) > 0) {
-        dosages[i,] <- dosages[i,] + as.numeric(aminos[ix[1],])
+        dosages[i,] <- dosages[i,] + as.numeric(alleles[ix[1],])
       }
     }
   }
   rownames(dosages) <- genotypes
-  colnames(dosages) <- colnames(aminos)
+  colnames(dosages) <- colnames(alleles)
   if (drop_constants) {
     # Select positions where we observe > 1 possible dosage [0, 1, 2]
     ix <- apply(dosages, 2, function(x) length(unique(x)))
