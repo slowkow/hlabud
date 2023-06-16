@@ -137,6 +137,7 @@ hla_genes <- function(release = NULL, overwrite = FALSE) {
   # get the genes.json
   if (overwrite || !file.exists(genes_file)) {
     j <- read_json(glue("https://api.github.com/repos/ANHIG/IMGTHLA/contents/alignments?ref={sha}"))
+    mkdir(dirname(genes_file))
     writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), genes_file)
   }
   j <- read_json(genes_file)
@@ -298,8 +299,8 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, verbose
   if (!file.exists(my_file)) {
     if (verbose) { message(glue("Downloading {my_url}")) }
     lines <- readLines(my_url)
-    mkdir(dirname(my_file))
     if (verbose) { message(glue("Writing {my_file}")) }
+    mkdir(dirname(my_file))
     writeLines(lines, my_file)
   }
   if (verbose) { message(glue("Reading {my_file}")) }
