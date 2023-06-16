@@ -79,7 +79,7 @@ These conventions are used for both nucleotide and protein alignments.
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hla_alignments</span><span class="op">(</span>gene <span class="op">=</span> <span class="st">"DRB1"</span>, type <span class="op">=</span> <span class="st">"prot"</span>, release <span class="op">=</span> <span class="cn">NULL</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hla_alignments</span><span class="op">(</span>gene <span class="op">=</span> <span class="st">"DRB1"</span>, type <span class="op">=</span> <span class="st">"prot"</span>, release <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -96,8 +96,8 @@ These conventions are used for both nucleotide and protein alignments.
 <dd><p>The name of a release like "3.51.0" (optional)</p></dd>
 
 
-<dt>quiet</dt>
-<dd><p>If FALSE, print messages along the way.</p></dd>
+<dt>verbose</dt>
+<dd><p>If TRUE, print messages along the way.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -112,36 +112,31 @@ These conventions are used for both nucleotide and protein alignments.
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">hla_alignments</span><span class="op">(</span><span class="st">"DRB1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">sequences</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             allele</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 DRB1*01:01:01:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 DRB1*01:01:01:02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 DRB1*01:01:01:03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 DRB1*01:01:01:04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 DRB1*01:01:01:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 DRB1*01:01:01:06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                             seq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 MVCLKLPGGSCMTALTVTLMVLSSPLALAGDTRPRFLWQLKFECHFFNGTERVR.LLERCIYNQEE.SVRFDSDVGEYRAVTELGRPDAEYWNSQKDLLEQRRAAVDTYCRHNYGVGESFTVQRR.VEPKVTVYPSKTQPLQHHNLLVCSVSGFYPGSIEVRWFRNGQEEKAGVVSTGLIQNGDWTFQTLVMLETVPRSGEVYTCQVEHPSVTSPLTVEWRARSESAQSKMLSGVGGFVLGLLFLGAGLFIYFRNQKGHSGLQPTGFLS</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 ------------------------------------------------------.-----------.----------------------------------------------------------.-----------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">aminos</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  Pn29 Pn28 Pn27 Pn26 Pn25 Pn24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:01    M    V    C    L    K    L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:02    M    V    C    L    K    L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:03    M    V    C    L    K    L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:04    M    V    C    L    K    L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:05    M    V    C    L    K    L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:06    M    V    C    L    K    L</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   allele           seq                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DRB1*01:01:01:01 MVCLKLPGGSCMTALTVTLMVLSSPLALAGDTRPRFLWQLKFECHFFNGTERVR.LLERC…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DRB1*01:01:01:02 ------------------------------------------------------.-----…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> DRB1*01:01:01:03 ------------------------------------------------------.-----…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> DRB1*01:01:01:04 ------------------------------------------------------.-----…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> DRB1*01:01:01:05 ------------------------------------------------------.-----…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> DRB1*01:01:01:06 ------------------------------------------------------.-----…</span>
+<span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">alleles</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  posn29 posn28 posn27 posn26 posn25 posn24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:01 "M"    "V"    "C"    "L"    "K"    "L"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:02 "M"    "V"    "C"    "L"    "K"    "L"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:03 "M"    "V"    "C"    "L"    "K"    "L"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:04 "M"    "V"    "C"    "L"    "K"    "L"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:05 "M"    "V"    "C"    "L"    "K"    "L"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:06 "M"    "V"    "C"    "L"    "K"    "L"   </span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  Pn29_M Pn28_L Pn28_V Pn27_C Pn26_L Pn25_K</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:01      1      0      1      1      1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:02      1      0      1      1      1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:03      1      0      1      1      1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:04      1      0      1      1      1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:05      1      0      1      1      1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:06      1      0      1      1      1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  posn29_M posn28_L posn28_V posn27_C posn26_L posn25_K</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:01        1        0        1        1        1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:02        1        0        1        1        1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:03        1        0        1        1        1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:04        1        0        1        1        1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:05        1        0        1        1        1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:06        1        0        1        1        1        1</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

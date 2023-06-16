@@ -72,7 +72,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hlabud</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/hla_alignments.html">hla_alignments</a></span><span class="op">(</span><span class="st">"DRB1"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/amino_dosage.html">amino_dosage</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DRB1*04:174"</span>, <span class="st">"DRB1*15:152"</span><span class="op">)</span>, <span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">amino_dosage</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DRB1*04:174"</span>, <span class="st">"DRB1*15:152"</span><span class="op">)</span>, <span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">)</span></span></code></pre></div>
 <pre><code>            P9_E P9_W
 DRB1*04:174    1    0
 DRB1*15:152    0    1</code></pre>
@@ -102,6 +102,19 @@ DRB1*15:152    0    1</code></pre>
 <li><a href="articles/examples.html#download-and-unpack-all-data-from-the-latest-imgthla-release">Download and unpack all data from the latest IMGTHLA release</a></li>
 </ul>
 <p><a href="articles/examples.html"> <img width="49%" src="articles/examples_files/figure-html/glm-volcano-1.png"><img width="49%" src="articles/examples_files/figure-html/umap1-1.png"></a></p>
+</div>
+<div class="section level1">
+<h1 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h1>
+<p><code>hlabud</code> provides access to the data in IMGT/HLA database. Therefore, if you use <code>hlabud</code> then please cite the IMGT/HLA paper:</p>
+<ul>
+<li>Robinson J, Barker DJ, Georgiou X, Cooper MA, Flicek P, Marsh SGE. <a href="https://www.ncbi.nlm.nih.gov/pubmed/31667505" class="external-link">IPD-IMGT/HLA Database.</a> Nucleic Acids Res. 2020;48: D948–D955. <a href="doi:10.1093/nar/gkz950" class="uri">doi:10.1093/nar/gkz950</a>
+</li>
+</ul>
+<p>You can also cite <code>hlabud</code> like this:</p>
+<ul>
+<li>Slowikowski K. hlabud: tidy methods for analysis of the human leukocyte antigen (HLA) genes from IMGT/HLA. R package version 1.0.0.</li>
+</ul>
 </div>
 <div class="section level1">
 <h1 id="related-work">Related work<a class="anchor" aria-label="anchor" href="#related-work"></a>

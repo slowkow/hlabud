@@ -22,7 +22,7 @@
     <loc>https://slowkow.github.io/hlabud/paper.html</loc>
   </url>
   <url>
-    <loc>https://slowkow.github.io/hlabud/reference/amino_dosage.html</loc>
+    <loc>https://slowkow.github.io/hlabud/reference/dosage.html</loc>
   </url>
   <url>
     <loc>https://slowkow.github.io/hlabud/reference/get_onehot.html</loc>
@@ -52,6 +52,6 @@
     <loc>https://slowkow.github.io/hlabud/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://slowkow.github.io/hlabud/reference/read_prot.html</loc>
+    <loc>https://slowkow.github.io/hlabud/reference/read_alignment.html</loc>
   </url>
 </urlset>
