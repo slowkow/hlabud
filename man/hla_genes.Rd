@@ -4,7 +4,7 @@
 \alias{hla_genes}
 \title{Get IMGTHLA gene names}
 \usage{
-hla_genes(overwrite = FALSE)
+hla_genes(release = NULL, overwrite = FALSE)
 }
 \arguments{
 \item{overwrite}{Overwrite the existing \code{genes.json} file with a new one from GitHub}

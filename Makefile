@@ -1,9 +1,12 @@
-.PHONY: all clean
+.PHONY: all clean install
 
 all: README.md vignettes/examples.md vignettes/examples.html docs/articles/examples.html
 
 clean:
-	rm -rf README_{files,cache} README.{md,html} vignettes/examples_* vignettes/examples.{md,html} docs/
+	rm -rf README_{files,cache} README.{md,html} vignettes/examples_{files,cache} vignettes/examples.{md,html} docs/
+
+install:
+	R -e 'devtools::document(); devtools::install()'
 
 README.md: README.Rmd
 	R -e 'devtools::install_deps(".", TRUE)'

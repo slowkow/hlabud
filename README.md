@@ -16,9 +16,9 @@ a <- hla_alignments("DRB1")
 dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
 ```
 
-    ##             P9_E P9_W
-    ## DRB1*04:174    1    0
-    ## DRB1*15:152    0    1
+    ##             pos9_E pos9_W
+    ## DRB1*04:174      1      0
+    ## DRB1*15:152      0      1
 
 From this output, we can see that the two genotypes are nearly
 identical, but they differ at position 9:

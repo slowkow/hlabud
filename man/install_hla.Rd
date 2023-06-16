@@ -4,12 +4,14 @@
 \alias{install_hla}
 \title{Download and unpack a tarball release of IMGTHLA from GitHub}
 \usage{
-install_hla(release = "latest", quiet = FALSE)
+install_hla(release = "latest", overwrite = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{release}{Either "latest" or else a release name like "3.51.0"}
 
-\item{quiet}{If FALSE, print messages along the way.}
+\item{overwrite}{If TRUE, overwrite existing files in the release folder.}
+
+\item{verbose}{If TRUE, print messages along the way.}
 }
 \description{
 Fetch a list of releases from Github. By default, install the latest

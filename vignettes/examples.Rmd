@@ -105,13 +105,23 @@ For example, what amino acid positions are different between the DRB1\*04:174 an
 ```{r}
 library(hlabud)
 a <- hla_alignments("DRB1")
-amino_dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
+dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
 ```
 
 The two genotypes are nearly identical, but the amino acid at position 9 is different:
 
-- E (Glu) in DRB1\*04:174
-- W (Trp) in DRB1\*15:152
+- position 9 E (Glu) in DRB1\*04:174
+- position 9 W (Trp) in DRB1\*15:152
+
+It is just as easy to find the nucleotides that distinguish the two alleles:
+
+```{r}
+n <- hla_alignments("DRB1", type = "nuc")
+dosage(c("DRB1*04:174", "DRB1*15:152"), n$onehot)
+```
+
+- position 22 T in DRB1\*04:174
+- position 22 C in DRB1\*15:152
 
 
 # Installation
@@ -137,19 +147,19 @@ latest [IMGTHLA](https://github.com/ANHIG/IMGTHLA/releases) release:
 
 ```{r}
 library(hlabud)
-a <- hla_alignments(gene = "DRB1", quiet = FALSE)
+a <- hla_alignments(gene = "DRB1", verbose = TRUE)
 ```
 
 The `a` object is a list with three items:
 
 ```{r}
-str(a, max.level = 1)
+str(a)
 ```
 
 `a$sequences` has amino acid sequence alignments in a data frame:
 
 ```{r}
-a$sequences[1:5,]
+a$sequences
 ```
 
 Here are the conventions used for alignments (copied from EBI):
@@ -167,17 +177,17 @@ Learn more about the alignments at:
 
 * https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/
 
-`a$aminos` has a matrix of amino acids with one column for each position:
+`a$alleles` has a matrix of amino acids with one column for each position:
 
 ```{r}
-a$aminos[1:5,1:10]
+a$alleles[1:5,1:7]
 ```
 
 `a$onehot` has a one-hot encoded matrix with one column for each amino acid at
 each position:
 
 ```{r}
-a$onehot[1:5,1:8]
+a$onehot[1:5,1:7]
 ```
 
 # Convert genotypes to a dosage matrix
@@ -201,22 +211,22 @@ genotypes <- c(
 If we want to run an association test on the amino acid positions, then we need
 to convert the genotype names to a matrix of allele dosages (e.g., 0, 1, 2).
 
-We can use `amino_dosage()` to convert each individual's genotypes to amino
+We can use `dosage()` to convert each individual's genotypes to amino
 acid dosages:
 
 ```{r}
-dosage <- amino_dosage(genotypes, a$onehot)
-dosage[,1:6]
+dosage <- dosage(genotypes, a$onehot)
+dosage[,1:4]
 dim(dosage)
 ```
 
 **Note:**
 
 * The `dosage` matrix has one row for each individual and one column for each
-  amino acid at each position. By default, `amino_dosage()` will discard the
+  amino acid at each position. By default, `dosage()` will discard the
   columns where all individuals are identical.
 
-* The first individual has `dosage=3` for `P6_R` (position 6 Arg). That's
+* The first individual has `dosage=3` for `pos6_R` (position 6 Arg). That's
   because we assigned this individual 3 alleles in our input.
 
 Please be careful to check that your data looks the way you expect!
@@ -238,7 +248,7 @@ d <- data.frame(
   age = sample(21:100, n, replace = TRUE),
   case = sample(0:1, n, replace = TRUE)
 )
-d <- cbind(d, amino_dosage(d$geno, a$onehot))
+d <- cbind(d, dosage(d$geno, a$onehot))
 d[1:5,1:6]
 ```
 
@@ -349,8 +359,9 @@ p
 
 We can highlight which alleles have amino acid H at position 13:
 
-```{r umap-P13H, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
-my_position <- "P13_H"
+```{r umap-pos13_H, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+
+my_position <- "pos13_H"
 a$umap$color <- as.factor(as.integer(a$onehot[,my_position]))
 p <- ggplot(a$umap) +
   aes(x, y, color = color) +
@@ -368,21 +379,33 @@ p <- ggplot(a$umap) +
   )
 p
 # ggsave("test.png", p)
+
 ```
 
 Or we can represent each amino acid at position 13 with a different color:
 
 ```{r umap-P13, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
-my_position <- "P13"
-a$umap$color <- factor(as.character(a$aminos[,my_position]))
+my_position <- "pos13"
+a$umap$color <- as.character(a$alleles[,my_position])
+
+one_to_three <- c(
+  "A" = "Ala", "C" = "Cys", "D" = "Asp", "E" = "Glu", "F" = "Phe", "G" = "Gly",
+  "H" = "His", "I" = "Ile", "K" = "Lys", "L" = "Leu", "M" = "Met", "N" = "Asn",
+  "P" = "Pro", "Q" = "Gln", "R" = "Arg", "S" = "Ser", "T" = "Thr", "V" = "Val",
+  "W" = "Trp", "Y" = "Tyr", "*" = "Ter"
+)
+aa_count <- a$umap %>% count(color) %>% arrange(-n) %>% mutate(label = glue("{one_to_three[color]} (n={n})"))
+aa_to_count <- aa_count$label
+names(aa_to_count) <- aa_count$color
+a$umap$color <- factor(a$umap$color, aa_count$color)
 
 p <- ggplot(a$umap) +
   aes(x, y, color = color) +
   geom_point() +
   geom_text_repel(aes(label = label), max.overlaps = 100) +
   guides(color = guide_legend(title = my_position, override.aes = list(label = "", size = 5))) +
-  scale_color_manual(values = mpn65) +
+  scale_color_manual(values = mpn65, labels = aa_to_count) +
   labs(
     title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
     caption = glue("IMGTHLA {options('hlabud_release')}")

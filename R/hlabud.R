@@ -54,7 +54,8 @@ setup_hlabud_dir <- function() {
 #' they will automatically download the minimum necessary files.
 #'
 #' @param release Either "latest" or else a release name like "3.51.0"
-#' @param quiet If FALSE, print messages along the way.
+#' @param overwrite If TRUE, overwrite existing files in the release folder.
+#' @param verbose If TRUE, print messages along the way.
 #' @examples
 #' \dontrun{
 #' install_hla()
@@ -66,16 +67,16 @@ setup_hlabud_dir <- function() {
 #' }
 #' @return NULL
 #' @export
-install_hla <- function(release = "latest", quiet = FALSE) {
+install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
 
   hlabud_dir <- setup_hlabud_dir()
 
-  message(glue("Fetching releases from GitHub"))
+  if (verbose) { message(glue("Fetching releases from GitHub")) }
   j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/tags")
   writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), file.path(hlabud_dir, "tags.json"))
   release_names <- sapply(j, function(x) x$name)
   releases <- str_extract(release_names, "[\\d.]+")
-  message(glue("{length(releases)} releases, latest release: {releases[1]}"))
+  if (verbose) { message(glue("{length(releases)} releases (latest release is {releases[1]})")) }
 
   if (release == "latest") {
     my_j <- j[[1]]
@@ -90,21 +91,22 @@ install_hla <- function(release = "latest", quiet = FALSE) {
 
   hlabud_release <- getOption("hlabud_release")
   if (is.null(hlabud_release) || !hlabud_release %in% releases) {
+    message(glue("Setting options(hlabud_release = '{release}')"))
     options(hlabud_release = release) 
   }
 
   url <- my_j$tarball_url
   tar_file <- file.path(hlabud_dir, glue("{basename(url)}.tar.gz"))
+  release_dir <- file.path(hlabud_dir, release)
 
-  if (!file.exists(tar_file)) {
+  if (!file.exists(tar_file) && (overwrite || !file.exists(release_dir))) {
     options(timeout = max(300, getOption("timeout")))
     message(glue("Downloading {url}"))
     # download.file(url, destfile = tar_file)
-    curl_download(url, tar_file, quiet = quiet)
+    curl_download(url, tar_file, quiet = !verbose)
   }
 
-  release_dir <- file.path(hlabud_dir, release)
-  if (!file.exists(release_dir)) {
+  if (file.exists(tar_file) && (overwrite || !file.exists(release_dir))) {
     dir.create(release_dir)
     message(glue("Unpacking {tar_file}"))
     untar(tar_file, exdir = release_dir, extras = '--strip-components=1')
@@ -112,7 +114,6 @@ install_hla <- function(release = "latest", quiet = FALSE) {
     message(glue("Using existing installation: {release_dir}"))
   }
 
-  # prot_files <- Sys.glob(glue("{dirname(tar_file)}/*/alignments/*_prot.txt"))
 }
 
 #' Get IMGTHLA gene names
@@ -124,17 +125,43 @@ install_hla <- function(release = "latest", quiet = FALSE) {
 #' hla_genes() 
 #' }
 #' @export
-hla_genes <- function(overwrite = FALSE) {
+hla_genes <- function(release = NULL, overwrite = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
-  genes_file <- file.path(hlabud_dir, "genes.json")
+  tags_file <- file.path(hlabud_dir, "tags.json")
+  release <- get_release(release)
+  genes_file <- file.path(hlabud_dir, release, "genes.json")
+  # get the shasum
+  j <- read_json(tags_file)
+  ix <- which(str_detect(sapply(j, "[[", "name"), glue("v{release}-")))
+  sha <- j[[ix]]$commit$sha
+  # get the genes.json
   if (overwrite || !file.exists(genes_file)) {
-    j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/contents/alignments")
+    j <- read_json(glue("https://api.github.com/repos/ANHIG/IMGTHLA/contents/alignments?ref={sha}"))
     writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), genes_file)
   }
   j <- read_json(genes_file)
-  genes <- sapply(j, function(x) x$name)
+  genes <- sapply(j, "[[", "name")
   genes <- unique(str_extract(genes, "^[^_]+"))
   return(genes)
+}
+
+#' @keywords internal
+get_release <- function(release) {
+  if (is.null(release)) {
+    # If the user already set a release, then use that
+    release <- getOption("hlabud_release")
+  }
+  releases <- hla_releases()
+  if (is.null(release)) {
+    # If the user didn't set it, then set it to the latest release
+    release <- releases[1]
+    options(hlabud_release = release)
+  }
+  # don't allow unrecognized releases
+  if (!release %in% releases) {
+    stop("Unrecognized release '{release}' not in releases: {paste(releases, ' ')}")
+  }
+  return(release)
 }
 
 #' Get a table of allele names for a particular IMGTHLA release
@@ -240,27 +267,34 @@ hla_releases <- function(overwrite = FALSE) {
 hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, verbose = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
-  releases <- hla_releases()
-  if (is.null(release)) {
-    release <- getOption("hlabud_release")
-  }
-  if (is.null(release)) {
-    release <- releases[1]
-    options(hlabud_release = release)
-  }
-  if (!release %in% releases) {
-    stop("Unrecognized release '{release}' not in releases: {paste(releases, ' ')}")
-  }
+  release <- get_release(release)
   if (!type %in% c("nuc", "gen", "prot")) {
     stop("Unrecognized type '{type}' not in: nuc gen prot")
   }
   if (verbose) { message(glue("hlabud is using IMGTHLA release {release}")) }
-  my_file <- file.path(hlabud_dir, release, "alignments", glue("{gene}_{type}.txt"))
-  ix <- which(releases == release)
-  j <- read_json(tags_file)
-  sha <- j[[ix]]$commit$sha
-  repo_url <- "https://github.com/ANHIG/IMGTHLA"
-  my_url <- glue("{repo_url}/raw/{sha}/alignments/{gene}_{type}.txt")
+  # 
+  genes_file <- file.path(hlabud_dir, release, "genes.json")
+  if (!file.exists(genes_file)) {
+    hla_genes()
+  }
+  genes <- read_json(genes_file)
+  genes <- genes[which(str_detect(sapply(genes, "[[", "name"), gene))]
+  #
+  my_names <- sapply(genes, "[[", "name")
+  my_urls <- sapply(genes, "[[", "download_url")
+  i <- which(str_detect(my_names, type))
+  if (length(i) == 0) {
+    message(glue("IMGT/HLA does not provide {type} for {gene}"))
+    return()
+  }
+  #
+  my_name <- my_names[i]
+  my_type <- str_replace(my_name, "^.+_(\\w+)\\..+", "\\1")
+  if (my_type != type) {
+    next
+  }
+  my_file <- file.path(hlabud_dir, release, "alignments", my_name)
+  my_url <- my_urls[i]
   if (!file.exists(my_file)) {
     if (verbose) { message(glue("Downloading {my_url}")) }
     lines <- readLines(my_url)
@@ -307,11 +341,15 @@ read_alignment <- function(my_file) {
     n_pre <- nchar(str_replace_all(substr(lines[al_i + 2], pre_i, pre_j - 1), " ", ""))
   } else if (my_type == "nuc") {
     al_i <- which(str_detect(lines, "AA codon"))
-    n_pre <- abs(as.numeric(str_remove(lines[al_i][1], " *AA codon +")))
+    n_pre <- 3 * abs(as.numeric(str_remove(lines[al_i][1], " *AA codon +")))
+  } else if (my_type == "gen") {
+    al_i <- which(str_detect(lines, "gDNA"))
+    n_pre <- abs(as.numeric(str_remove(lines[al_i][1], " *gDNA +")))
   }
   # Convert lines to a simple data frame
   my_regex <- glue("^ {my_gene}\\\\*")
   al <- lines[str_detect(lines, my_regex)]
+  al <- str_replace_all(al, "\\|", "")
   al <- str_split_fixed(al, " +", 3)
   al <- al[,2:3]
   colnames(al) <- c("allele", "seq")
@@ -323,7 +361,7 @@ read_alignment <- function(my_file) {
   #
   oh <- get_onehot(al, n_pre)
   return(list(
-    sequences = as.data.frame(al),
+    sequences = as_tibble(al),
     alleles = oh$alleles,
     onehot = oh$onehot
   ))
@@ -367,7 +405,7 @@ get_onehot <- function(al, n_pre) {
   alleles <- do.call(rbind, seq_chars)
   rownames(alleles) <- al$allele
   colnames(alleles) <- str_replace_all(
-    sprintf("P%s", c(-n_pre:-1, 1:(ncol(alleles) - n_pre))), "-", "n"
+    sprintf("pos%s", c(-n_pre:-1, 1:(ncol(alleles) - n_pre))), "-", "n"
   )
   # colnames(alleles) <- sprintf("P%s", seq(ncol(alleles)))
   # keep positions with more than 1 allele
@@ -382,7 +420,7 @@ get_onehot <- function(al, n_pre) {
   # Discard positions where we don't know the allele
   retval <- retval[,!str_detect(colnames(retval), "\\*")]
   colnames(retval) <- str_replace(colnames(retval), "=", "_")
-  return(list(alleles = alleles, onehot = retval))
+  return(list(alleles = as.matrix(alleles), onehot = retval))
 }
 
 #' Dosage
@@ -408,7 +446,7 @@ get_onehot <- function(al, n_pre) {
 #'   "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
 #'   "alignments/DRB1_prot.txt"
 #' )
-#' a <- read_prot(DRB1_file)
+#' a <- read_alignment(DRB1_file)
 #' genotypes <- c(
 #'   "DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02",
 #'   "DRB1*04:174,DRB1*15:152",

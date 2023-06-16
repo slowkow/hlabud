@@ -38,7 +38,7 @@ DRB1_file <- file.path(
   "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
   "alignments/DRB1_prot.txt"
 )
-a <- read_prot(DRB1_file)
+a <- read_alignment(DRB1_file)
 genotypes <- c(
   "DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02",
   "DRB1*04:174,DRB1*15:152",
