@@ -8,6 +8,9 @@ clean:
 install:
 	R -e 'devtools::document(); devtools::install()'
 
+check:
+	R -e 'devtools::document(); devtools::check()'
+
 README.md: README.Rmd
 	R -e 'devtools::install_deps(".", TRUE)'
 	R -e 'rmarkdown::render("README.Rmd", "all")'

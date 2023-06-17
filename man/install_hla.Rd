@@ -7,7 +7,7 @@
 install_hla(release = "latest", overwrite = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{release}{Either "latest" or else a release name like "3.51.0"}
+\item{release}{Default is "latest". Should be a release name like "3.51.0".}
 
 \item{overwrite}{If TRUE, overwrite existing files in the release folder.}
 

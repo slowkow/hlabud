@@ -4,9 +4,11 @@
 \alias{hla_genes}
 \title{Get IMGTHLA gene names}
 \usage{
-hla_genes(release = NULL, overwrite = FALSE)
+hla_genes(release = "latest", overwrite = FALSE)
 }
 \arguments{
+\item{release}{Default is "latest". Should be a release name like "3.51.0".}
+
 \item{overwrite}{Overwrite the existing \code{genes.json} file with a new one from GitHub}
 }
 \value{

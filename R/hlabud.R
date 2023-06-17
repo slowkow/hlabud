@@ -21,6 +21,25 @@ setup_hlabud_dir <- function() {
   return(hlabud_dir)
 }
 
+#' @keywords internal
+get_release <- function(release = "latest") {
+  if (is.null(release)) {
+    # If the user already set a release, then use that
+    release <- getOption("hlabud_release")
+  }
+  releases <- hla_releases()
+  if (is.null(release) || release == "latest") {
+    # If the user didn't set it, then set it to the latest release
+    release <- releases[1]
+    options(hlabud_release = release)
+  }
+  # don't allow unrecognized releases
+  if (!release %in% releases) {
+    stop("Unrecognized release '{release}' not in releases: {paste(releases, ' ')}")
+  }
+  return(release)
+}
+
 #' Download and unpack a tarball release of IMGTHLA from GitHub
 #'
 #' Fetch a list of releases from Github. By default, install the latest
@@ -53,7 +72,7 @@ setup_hlabud_dir <- function() {
 #' Other functions in the hlabud package will use the unpacked data, or else
 #' they will automatically download the minimum necessary files.
 #'
-#' @param release Either "latest" or else a release name like "3.51.0"
+#' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param overwrite If TRUE, overwrite existing files in the release folder.
 #' @param verbose If TRUE, print messages along the way.
 #' @examples
@@ -72,30 +91,13 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
   hlabud_dir <- setup_hlabud_dir()
 
   if (verbose) { message(glue("Fetching releases from GitHub")) }
-  j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/tags")
-  writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), file.path(hlabud_dir, "tags.json"))
-  release_names <- sapply(j, function(x) x$name)
-  releases <- str_extract(release_names, "[\\d.]+")
-  if (verbose) { message(glue("{length(releases)} releases (latest release is {releases[1]})")) }
+  tags <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/tags")
+  writeLines(toJSON(tags, pretty = TRUE, auto_unbox = TRUE), file.path(hlabud_dir, "tags.json"))
 
-  if (release == "latest") {
-    my_j <- j[[1]]
-    release <- releases[1]
-  } else {
-    ix <- which(str_detect(releases, release))
-    if (length(ix) != 1) {
-      stop(glue("Could not find '{release}' in: {paste(releases, collapse=' ')}"))
-    }
-    my_j <- j[[ix]]
-  }
+  release <- get_release(release)
+  ix <- which(str_detect(sapply(tags, "[[", "name"), glue("v{release}-")))
 
-  hlabud_release <- getOption("hlabud_release")
-  if (is.null(hlabud_release) || !hlabud_release %in% releases) {
-    message(glue("Setting options(hlabud_release = '{release}')"))
-    options(hlabud_release = release) 
-  }
-
-  url <- my_j$tarball_url
+  url <- tags[[ix]]$tarball_url
   tar_file <- file.path(hlabud_dir, glue("{basename(url)}.tar.gz"))
   release_dir <- file.path(hlabud_dir, release)
 
@@ -119,21 +121,22 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 #' Get IMGTHLA gene names
 #'
 #' @return A character vector of HLA gene names like "DRB1"
+#' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param overwrite Overwrite the existing `genes.json` file with a new one from GitHub
 #' @examples
 #' \donttest{
 #' hla_genes() 
 #' }
 #' @export
-hla_genes <- function(release = NULL, overwrite = FALSE) {
+hla_genes <- function(release = "latest", overwrite = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   release <- get_release(release)
   genes_file <- file.path(hlabud_dir, release, "genes.json")
   # get the shasum
-  j <- read_json(tags_file)
-  ix <- which(str_detect(sapply(j, "[[", "name"), glue("v{release}-")))
-  sha <- j[[ix]]$commit$sha
+  tags <- read_json(tags_file)
+  ix <- which(str_detect(sapply(tags, "[[", "name"), glue("v{release}-")))
+  sha <- tags[[ix]]$commit$sha
   # get the genes.json
   if (overwrite || !file.exists(genes_file)) {
     j <- read_json(glue("https://api.github.com/repos/ANHIG/IMGTHLA/contents/alignments?ref={sha}"))
@@ -146,49 +149,20 @@ hla_genes <- function(release = NULL, overwrite = FALSE) {
   return(genes)
 }
 
-#' @keywords internal
-get_release <- function(release) {
-  if (is.null(release)) {
-    # If the user already set a release, then use that
-    release <- getOption("hlabud_release")
-  }
-  releases <- hla_releases()
-  if (is.null(release)) {
-    # If the user didn't set it, then set it to the latest release
-    release <- releases[1]
-    options(hlabud_release = release)
-  }
-  # don't allow unrecognized releases
-  if (!release %in% releases) {
-    stop("Unrecognized release '{release}' not in releases: {paste(releases, ' ')}")
-  }
-  return(release)
-}
-
 #' Get a table of allele names for a particular IMGTHLA release
 #'
 #' @return A data frame with HLA allele ids and names
-#' @param release The name of a release like "3.51.0" (optional)
+#' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param overwrite Overwrite the existing `alleles.json` file and `Allelelist.{version}.txt` file
 #' @examples
 #' \donttest{
 #' head(hla_alleles())
 #' }
 #' @export
-hla_alleles <- function(release = NULL, overwrite = FALSE) {
+hla_alleles <- function(release = "latest", overwrite = FALSE) {
   hlabud_dir <- setup_hlabud_dir()
   alleles_file <- file.path(hlabud_dir, "alleles.json")
-  releases <- hla_releases()
-  if (is.null(release)) {
-    release <- getOption("hlabud_release")
-  }
-  if (is.null(release)) {
-    release <- releases[1]
-    options(hlabud_release = release)
-  }
-  if (!release %in% releases) {
-    stop("Unrecognized release '{release}' not in releases: {paste(releases, collapse=' ')}")
-  }
+  release <- get_release(release)
   if (overwrite || !file.exists(alleles_file)) {
     j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/contents/allelelist")
     writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), alleles_file)
@@ -255,7 +229,7 @@ hla_releases <- function(overwrite = FALSE) {
 #' @return A dataframe.
 #' @param gene The name of a gene like "DRB1"
 #' @param type The type of sequence, one of "prot", "nuc", "gen"
-#' @param release The name of a release like "3.51.0" (optional)
+#' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param verbose If TRUE, print messages along the way.
 #' @examples
 #' \donttest{
@@ -291,9 +265,6 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, verbose
   #
   my_name <- my_names[i]
   my_type <- str_replace(my_name, "^.+_(\\w+)\\..+", "\\1")
-  if (my_type != type) {
-    next
-  }
   my_file <- file.path(hlabud_dir, release, "alignments", my_name)
   my_url <- my_urls[i]
   if (!file.exists(my_file)) {

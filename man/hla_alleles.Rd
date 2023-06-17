@@ -4,10 +4,10 @@
 \alias{hla_alleles}
 \title{Get a table of allele names for a particular IMGTHLA release}
 \usage{
-hla_alleles(release = NULL, overwrite = FALSE)
+hla_alleles(release = "latest", overwrite = FALSE)
 }
 \arguments{
-\item{release}{The name of a release like "3.51.0" (optional)}
+\item{release}{Default is "latest". Should be a release name like "3.51.0".}
 
 \item{overwrite}{Overwrite the existing \code{alleles.json} file and \verb{Allelelist.\{version\}.txt} file}
 }
