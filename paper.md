@@ -45,12 +45,12 @@ Analysis of this genotype data requires computational methods for managing colle
 `hlabud` is an R package for conveniently downloading and analyzing the data from the IMGT/HLA database of HLA genotypes [@Robinson2020].
 The R programming language has a large repository of open-source libraries for statistical modeling and data visualization that can be applied to any data analysis.
 The API for `hlabud` is designed to provide functions that output simple lists of matrices and data frames to facilitate seamless integration with any other packages.
-The documentation includes usage examples such as logistic regression association analysis with amino acid positions and UMAP [@McInnes2018] analysis of the one-hot encoded amino acid position data.
-HLA genotype data is lazily downloaded from the IMGT-HLA GitHub repository [@imgthla] and cached in a user-configurable directory.
+The documentation includes usage examples for analysis of a one-hot encoding of amino acid positions such as logistic regression association analysis with amino acid positions and low dimensional embedding with UMAP.
+HLA genotype data is lazily downloaded (as-needed) from the IMGT-HLA GitHub repository [@imgthla] and cached in a user-configurable directory.
 
 The BIGDAWG R package provides functions for chi-squared Hardy-Weinberg and case-control association tests of highly polymorphic genetic data like HLA genotypes [@Pappas2016].
 In contrast, `hlabud` was designed to be a minimal package that provides flexible functions to facilitate any downstream HLA analyses.
-`hlabud` can be used by biomedical researchers and by students in courses on genetics and bioinformatics.
+`hlabud` can be used by biomedical researchers and also by students in courses that teach immunology, genetics, and bioinformatics.
 
 
 # References
