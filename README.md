@@ -23,8 +23,23 @@ dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
 From this output, we can see that the two genotypes are nearly
 identical, but they differ at position 9:
 
--   DRB1\*04:174 has P9_E (Glu)
--   DRB1\*15:152 has P9_W (Trp)
+-   position 9 E (Glu) in DRB1\*04:174
+-   position 9 W (Trp) in DRB1\*15:152
+
+It is just as easy to find the exonic nucleotides that distinguish the
+two alleles:
+
+``` r
+n <- hla_alignments("DRB1", type = "nuc")
+dosage(c("DRB1*04:174", "DRB1*15:152"), n$onehot)
+```
+
+    ##             pos22_C pos22_T
+    ## DRB1*04:174       0       1
+    ## DRB1*15:152       1       0
+
+-   position 22 T in DRB1\*04:174
+-   position 22 C in DRB1\*15:152
 
 # Installation
 
@@ -66,7 +81,7 @@ you use `hlabud` then please cite the IMGT/HLA paper:
     Database.](https://www.ncbi.nlm.nih.gov/pubmed/31667505) Nucleic
     Acids Res. 2020;48: D948–D955. <doi:10.1093/nar/gkz950>
 
-You can also cite `hlabud` like this:
+Additionally, you can also cite `hlabud` like this:
 
 -   Slowikowski K. hlabud: tidy methods for analysis of the human
     leukocyte antigen (HLA) genes from IMGT/HLA. R package version
