@@ -65,10 +65,10 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A list with a dataframe and a matrix. The dataframe has two columns:</p><ul><li><p>allele: the name of the allele, e.g., <code>DQB*01:01</code></p></li>
+<p>A list with a dataframe called <code>sequences</code> and two matrices <code>alleles</code> and <code>onehot</code> The data frame has two columns:</p><ul><li><p>allele: the name of the allele, e.g., <code>DQB*01:01</code></p></li>
 <li><p>seq: the amino acid sequence
-The matrix has a one-hot encoding of the variants among the alleles, with
-one row for each allele and one column for each amino acid at each position.</p></li>
+The matrix <code>alleles</code> has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
+The matrix <code>onehot</code> has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.</p></li>
 </ul></div>
 
     <div class="section level2">

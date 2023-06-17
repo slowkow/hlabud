@@ -84,11 +84,12 @@
 <p>Kamil Slowikowski</p>
 <p>2023-06-17</p>
 <p><a href="https://github.com/slowkow/hlabud" class="external-link">hlabud</a> is an R
-package that provides functions to download and analyze human leukocyte
-antigen (HLA) genotypes from <a href="https://github.com/ANHIG/IMGTHLA" class="external-link">IMGTHLA</a> in a tidy R
-workflow.</p>
-<p>For example, what amino acid positions are different between the
+package that provides functions to facilitate download and analysis of
+human leukocyte antigen (HLA) genotype sequence alignments from <a href="https://github.com/ANHIG/IMGTHLA" class="external-link">IMGTHLA</a> in R.</p>
+<p>Let’s consider a question that we might want to answer about HLA
+genotypes. What amino acid positions are different between the
 DRB1*04:174 and DRB1*15:152 genotypes?</p>
+<p>With hlabud, we can find the answer with a few lines of code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hlabud</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hla_alignments.html">hla_alignments</a></span><span class="op">(</span><span class="st">"DRB1"</span><span class="op">)</span></span>
@@ -339,8 +340,8 @@ pos101_E (P = 0.0086, OR = 4.7, 95% CI 1.6 to 18).</p>
 <div class="section level2">
 <h2 id="umap-embedding-of-3516-hla-drb1-alleles">UMAP embedding of 3,516 HLA-DRB1 alleles<a class="anchor" aria-label="anchor" href="#umap-embedding-of-3516-hla-drb1-alleles"></a>
 </h2>
-<p>There are many things we might do with a one-hot encoding of HLA-DRB1
-alleles.</p>
+<p>There are many possibilities for analysis of a one-hot encoding of
+HLA-DRB1 alleles.</p>
 <p>For example, here is a UMAP embedding of 3,516 HLA-DRB1 alleles
 encoded as a one-hot amino acid matrix with 1482 columns, one for each
 amino acid at each position.</p>
@@ -357,8 +358,8 @@ color:</p>
 <h2 id="download-and-unpack-all-data-from-the-latest-imgthla-release">Download and unpack all data from the latest IMGTHLA release<a class="anchor" aria-label="anchor" href="#download-and-unpack-all-data-from-the-latest-imgthla-release"></a>
 </h2>
 <p>If you only want to use <code><a href="../reference/hla_alignments.html">hla_alignments()</a></code>, then you don’t
-need <code><a href="../reference/install_hla.html">install_hla()</a></code> because data files are automatically
-downloaded automatically as needed.</p>
+need <code><a href="../reference/install_hla.html">install_hla()</a></code> because data files are downloaded
+automatically as needed and cached for future use.</p>
 <p>But some users might need access to additional files that are only
 present in the full data release.</p>
 <p>Run <code><a href="../reference/install_hla.html">install_hla()</a></code> to download and unpack the <a href="https://github.com/ANHIG/IMGTHLA/releases" class="external-link">latest IMGTHLA
@@ -382,16 +383,9 @@ data:</p>
 <span></span>
 <span><span class="co"># Manually override the directory for hlabud to use</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>hlabud_dir <span class="op">=</span> <span class="st">"/path/to/my/dir"</span><span class="op">)</span></span></code></pre></div>
-<p>Check which release hlabud is using, or choose a release:</p>
+<p>List all releases:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"hlabud_release"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "3.51.0"</span></span>
-<span></span>
-<span><span class="co"># Use a specific release</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>hlabud_release <span class="op">=</span> <span class="st">"3.51.0"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># List all releases</span></span>
-<span><span class="fu"><a href="../reference/hla_releases.html">hla_releases</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/hla_releases.html">hla_releases</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "3.51.0"   "3.50.0"   "3.49.0"   "3.48.0"   "3.47.0"   "3.46.0"   "3.45.1"   "3.45.01"</span></span>
 <span><span class="co">#&gt;  [9] "3.45.0.1" "3.45.0"   "3.44.1"   "3.44.0"   "3.43.0"   "3.42.0"   "3.41.2"   "3.41.0"</span></span>
 <span><span class="co">#&gt; [17] "3.40.0"   "3.39.0"   "3.38.0"   "3.37.0"   "3.36.0"   "3.35.0"   "3.34.0"   "3.33.0"</span></span>
