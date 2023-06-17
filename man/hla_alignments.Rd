@@ -4,7 +4,12 @@
 \alias{hla_alignments}
 \title{Get aligned sequences in a dataframe}
 \usage{
-hla_alignments(gene = "DRB1", type = "prot", release = NULL, verbose = FALSE)
+hla_alignments(
+  gene = "DRB1",
+  type = "prot",
+  release = "latest",
+  verbose = FALSE
+)
 }
 \arguments{
 \item{gene}{The name of a gene like "DRB1"}
@@ -19,7 +24,7 @@ hla_alignments(gene = "DRB1", type = "prot", release = NULL, verbose = FALSE)
 A dataframe.
 }
 \description{
-Here are the conventions used for alignments (\href{https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/}{EBI IMGT-HLA}):
+Here are the conventions used for alignments (\href{https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/}{EBI IMGT-HLA help page}):
 \itemize{
 \item The entry for each allele is displayed in respect to the reference sequences.
 \item Where identity to the reference sequence is present the base will be displayed as a hyphen (-).

@@ -13,7 +13,8 @@ hla_releases(overwrite = FALSE)
 A character vector of release names like "3.51.0"
 }
 \description{
-Get IMGTHLA releases from GitHub
+Retrieve the tags from the ANHIG/IMGTHLA repo and get the associated release
+names.
 }
 \examples{
 \donttest{

@@ -7,31 +7,11 @@ mkdir <- function(path) {
 }
 
 #' @keywords internal
-setup_hlabud_dir <- function() {
-  hlabud_dir <- getOption("hlabud_dir")
-  if (!is.null(hlabud_dir) && nchar(hlabud_dir) > 1) {
-    mkdir(hlabud_dir)
-  } else {
-    appname <- "hlabud"
-    appauthor <- "slowkow"
-    hlabud_dir <- path.expand(user_data_dir(appname, appauthor))
-    mkdir(hlabud_dir)
-    options(hlabud_dir = hlabud_dir)
-  }
-  return(hlabud_dir)
-}
-
-#' @keywords internal
 get_release <- function(release = "latest") {
-  if (is.null(release)) {
-    # If the user already set a release, then use that
-    release <- getOption("hlabud_release")
-  }
   releases <- hla_releases()
-  if (is.null(release) || release == "latest") {
+  if (release == "latest") {
     # If the user didn't set it, then set it to the latest release
     release <- releases[1]
-    options(hlabud_release = release)
   }
   # don't allow unrecognized releases
   if (!release %in% releases) {
@@ -40,10 +20,13 @@ get_release <- function(release = "latest") {
   return(release)
 }
 
-#' Download and unpack a tarball release of IMGTHLA from GitHub
+#' Get the name of the folder for caching downloaded IMGTHLA files
 #'
-#' Fetch a list of releases from Github. By default, install the latest
-#' release to the folder appropriate for your operating system:
+#' Get the folder name from `getOption("hlabud_dir")` or else use the
+#' [rappdirs](https://github.com/r-lib/rappdirs) package to choose an
+#' appropriate folder for your operating system. The folder will be created
+#' automatically if it does not exist. And the `hlabud_dir` option will bet set
+#' to that folder.
 #'
 #' Linux:
 #'
@@ -57,20 +40,33 @@ get_release <- function(release = "latest") {
 #'
 #'     C:\Documents and Settings\<User>\Application Data\slowkow\hlabud
 #'
-#' A typical release is about 120 MB in size, so the download can take a few
-#' minutes.
+#' @examples
+#' \dontrun{
+#' hlabud_dir <- get_hlabud_dir()
+#' }
+#' @return The name of the folder.
+#' @export
+get_hlabud_dir <- function() {
+  hlabud_dir <- getOption("hlabud_dir")
+  if (!is.null(hlabud_dir) && nchar(hlabud_dir) > 1) {
+    mkdir(hlabud_dir)
+  } else {
+    appname <- "hlabud"
+    appauthor <- "slowkow"
+    hlabud_dir <- path.expand(user_data_dir(appname, appauthor))
+    mkdir(hlabud_dir)
+    options(hlabud_dir = hlabud_dir)
+  }
+  return(hlabud_dir)
+}
+
+#' Download and unpack a tarball release of IMGTHLA from GitHub
 #' 
-#' We can get or set the folder with the `hlabud_dir` option:
+#' The release tarball from Github is unpacked into the
+#' `getOption("hlabud_dir")` folder.
 #'
-#' ```
-#' my_dir <- getOption("hlabud_dir")
-#' options(hlabud_dir = my_dir)
-#' ```
-#' 
-#' The release tarball from Github is unpacked into the folder.
-#'
-#' Other functions in the hlabud package will use the unpacked data, or else
-#' they will automatically download the minimum necessary files.
+#' Note that the latest releases are more than 100 MB in size, so the download
+#' might take a while on slow connections.
 #'
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param overwrite If TRUE, overwrite existing files in the release folder.
@@ -79,7 +75,7 @@ get_release <- function(release = "latest") {
 #' \dontrun{
 #' install_hla()
 #' install_hla("3.51.0")
-#' install_hla("3.51.0", quiet = TRUE)
+#' install_hla("3.51.0", verbose = TRUE)
 #' # Change the install directory
 #' options(hlabud_dir = "path/to/my/dir")
 #' install_hla()
@@ -88,7 +84,7 @@ get_release <- function(release = "latest") {
 #' @export
 install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
 
-  hlabud_dir <- setup_hlabud_dir()
+  hlabud_dir <- get_hlabud_dir()
 
   if (verbose) { message(glue("Fetching releases from GitHub")) }
   tags <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/tags")
@@ -120,16 +116,22 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 
 #' Get IMGTHLA gene names
 #'
-#' @return A character vector of HLA gene names like "DRB1"
+#' Retrieve the contents of `ANHIG/IMGTHLA/alignments` and return a list of gene
+#' names derived from the txt files in that folder.
+#'
+#' See the files at: https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments
+#'
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param overwrite Overwrite the existing `genes.json` file with a new one from GitHub
+#' @param verbose If TRUE, print messages along the way.
+#' @return A character vector of HLA gene names like "DRB1"
 #' @examples
 #' \donttest{
 #' hla_genes() 
 #' }
 #' @export
-hla_genes <- function(release = "latest", overwrite = FALSE) {
-  hlabud_dir <- setup_hlabud_dir()
+hla_genes <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
+  hlabud_dir <- get_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   release <- get_release(release)
   genes_file <- file.path(hlabud_dir, release, "genes.json")
@@ -140,6 +142,7 @@ hla_genes <- function(release = "latest", overwrite = FALSE) {
   # get the genes.json
   if (overwrite || !file.exists(genes_file)) {
     j <- read_json(glue("https://api.github.com/repos/ANHIG/IMGTHLA/contents/alignments?ref={sha}"))
+    if (verbose) { message(glue("Writing {genes_file}")) }
     mkdir(dirname(genes_file))
     writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), genes_file)
   }
@@ -151,20 +154,25 @@ hla_genes <- function(release = "latest", overwrite = FALSE) {
 
 #' Get a table of allele names for a particular IMGTHLA release
 #'
-#' @return A data frame with HLA allele ids and names
+#' Download a list of all allele names for all HLA genes for a particular
+#' IMGTHLA release.
+#'
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param overwrite Overwrite the existing `alleles.json` file and `Allelelist.{version}.txt` file
+#' @param verbose If TRUE, print messages along the way.
+#' @return A data frame with HLA allele ids and names
 #' @examples
 #' \donttest{
 #' head(hla_alleles())
 #' }
 #' @export
-hla_alleles <- function(release = "latest", overwrite = FALSE) {
-  hlabud_dir <- setup_hlabud_dir()
+hla_alleles <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
+  hlabud_dir <- get_hlabud_dir()
   alleles_file <- file.path(hlabud_dir, "alleles.json")
   release <- get_release(release)
   if (overwrite || !file.exists(alleles_file)) {
     j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/contents/allelelist")
+    if (verbose) { message(glue("Writing {alleles_file}")) }
     writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), alleles_file)
   }
   j <- read_json(alleles_file)
@@ -194,15 +202,18 @@ hla_alleles <- function(release = "latest", overwrite = FALSE) {
 
 #' Get IMGTHLA releases from GitHub
 #'
-#' @return A character vector of release names like "3.51.0"
+#' Retrieve the tags from the ANHIG/IMGTHLA repo and get the associated release
+#' names.
+#'
 #' @param overwrite Overwrite the existing tags.json file with a new one from GitHub
+#' @return A character vector of release names like "3.51.0"
 #' @examples
 #' \donttest{
 #' hla_releases() 
 #' }
 #' @export
 hla_releases <- function(overwrite = FALSE) {
-  hlabud_dir <- setup_hlabud_dir()
+  hlabud_dir <- get_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   if (overwrite || !file.exists(tags_file)) {
     j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/tags")
@@ -216,7 +227,7 @@ hla_releases <- function(overwrite = FALSE) {
 
 #' Get aligned sequences in a dataframe
 #'
-#' Here are the conventions used for alignments ([EBI IMGT-HLA](https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/)):
+#' Here are the conventions used for alignments ([EBI IMGT-HLA help page](https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/)):
 #' * The entry for each allele is displayed in respect to the reference sequences.
 #' * Where identity to the reference sequence is present the base will be displayed as a hyphen (-).
 #' * Non-identity to the reference sequence is shown by displaying the appropriate base at that position.
@@ -226,11 +237,11 @@ hla_releases <- function(overwrite = FALSE) {
 #' * In protein alignments, sequence following the termination codon, will not be marked and will appear blank.
 #' * These conventions are used for both nucleotide and protein alignments.
 #'
-#' @return A dataframe.
 #' @param gene The name of a gene like "DRB1"
 #' @param type The type of sequence, one of "prot", "nuc", "gen"
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param verbose If TRUE, print messages along the way.
+#' @return A dataframe.
 #' @examples
 #' \donttest{
 #' a <- hla_alignments("DRB1")
@@ -239,8 +250,8 @@ hla_releases <- function(overwrite = FALSE) {
 #' a$onehot[1:6,1:6]
 #' }
 #' @export
-hla_alignments <- function(gene = "DRB1", type = "prot", release = NULL, verbose = FALSE) {
-  hlabud_dir <- setup_hlabud_dir()
+hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", verbose = FALSE) {
+  hlabud_dir <- get_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   release <- get_release(release)
   if (!type %in% c("nuc", "gen", "prot")) {
@@ -439,6 +450,8 @@ dosage <- function(genotypes, alleles, drop_constants = TRUE, drop_duplicates = 
       ix <- which(str_starts(rownames(alleles), fixed(my_a)))
       if (length(ix) > 0) {
         dosages[i,] <- dosages[i,] + as.numeric(alleles[ix[1],])
+      } else {
+        warning(glue("'{my_a}' not found in rownames"))
       }
     }
   }

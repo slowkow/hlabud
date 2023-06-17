@@ -4,18 +4,21 @@
 \alias{hla_alleles}
 \title{Get a table of allele names for a particular IMGTHLA release}
 \usage{
-hla_alleles(release = "latest", overwrite = FALSE)
+hla_alleles(release = "latest", overwrite = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{release}{Default is "latest". Should be a release name like "3.51.0".}
 
 \item{overwrite}{Overwrite the existing \code{alleles.json} file and \verb{Allelelist.\{version\}.txt} file}
+
+\item{verbose}{If TRUE, print messages along the way.}
 }
 \value{
 A data frame with HLA allele ids and names
 }
 \description{
-Get a table of allele names for a particular IMGTHLA release
+Download a list of all allele names for all HLA genes for a particular
+IMGTHLA release.
 }
 \examples{
 \donttest{

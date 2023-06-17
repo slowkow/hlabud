@@ -4,18 +4,24 @@
 \alias{hla_genes}
 \title{Get IMGTHLA gene names}
 \usage{
-hla_genes(release = "latest", overwrite = FALSE)
+hla_genes(release = "latest", overwrite = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{release}{Default is "latest". Should be a release name like "3.51.0".}
 
 \item{overwrite}{Overwrite the existing \code{genes.json} file with a new one from GitHub}
+
+\item{verbose}{If TRUE, print messages along the way.}
 }
 \value{
 A character vector of HLA gene names like "DRB1"
 }
 \description{
-Get IMGTHLA gene names
+Retrieve the contents of \code{ANHIG/IMGTHLA/alignments} and return a list of gene
+names derived from the txt files in that folder.
+}
+\details{
+See the files at: https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments
 }
 \examples{
 \donttest{
