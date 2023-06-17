@@ -1,8 +1,8 @@
-# hlabud: tidy HLA analysis in R <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/8fd7874d-7773-42d1-858e-79c56dc5d94f"></img>
+# hlabud: HLA analysis in R <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/8fd7874d-7773-42d1-858e-79c56dc5d94f"></img>
 
-hlabud is an R package that provides functions to download and analyze
-human leukocyte antigen (HLA) genotypes from
-[IMGTHLA](https://github.com/ANHIG/IMGTHLA) in a tidy R workflow.
+hlabud provides methods for retrieving sequence alignment data from the [IMGTHLA] database, and for converting the sequence alignments into R matrices ready for downstream analysis. The [vignette](articles/examples.html) shows examples of how to use the data with logistic regression and dimensionality reduction.
+
+[IMGTHLA]: https://github.com/ANHIG/IMGTHLA
 
 For example, let’s consider a simple question about two HLA genotypes
 DRB1\*04:174 and DRB1\*15:152. What amino acid positions are different
@@ -39,7 +39,7 @@ devtools::install_github("slowkow/hlabud")
 Examples
 ========
 
-See the [usage examples](vignettes/examples.md) to get some ideas for
+See the [usage examples](articles/examples.html) to get some ideas for
 how to use hlabud in your analyses.
 
 -   [Get a one-hot encoded matrix for all HLA-DRB1
@@ -68,7 +68,7 @@ use `hlabud` then please cite the IMGT/HLA paper:
 
 You can also cite `hlabud` like this:
 
-- Slowikowski K. hlabud: tidy methods for analysis of the human leukocyte antigen (HLA) genes from IMGT/HLA. R package version 1.0.0.
+- Slowikowski K. hlabud: methods for access and analysis of the human leukocyte antigen (HLA) gene sequence alignments from IMGT/HLA. R package version 1.0.0.
 
 Related work
 ============

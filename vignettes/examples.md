@@ -2,15 +2,18 @@
 
 Kamil Slowikowski
 
-2023-06-16
+2023-06-17
 
 [hlabud](https://github.com/slowkow/hlabud) is an R package that
-provides functions to download and analyze human leukocyte antigen (HLA)
-genotypes from [IMGTHLA](https://github.com/ANHIG/IMGTHLA) in a tidy R
-workflow.
+provides functions to facilitate download and analysis of human
+leukocyte antigen (HLA) genotype sequence alignments from
+[IMGTHLA](https://github.com/ANHIG/IMGTHLA) in R.
 
-For example, what amino acid positions are different between the
+Let’s consider a question that we might want to answer about HLA
+genotypes. What amino acid positions are different between the
 DRB1\*04:174 and DRB1\*15:152 genotypes?
+
+With hlabud, we can find the answer with a few lines of code:
 
     library(hlabud)
     a <- hla_alignments("DRB1")
@@ -266,8 +269,8 @@ In this simulation, the `case` variable is associated with pos101\_E (P
 
 # UMAP embedding of 3,516 HLA-DRB1 alleles
 
-There are many things we might do with a one-hot encoding of HLA-DRB1
-alleles.
+There are many possibilities for analysis of a one-hot encoding of
+HLA-DRB1 alleles.
 
 For example, here is a UMAP embedding of 3,516 HLA-DRB1 alleles encoded
 as a one-hot amino acid matrix with 1482 columns, one for each amino
@@ -289,8 +292,8 @@ color:
 # Download and unpack all data from the latest IMGTHLA release
 
 If you only want to use `hla_alignments()`, then you don’t need
-`install_hla()` because data files are automatically downloaded
-automatically as needed.
+`install_hla()` because data files are downloaded automatically as
+needed and cached for future use.
 
 But some users might need access to additional files that are only
 present in the full data release.
@@ -320,15 +323,8 @@ Optionally, get or set the directory hlabud uses to store the data:
     # Manually override the directory for hlabud to use
     options(hlabud_dir = "/path/to/my/dir")
 
-Check which release hlabud is using, or choose a release:
+List all releases:
 
-    getOption("hlabud_release")
-    #> [1] "3.51.0"
-
-    # Use a specific release
-    options(hlabud_release = "3.51.0")
-
-    # List all releases
     hla_releases()
     #>  [1] "3.51.0"   "3.50.0"   "3.49.0"   "3.48.0"   "3.47.0"   "3.46.0"   "3.45.1"   "3.45.01"
     #>  [9] "3.45.0.1" "3.45.0"   "3.44.1"   "3.44.0"   "3.43.0"   "3.42.0"   "3.41.2"   "3.41.0"

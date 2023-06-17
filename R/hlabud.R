@@ -205,7 +205,7 @@ hla_alleles <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 #' Retrieve the tags from the ANHIG/IMGTHLA repo and get the associated release
 #' names.
 #'
-#' @param overwrite Overwrite the existing tags.json file with a new one from GitHub
+#' @param overwrite Overwrite the existing tags.json file in `file.path(getOption("hlabud_dir"), "tags.json")`with a new one from the [IMGTHLA](https://github.com/ANHIG/IMGTHLA) GitHub repo
 #' @return A character vector of release names like "3.51.0"
 #' @examples
 #' \donttest{
@@ -293,11 +293,11 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
 #'
 #' The prot file has the amino acid sequence for each HLA allele.
 #'
-#' @return A list with a dataframe and a matrix. The dataframe has two columns:
+#' @return A list with a dataframe called `sequences` and two matrices `alleles` and `onehot` The data frame has two columns:
 #' * allele: the name of the allele, e.g., `DQB*01:01`
 #' * seq: the amino acid sequence
-#' The matrix has a one-hot encoding of the variants among the alleles, with
-#' one row for each allele and one column for each amino acid at each position.
+#' The matrix `alleles` has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
+#' The matrix `onehot` has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
 #' @param my_file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
 #' @examples
 #' my_file <- file.path(

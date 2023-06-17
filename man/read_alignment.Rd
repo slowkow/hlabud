@@ -10,12 +10,12 @@ read_alignment(my_file)
 \item{my_file}{File name for a txt file from IMGTHLA like "DQB1_prot.txt"}
 }
 \value{
-A list with a dataframe and a matrix. The dataframe has two columns:
+A list with a dataframe called \code{sequences} and two matrices \code{alleles} and \code{onehot} The data frame has two columns:
 \itemize{
 \item allele: the name of the allele, e.g., \code{DQB*01:01}
 \item seq: the amino acid sequence
-The matrix has a one-hot encoding of the variants among the alleles, with
-one row for each allele and one column for each amino acid at each position.
+The matrix \code{alleles} has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
+The matrix \code{onehot} has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
 }
 }
 \description{

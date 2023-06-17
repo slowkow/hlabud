@@ -4,7 +4,7 @@
 \name{hlabud-package}
 \alias{hlabud}
 \alias{hlabud-package}
-\title{hlabud: Methods for Accessing the Human Leukocyte Antigen (HLA) Gene Alignments from IMGTHLA}
+\title{hlabud: Methods for Access and Analysis of the Human Leukocyte Antigen (HLA) Gene Sequence Alignments from IMGTHLA}
 \description{
 hlabud provides methods for retrieving sequence alignment data from the IMGTHLA database, and for converting the sequence alignments into R matrices ready for downstream analysis. The vignette shows examples of how to use the data with logistic regression and dimensionality reduction.
 }
