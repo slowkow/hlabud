@@ -44,3 +44,6 @@ a$alleles[1:6,1:6]
 a$onehot[1:6,1:6]
 }
 }
+\seealso{
+\code{\link[=hla_releases]{hla_releases()}} to get a complete list of all release names.
+}

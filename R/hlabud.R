@@ -71,6 +71,7 @@ get_hlabud_dir <- function() {
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param overwrite If TRUE, overwrite existing files in the release folder.
 #' @param verbose If TRUE, print messages along the way.
+#' @seealso [hla_releases()] to get a complete list of all release names.
 #' @examples
 #' \dontrun{
 #' install_hla()
@@ -116,15 +117,13 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 
 #' Get IMGTHLA gene names
 #'
-#' Retrieve the contents of `ANHIG/IMGTHLA/alignments` and return a list of gene
-#' names derived from the txt files in that folder.
-#'
-#' See the files at: https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments
+#' Retrieve the contents of [`github.com/ANHIG/IMGTHLA/alignments`](https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments) and return a list of gene names derived from the txt files in that folder.
 #'
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param overwrite Overwrite the existing `genes.json` file with a new one from GitHub
 #' @param verbose If TRUE, print messages along the way.
 #' @return A character vector of HLA gene names like "DRB1"
+#' @seealso [hla_releases()] to get a complete list of all release names.
 #' @examples
 #' \donttest{
 #' hla_genes() 
@@ -161,6 +160,7 @@ hla_genes <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
 #' @param overwrite Overwrite the existing `alleles.json` file and `Allelelist.{version}.txt` file
 #' @param verbose If TRUE, print messages along the way.
 #' @return A data frame with HLA allele ids and names
+#' @seealso [hla_releases()] to get a complete list of all release names.
 #' @examples
 #' \donttest{
 #' head(hla_alleles())
@@ -205,7 +205,7 @@ hla_alleles <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 #' Retrieve the tags from the ANHIG/IMGTHLA repo and get the associated release
 #' names.
 #'
-#' @param overwrite Overwrite the existing tags.json file in `file.path(getOption("hlabud_dir"), "tags.json")`with a new one from the [IMGTHLA](https://github.com/ANHIG/IMGTHLA) GitHub repo
+#' @param overwrite Overwrite the existing tags.json file in `getOption("hlabud_dir")` with a new one from the [IMGTHLA](https://github.com/ANHIG/IMGTHLA) GitHub repo.
 #' @return A character vector of release names like "3.51.0"
 #' @examples
 #' \donttest{
@@ -242,6 +242,7 @@ hla_releases <- function(overwrite = FALSE) {
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param verbose If TRUE, print messages along the way.
 #' @return A dataframe.
+#' @seealso [hla_releases()] to get a complete list of all release names.
 #' @examples
 #' \donttest{
 #' a <- hla_alignments("DRB1")
@@ -406,23 +407,23 @@ get_onehot <- function(al, n_pre) {
   return(list(alleles = as.matrix(alleles), onehot = retval))
 }
 
-#' Dosage
+#' Convert a set of genotype names into a dosage matrix of each residue at each position
 #'
-#' For each genotype, return the the dosage for each amino acid (or nucleotide)
-#' at each position.
+#' For each genotype name, return the the dosage matrix for each residue (amino
+#' acid or nucleotide) at each position.
 #'
-#' Each genotype should be represented like `"HLA-A*01:01,HLA-A*01:01"`
+#' Each genotype should be represented like this `"HLA-A*01:01,HLA-A*01:01"`
 #'
-#' By default, the returned data frame is filtered to exclude:
+#' By default, the returned matrix is filtered to exclude:
 #' * positions where all input genotypes have the same allele
 #' * positions that are identical to previous positions
 #'
 #' @param genotypes Input character vector with one genotype for each individual.
 #' @param alleles A one-hot encoded matrix with one row per allele and one
-#' column per amino acid position (or nucleotide position).
+#' column for each residue (amino acid or nucleotide) at each position.
 #' @param drop_constants Filter out constant amino acid positions by default.
 #' @param drop_duplicates Filter out duplicate amino acid positions by default.
-#' @returns A data frame with one row for each input genotype.
+#' @return A matrix with one row for each input genotype, and one column for each residue at each position.
 #' @examples
 #' DRB1_file <- file.path(
 #'   "https://github.com/ANHIG/IMGTHLA/raw",

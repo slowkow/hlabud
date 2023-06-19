@@ -31,3 +31,6 @@ options(hlabud_dir = "path/to/my/dir")
 install_hla()
 }
 }
+\seealso{
+\code{\link[=hla_releases]{hla_releases()}} to get a complete list of all release names.
+}

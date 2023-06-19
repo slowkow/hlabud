@@ -7,7 +7,7 @@
 hla_releases(overwrite = FALSE)
 }
 \arguments{
-\item{overwrite}{Overwrite the existing tags.json file in \code{file.path(getOption("hlabud_dir"), "tags.json")}with a new one from the \href{https://github.com/ANHIG/IMGTHLA}{IMGTHLA} GitHub repo}
+\item{overwrite}{Overwrite the existing tags.json file in \code{getOption("hlabud_dir")} with a new one from the \href{https://github.com/ANHIG/IMGTHLA}{IMGTHLA} GitHub repo.}
 }
 \value{
 A character vector of release names like "3.51.0"

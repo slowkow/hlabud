@@ -42,14 +42,14 @@ Analysis of this genotype data requires computational methods for managing colle
 
 # Statement of need
 
-`hlabud` is an R package for conveniently downloading and analyzing the data from the IMGT/HLA database of HLA genotypes [@Robinson2020].
-The R programming language has a large repository of open-source libraries for statistical modeling and data visualization that can be applied to any data analysis.
-The API for `hlabud` is designed to provide functions that output simple lists of matrices and data frames to facilitate seamless integration with any other packages.
-The documentation includes usage examples for analysis of a one-hot encoding of amino acid positions such as logistic regression association analysis with amino acid positions and low dimensional embedding with UMAP.
-HLA genotype data is lazily downloaded (as-needed) from the IMGT-HLA GitHub repository [@imgthla] and cached in a user-configurable directory.
+`hlabud` is an R package that simplifies the tasks of downloading and parsing data from the IMGT/HLA database of HLA genotypes and sequence alignments [@Robinson2020].
+The R programming language has a comprehensive repository of open-source libraries for statistical modeling and data visualization that can be applied to any data analysis.
+The API for `hlabud` is designed to provide functions that output simple lists of matrices and tables that facilitate seamless integration with all other R packages.
+HLA genotype data is lazily downloaded (as-needed) from the IMGT-HLA GitHub repository [@imgthla] and automatically cached in a user-configurable directory.
+The documentation includes usage examples for analysis of the one-hot encoding of amino acid positions such as association analysis with logistic regression and low dimensional embedding with UMAP.
 
 The BIGDAWG R package provides functions for chi-squared Hardy-Weinberg and case-control association tests of highly polymorphic genetic data like HLA genotypes [@Pappas2016].
-In contrast, `hlabud` was designed to be a minimal package that provides flexible functions to facilitate any downstream HLA analyses.
+In contrast, `hlabud` was designed to be minimal and flexible, to support any downstream HLA analyses, including analyses that have yet to be imagined.
 `hlabud` can be used by biomedical researchers and also by students in courses that teach immunology, genetics, and bioinformatics.
 
 

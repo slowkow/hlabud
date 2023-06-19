@@ -24,4 +24,5 @@ vignettes/examples.html: vignettes/examples.Rmd vignettes/custom.css
 
 docs/articles/examples.html: vignettes/examples.Rmd index.md man/*.Rd
 	R -e 'pkgdown::build_site()'
+	rm -f docs/paper.*
 

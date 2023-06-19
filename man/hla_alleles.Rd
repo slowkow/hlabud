@@ -25,3 +25,6 @@ IMGTHLA release.
 head(hla_alleles())
 }
 }
+\seealso{
+\code{\link[=hla_releases]{hla_releases()}} to get a complete list of all release names.
+}

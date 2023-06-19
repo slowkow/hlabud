@@ -17,14 +17,13 @@ hla_genes(release = "latest", overwrite = FALSE, verbose = FALSE)
 A character vector of HLA gene names like "DRB1"
 }
 \description{
-Retrieve the contents of \code{ANHIG/IMGTHLA/alignments} and return a list of gene
-names derived from the txt files in that folder.
-}
-\details{
-See the files at: https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments
+Retrieve the contents of \href{https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments}{\code{github.com/ANHIG/IMGTHLA/alignments}} and return a list of gene names derived from the txt files in that folder.
 }
 \examples{
 \donttest{
 hla_genes() 
 }
+}
+\seealso{
+\code{\link[=hla_releases]{hla_releases()}} to get a complete list of all release names.
 }
