@@ -23,19 +23,22 @@ get_release <- function(release = "latest") {
 #' Get the name of the folder for caching downloaded IMGTHLA files
 #'
 #' This function will:
-#' - Get the folder name from `getOption("hlabud_dir")` or else automatically choose an appropriate folder for your operating system (thanks to [rappdirs](https://github.com/r-lib/rappdirs)).
+#' - Get the folder name from `getOption("hlabud_dir")` or else automatically choose an appropriate folder for your operating system thanks to [rappdirs](https://github.com/r-lib/rappdirs).
 #' - Create the folder automatically if it does not already exist.
 #' - Set the the `hlabud_dir` option to that new folder.
 #'
 #' Here are the locations of the `hlabud_dir` folder on each operating system.
 #'
 #' Linux:
+#'
 #'     ~/.local/share/hlabud
 #'
 #' Mac:
+#'
 #'     ~/Library/Application Support/hlabud
 #'
 #' Windows:
+#'
 #'     C:\Documents and Settings\{User}\Application Data\slowkow\hlabud
 #'
 #' To set the `hlabud_dir` option, please use:
