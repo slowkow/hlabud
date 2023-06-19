@@ -83,7 +83,17 @@ you use `hlabud` then please cite the IMGT/HLA paper:
     Database.](https://www.ncbi.nlm.nih.gov/pubmed/31667505) Nucleic
     Acids Res. 2020;48: D948–D955. <doi:10.1093/nar/gkz950>
 
-Additionally, you can also cite `hlabud` like this:
+`hlabud` also provides access to the data in Allele Frequency Net
+Database (AFND). Therefore, if you use `hlabud::hla_frequencies()` then
+please cite the AFND paper:
+
+-   Gonzalez-Galarza FF, McCabe A, Santos EJMD, Jones J, Takeshita L,
+    Ortega-Rivera ND, et al. [Allele frequency net database (AFND) 2020
+    update: gold-standard data classification, open access genotype data
+    and new query tools.](https://pubmed.ncbi.nlm.nih.gov/31722398)
+    Nucleic Acids Res. 2020;48: D783–D788. <doi:10.1093/nar/gkz1029>
+
+Additionally, you can also cite the `hlabud` package like this:
 
 -   Slowikowski K. hlabud: methods for access and analysis of the human
     leukocyte antigen (HLA) gene sequence alignments from IMGT/HLA. R
