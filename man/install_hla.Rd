@@ -2,7 +2,7 @@
 % Please edit documentation in R/hlabud.R
 \name{install_hla}
 \alias{install_hla}
-\title{Download and unpack a tarball release of IMGTHLA from GitHub}
+\title{Download and unpack a tarball release from IMGTHLA}
 \usage{
 install_hla(release = "latest", overwrite = FALSE, verbose = FALSE)
 }

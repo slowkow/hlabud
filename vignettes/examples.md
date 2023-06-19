@@ -2,7 +2,7 @@
 
 Kamil Slowikowski
 
-2023-06-17
+2023-06-19
 
 [hlabud](https://github.com/slowkow/hlabud) is an R package that
 provides functions to facilitate download and analysis of human
@@ -289,6 +289,64 @@ color:
 
 ![](examples_files/figure-markdown_strict/umap-P13-1.png)
 
+# Get HLA allele frequencies from Allele Frequency Net Database (AFND)
+
+Download and read a table of HLA allele frequencies from the [Allele
+Frequency Net Database (AFND)](http://www.allelefrequencies.net/).
+
+If you use this data, please cite the latest manuscript about Allele
+Frequency Net Database:
+
+-   Gonzalez-Galarza FF, McCabe A, Santos EJMD, Jones J, Takeshita L,
+    Ortega-Rivera ND, et al. [Allele frequency net database (AFND) 2020
+    update: gold-standard data classification, open access genotype data
+    and new query tools.](https://pubmed.ncbi.nlm.nih.gov/31722398)
+    Nucleic Acids Res. 2020;48: D783–D788. <doi:10.1093/nar/gkz1029>
+
+<!-- -->
+
+    af <- hla_frequencies()
+    af
+    #> # A tibble: 123,502 × 7
+    #>    group gene  allele  population            indivs_over_n alleles_over_2n     n
+    #>    <chr> <chr> <chr>   <chr>                         <dbl>           <dbl> <dbl>
+    #>  1 hla   A     A*01:01 Argentina Rosario To…          15.1           0.076    86
+    #>  2 hla   A     A*01:01 Armenia combined Reg…          NA             0.125   100
+    #>  3 hla   A     A*01:01 Australia Cape York …          NA             0.053   103
+    #>  4 hla   A     A*01:01 Australia Groote Eyl…          NA             0.027    75
+    #>  5 hla   A     A*01:01 Australia New South …          NA             0.187   134
+    #>  6 hla   A     A*01:01 Australia Yuendumu A…          NA             0.008   191
+    #>  7 hla   A     A*01:01 Austria                        27             0.146   200
+    #>  8 hla   A     A*01:01 Azores Central Islan…          NA             0.08     59
+    #>  9 hla   A     A*01:01 Azores Oriental Isla…          NA             0.115    43
+    #> 10 hla   A     A*01:01 Azores Terceira Isla…          NA             0.109   130
+    #> # ℹ 123,492 more rows
+
+Plot the frequency of a specific allele (DQB1\*02:01) in populations
+with more than 1000 sampled individuals:
+
+    my_allele <- "DQB1*02:01"
+    my_af <- af %>% filter(allele == my_allele) %>%
+      filter(n > 1000) %>%
+      arrange(-alleles_over_2n)
+
+    ggplot(my_af) +
+      aes(x = alleles_over_2n, y = reorder(population, alleles_over_2n)) +
+      scale_y_discrete(position = "right") +
+      geom_colh() +
+      labs(
+        x = "Allele Frequency (Alleles / 2N)",
+        y = NULL,
+        title =  glue("Frequency of {my_allele} across {length(unique(my_af$population))} populations"),
+        caption = "Data from AFND http://allelefrequencies.net"
+      )
+
+![](examples_files/figure-markdown_strict/unnamed-chunk-15-1.png)
+
+See
+[github.com/slowkow/allelefrequencies](https://github.com/slowkow/allelefrequencies)
+for more examples of how we might use this data.
+
 # Download and unpack all data from the latest IMGTHLA release
 
 If you only want to use `hla_alignments()`, then you don’t need
@@ -418,7 +476,7 @@ And plot the number of alleles as a line plot:
         axis.ticks.x = element_blank(),
       )
 
-![](examples_files/figure-markdown_strict/unnamed-chunk-21-1.png)
+![](examples_files/figure-markdown_strict/unnamed-chunk-22-1.png)
 
     d2 <- my_alleles %>% mutate(gene = str_split_fixed(Allele, "\\*", 2)[,1]) %>% count(release, gene)
     ggplot() +
@@ -443,4 +501,4 @@ And plot the number of alleles as a line plot:
         axis.ticks.x = element_blank(),
       )
 
-![](examples_files/figure-markdown_strict/unnamed-chunk-22-1.png)
+![](examples_files/figure-markdown_strict/unnamed-chunk-23-1.png)

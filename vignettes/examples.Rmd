@@ -339,6 +339,8 @@ set.seed(2)
 ix <- sample(1:nrow(a$umap), 40)
 a$umap$label[ix] <- a$umap$d4[ix]
 
+my_release <- hla_releases()[1]
+
 p <- ggplot(a$umap) +
   aes(x, y, color = d2) +
   geom_point() +
@@ -347,7 +349,7 @@ p <- ggplot(a$umap) +
   guides(color = guide_legend(title = "2-digit", override.aes = list(label = "", size = 5))) +
   labs(
     title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {options('hlabud_release')}")
+    caption = glue("IMGTHLA {my_release}")
   ) +
   theme(
     axis.text = element_blank(),
@@ -372,7 +374,7 @@ p <- ggplot(a$umap) +
   guides(color = guide_legend(title = my_position, override.aes = list(label = "", size = 5))) +
   labs(
     title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {options('hlabud_release')}")
+    caption = glue("IMGTHLA {my_release}")
   ) +
   theme(
     axis.text = element_blank(),
@@ -410,7 +412,7 @@ p <- ggplot(a$umap) +
   scale_color_manual(values = mpn65, labels = aa_to_count) +
   labs(
     title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {options('hlabud_release')}")
+    caption = glue("IMGTHLA {my_release}")
   ) +
   theme(
     axis.text = element_blank(),
@@ -421,6 +423,42 @@ p
 # ggsave("test.png", p)
 
 ```
+
+# Get HLA allele frequencies from Allele Frequency Net Database (AFND)
+
+Download and read a table of HLA allele frequencies from the [Allele Frequency Net Database (AFND)](http://www.allelefrequencies.net/).
+
+If you use this data, please cite the latest manuscript about Allele Frequency Net Database:
+
+- Gonzalez-Galarza FF, McCabe A, Santos EJMD, Jones J, Takeshita L, Ortega-Rivera ND, et al. [Allele frequency net database (AFND) 2020 update: gold-standard data classification, open access genotype data and new query tools.](https://pubmed.ncbi.nlm.nih.gov/31722398) Nucleic Acids Res. 2020;48: D783–D788. doi:10.1093/nar/gkz1029
+
+```{r, afnd}
+af <- hla_frequencies()
+af
+```
+
+Plot the frequency of a specific allele (DQB1*02:01) in populations with more than 1000 sampled individuals:
+
+```{r, fig.dpi = 300, fig.width = 10, fig.height = 8}
+my_allele <- "DQB1*02:01"
+my_af <- af %>% filter(allele == my_allele) %>%
+  filter(n > 1000) %>%
+  arrange(-alleles_over_2n)
+
+ggplot(my_af) +
+  aes(x = alleles_over_2n, y = reorder(population, alleles_over_2n)) +
+  scale_y_discrete(position = "right") +
+  geom_colh() +
+  labs(
+    x = "Allele Frequency (Alleles / 2N)",
+    y = NULL,
+    title =  glue("Frequency of {my_allele} across {length(unique(my_af$population))} populations"),
+    caption = "Data from AFND http://allelefrequencies.net"
+  )
+```
+
+See [github.com/slowkow/allelefrequencies](https://github.com/slowkow/allelefrequencies) for more examples of how we might use this data.
+
 
 # Download and unpack all data from the latest IMGTHLA release
 

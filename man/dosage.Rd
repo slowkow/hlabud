@@ -4,13 +4,12 @@
 \alias{dosage}
 \title{Convert a set of genotype names into a dosage matrix of each residue at each position}
 \usage{
-dosage(genotypes, alleles, drop_constants = TRUE, drop_duplicates = TRUE)
+dosage(names, mat, drop_constants = TRUE, drop_duplicates = TRUE)
 }
 \arguments{
-\item{genotypes}{Input character vector with one genotype for each individual.}
+\item{names}{Input character vector with one genotype for each individual. All entries must be present in \code{rownames(mat)}.}
 
-\item{alleles}{A one-hot encoded matrix with one row per allele and one
-column for each residue (amino acid or nucleotide) at each position.}
+\item{mat}{A one-hot encoded matrix with one row per allele and one column for each residue (amino acid or nucleotide) at each position.}
 
 \item{drop_constants}{Filter out constant amino acid positions by default.}
 
@@ -20,8 +19,7 @@ column for each residue (amino acid or nucleotide) at each position.}
 A matrix with one row for each input genotype, and one column for each residue at each position.
 }
 \description{
-For each genotype name, return the the dosage matrix for each residue (amino
-acid or nucleotide) at each position.
+For each genotype name, return the the dosage matrix for each residue (amino acid or nucleotide) at each position.
 }
 \details{
 Each genotype should be represented like this \code{"HLA-A*01:01,HLA-A*01:01"}

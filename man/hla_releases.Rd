@@ -2,19 +2,18 @@
 % Please edit documentation in R/hlabud.R
 \name{hla_releases}
 \alias{hla_releases}
-\title{Get IMGTHLA releases from GitHub}
+\title{Get the names of releases from IMGTHLA}
 \usage{
 hla_releases(overwrite = FALSE)
 }
 \arguments{
-\item{overwrite}{Overwrite the existing tags.json file in \code{getOption("hlabud_dir")} with a new one from the \href{https://github.com/ANHIG/IMGTHLA}{IMGTHLA} GitHub repo.}
+\item{overwrite}{Overwrite the existing tags.json file in \code{getOption("hlabud_dir")}}
 }
 \value{
 A character vector of release names like "3.51.0"
 }
 \description{
-Retrieve the tags from the ANHIG/IMGTHLA repo and get the associated release
-names.
+Get tags from \href{https://github.com/ANHIG/IMGTHLA}{github.com/ANHIG/IMGTHLA}, save them to a file called \code{tags.json} in \code{getOption("hlabud_dir")},  and return the release names from that file.
 }
 \examples{
 \donttest{

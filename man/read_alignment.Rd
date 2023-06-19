@@ -2,7 +2,7 @@
 % Please edit documentation in R/hlabud.R
 \name{read_alignment}
 \alias{read_alignment}
-\title{Read an alignment file \verb{*_prot.txt} file from IMGTHLA.}
+\title{Read an alignment file \verb{*_(nuc|gen|prot).txt} from IMGTHLA}
 \usage{
 read_alignment(my_file)
 }
@@ -10,16 +10,29 @@ read_alignment(my_file)
 \item{my_file}{File name for a txt file from IMGTHLA like "DQB1_prot.txt"}
 }
 \value{
-A list with a dataframe called \code{sequences} and two matrices \code{alleles} and \code{onehot} The data frame has two columns:
+A list with a dataframe called \code{sequences} and two matrices \code{alleles} and \code{onehot}.
+
+The dataframe has two columns:
 \itemize{
-\item allele: the name of the allele, e.g., \code{DQB*01:01}
-\item seq: the amino acid sequence
+\item \code{allele}: the name of the allele, e.g., \code{DQB*01:01}
+\item \code{seq}: the amino acid sequence
+}
+
 The matrix \code{alleles} has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
 The matrix \code{onehot} has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
 }
-}
 \description{
-The prot file has the amino acid sequence for each HLA allele.
+This function reads the txt files that are provided by IMGTHLA.
+}
+\details{
+Consider using \code{\link[=hla_alignments]{hla_alignments()}} instead of this function. If you already have your own txt file that you want to read, then you can read it with \code{read_alignment("myfile.txt")}.
+
+These are the sequences contained in each file:
+\itemize{
+\item \verb{\{gene\}_prot.txt} has the amino acid sequence for each HLA allele.
+\item \verb{\{gene\}_nuc.txt} has the nucleotide sequence for the exons.
+\item \verb{\{gene\}_gen.txt} has the genomic sequence for the exons and introns.
+}
 }
 \examples{
 my_file <- file.path(

@@ -2,7 +2,7 @@
 % Please edit documentation in R/hlabud.R
 \name{hla_alignments}
 \alias{hla_alignments}
-\title{Get aligned sequences in a dataframe}
+\title{Get sequence alignments from IMGTHLA}
 \usage{
 hla_alignments(
   gene = "DRB1",
@@ -21,7 +21,16 @@ hla_alignments(
 \item{verbose}{If TRUE, print messages along the way.}
 }
 \value{
-A dataframe.
+A list with a dataframe called \code{sequences} and two matrices \code{alleles} and \code{onehot}.
+
+The dataframe has two columns:
+\itemize{
+\item \code{allele}: the name of the allele, e.g., \code{DQB*01:01}
+\item \code{seq}: the amino acid sequence
+}
+
+The matrix \code{alleles} has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
+The matrix \code{onehot} has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
 }
 \description{
 Here are the conventions used for alignments (\href{https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/}{EBI IMGT-HLA help page}):

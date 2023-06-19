@@ -22,23 +22,25 @@ get_release <- function(release = "latest") {
 
 #' Get the name of the folder for caching downloaded IMGTHLA files
 #'
-#' Get the folder name from `getOption("hlabud_dir")` or else use the
-#' [rappdirs](https://github.com/r-lib/rappdirs) package to choose an
-#' appropriate folder for your operating system. The folder will be created
-#' automatically if it does not exist. And the `hlabud_dir` option will bet set
-#' to that folder.
+#' This function will:
+#' - Get the folder name from `getOption("hlabud_dir")` or else automatically choose an appropriate folder for your operating system (thanks to [rappdirs](https://github.com/r-lib/rappdirs)).
+#' - Create the folder automatically if it does not already exist.
+#' - Set the the `hlabud_dir` option to that new folder.
+#'
+#' Here are the locations of the `hlabud_dir` folder on each operating system.
 #'
 #' Linux:
-#'
 #'     ~/.local/share/hlabud
 #'
 #' Mac:
-#'
 #'     ~/Library/Application Support/hlabud
 #'
 #' Windows:
+#'     C:\Documents and Settings\{User}\Application Data\slowkow\hlabud
 #'
-#'     C:\Documents and Settings\<User>\Application Data\slowkow\hlabud
+#' To set the `hlabud_dir` option, please use:
+#' 
+#'     options(hlabud_dir = "/my/favorite/path")
 #'
 #' @examples
 #' \dontrun{
@@ -60,7 +62,7 @@ get_hlabud_dir <- function() {
   return(hlabud_dir)
 }
 
-#' Download and unpack a tarball release of IMGTHLA from GitHub
+#' Download and unpack a tarball release from IMGTHLA
 #' 
 #' The release tarball from Github is unpacked into the
 #' `getOption("hlabud_dir")` folder.
@@ -115,7 +117,7 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 
 }
 
-#' Get IMGTHLA gene names
+#' Get HLA gene names from IMGTHLA
 #'
 #' Retrieve the contents of [`github.com/ANHIG/IMGTHLA/alignments`](https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments) and return a list of gene names derived from the txt files in that folder.
 #'
@@ -200,12 +202,11 @@ hla_alleles <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
   return(alleles)
 }
 
-#' Get IMGTHLA releases from GitHub
+#' Get the names of releases from IMGTHLA
 #'
-#' Retrieve the tags from the ANHIG/IMGTHLA repo and get the associated release
-#' names.
+#' Get tags from [github.com/ANHIG/IMGTHLA](https://github.com/ANHIG/IMGTHLA), save them to a file called `tags.json` in `getOption("hlabud_dir")`,  and return the release names from that file.
 #'
-#' @param overwrite Overwrite the existing tags.json file in `getOption("hlabud_dir")` with a new one from the [IMGTHLA](https://github.com/ANHIG/IMGTHLA) GitHub repo.
+#' @param overwrite Overwrite the existing tags.json file in `getOption("hlabud_dir")`
 #' @return A character vector of release names like "3.51.0"
 #' @examples
 #' \donttest{
@@ -225,7 +226,7 @@ hla_releases <- function(overwrite = FALSE) {
   return(releases)
 }
 
-#' Get aligned sequences in a dataframe
+#' Get sequence alignments from IMGTHLA
 #'
 #' Here are the conventions used for alignments ([EBI IMGT-HLA help page](https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/)):
 #' * The entry for each allele is displayed in respect to the reference sequences.
@@ -241,7 +242,14 @@ hla_releases <- function(overwrite = FALSE) {
 #' @param type The type of sequence, one of "prot", "nuc", "gen"
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param verbose If TRUE, print messages along the way.
-#' @return A dataframe.
+#' @return A list with a dataframe called `sequences` and two matrices `alleles` and `onehot`.
+#'
+#' The dataframe has two columns:
+#' * `allele`: the name of the allele, e.g., `DQB*01:01`
+#' * `seq`: the amino acid sequence
+#'
+#' The matrix `alleles` has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
+#' The matrix `onehot` has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
 #' @seealso [hla_releases()] to get a complete list of all release names.
 #' @examples
 #' \donttest{
@@ -290,13 +298,23 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
   return(read_alignment(my_file))
 }
 
-#' Read an alignment file `*_prot.txt` file from IMGTHLA.
+#' Read an alignment file `*_(nuc|gen|prot).txt` from IMGTHLA
 #'
-#' The prot file has the amino acid sequence for each HLA allele.
+#' This function reads the txt files that are provided by IMGTHLA.
 #'
-#' @return A list with a dataframe called `sequences` and two matrices `alleles` and `onehot` The data frame has two columns:
-#' * allele: the name of the allele, e.g., `DQB*01:01`
-#' * seq: the amino acid sequence
+#' Consider using [`hla_alignments()`] instead of this function. If you already have your own txt file that you want to read, then you can read it with `read_alignment("myfile.txt")`.
+#'
+#' These are the sequences contained in each file:
+#' - `{gene}_prot.txt` has the amino acid sequence for each HLA allele.
+#' - `{gene}_nuc.txt` has the nucleotide sequence for the exons.
+#' - `{gene}_gen.txt` has the genomic sequence for the exons and introns.
+#'
+#' @return A list with a dataframe called `sequences` and two matrices `alleles` and `onehot`.
+#'
+#' The dataframe has two columns:
+#' * `allele`: the name of the allele, e.g., `DQB*01:01`
+#' * `seq`: the amino acid sequence
+#'
 #' The matrix `alleles` has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
 #' The matrix `onehot` has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
 #' @param my_file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
@@ -409,8 +427,7 @@ get_onehot <- function(al, n_pre) {
 
 #' Convert a set of genotype names into a dosage matrix of each residue at each position
 #'
-#' For each genotype name, return the the dosage matrix for each residue (amino
-#' acid or nucleotide) at each position.
+#' For each genotype name, return the the dosage matrix for each residue (amino acid or nucleotide) at each position.
 #'
 #' Each genotype should be represented like this `"HLA-A*01:01,HLA-A*01:01"`
 #'
@@ -418,9 +435,8 @@ get_onehot <- function(al, n_pre) {
 #' * positions where all input genotypes have the same allele
 #' * positions that are identical to previous positions
 #'
-#' @param genotypes Input character vector with one genotype for each individual.
-#' @param alleles A one-hot encoded matrix with one row per allele and one
-#' column for each residue (amino acid or nucleotide) at each position.
+#' @param names Input character vector with one genotype for each individual. All entries must be present in `rownames(mat)`.
+#' @param mat A one-hot encoded matrix with one row per allele and one column for each residue (amino acid or nucleotide) at each position.
 #' @param drop_constants Filter out constant amino acid positions by default.
 #' @param drop_duplicates Filter out duplicate amino acid positions by default.
 #' @return A matrix with one row for each input genotype, and one column for each residue at each position.
@@ -441,23 +457,23 @@ get_onehot <- function(al, n_pre) {
 #' dosage <- dosage(genotypes, a$onehot)
 #' dosage[,1:5]
 #' @export
-dosage <- function(genotypes, alleles, drop_constants = TRUE, drop_duplicates = TRUE) {
-  dosages <- matrix(0, ncol = ncol(alleles), nrow = length(genotypes))
-  for (i in seq_along(genotypes)) {
+dosage <- function(names, mat, drop_constants = TRUE, drop_duplicates = TRUE) {
+  dosages <- matrix(0, ncol = ncol(mat), nrow = length(names))
+  for (i in seq_along(names)) {
     # Split a string of genotypes like "HLA-A*01:01,HLA-A*01:01"
-    a <- str_split(genotypes[i], ",")[[1]]
+    a <- str_split(names[i], ",")[[1]]
     for (my_a in a) {
-      # Find the first row in alleles where the prefix matches our genotype
-      ix <- which(str_starts(rownames(alleles), fixed(my_a)))
+      # Find the first row in mat where the prefix matches our genotype
+      ix <- which(str_starts(rownames(mat), fixed(my_a)))
       if (length(ix) > 0) {
-        dosages[i,] <- dosages[i,] + as.numeric(alleles[ix[1],])
+        dosages[i,] <- dosages[i,] + as.numeric(mat[ix[1],])
       } else {
         warning(glue("'{my_a}' not found in rownames"))
       }
     }
   }
-  rownames(dosages) <- genotypes
-  colnames(dosages) <- colnames(alleles)
+  rownames(dosages) <- names
+  colnames(dosages) <- colnames(mat)
   if (drop_constants) {
     # Select positions where we observe > 1 possible dosage [0, 1, 2]
     ix <- apply(dosages, 2, function(x) length(unique(x)))
@@ -472,5 +488,38 @@ dosage <- function(genotypes, alleles, drop_constants = TRUE, drop_duplicates = 
     dosages <- dosages[,which(ix)]
   }
   return(dosages)
+}
+
+#' Get HLA frequences from Allele Frequency Net Database (AFND)
+#'
+#' Download and read a table of HLA allele frequencies from the [Allele Frequency Net Database (AFND)](http://www.allelefrequencies.net/).
+#'
+#' If you use this data, please cite the latest manuscript about Allele Frequency Net Database:
+#'
+#' - Gonzalez-Galarza FF, McCabe A, Santos EJMD, Jones J, Takeshita L, Ortega-Rivera ND, et al. [Allele frequency net database (AFND) 2020 update: gold-standard data classification, open access genotype data and new query tools.](https://pubmed.ncbi.nlm.nih.gov/31722398) Nucleic Acids Res. 2020;48: D783–D788. doi:10.1093/nar/gkz1029
+#'
+#' @param verbose If TRUE, print messages along the way.
+#' @return A dataframe with HLA allele frequencies for all genes.
+#' @examples
+#' \donttest{
+#' hla_frequencies()
+#' }
+#' @export
+hla_frequencies <- function(verbose = FALSE) {
+  hlabud_dir <- get_hlabud_dir()
+  my_file <- file.path(hlabud_dir, "afnd.tsv")
+  my_url <- "https://github.com/slowkow/allelefrequencies/raw/main/afnd.tsv"
+  if (!file.exists(my_file)) {
+    if (verbose) { message(glue("Downloading {my_url}")) }
+    lines <- readLines(my_url)
+    if (verbose) { message(glue("Writing {my_file}")) }
+    writeLines(lines, my_file)
+  }
+  if (verbose) { message(glue("Reading {my_file}")) }
+  d <- as_tibble(read.delim(my_file))
+  d$indivs_over_n <- as.numeric(str_remove(d$indivs_over_n, "\\(\\*\\)"))
+  d$alleles_over_2n <- as.numeric(str_remove(d$alleles_over_2n, "\\(\\*\\)"))
+  d$n <- as.numeric(str_remove_all(d$n, ","))
+  return(d)
 }
 

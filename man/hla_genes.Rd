@@ -2,7 +2,7 @@
 % Please edit documentation in R/hlabud.R
 \name{hla_genes}
 \alias{hla_genes}
-\title{Get IMGTHLA gene names}
+\title{Get HLA gene names from IMGTHLA}
 \usage{
 hla_genes(release = "latest", overwrite = FALSE, verbose = FALSE)
 }
