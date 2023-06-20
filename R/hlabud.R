@@ -122,9 +122,10 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 
 #' Get HLA gene names from IMGTHLA
 #'
-#' Retrieve the contents of [`github.com/ANHIG/IMGTHLA/alignments`](https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments) and return a list of gene names derived from the txt files in that folder.
+#' Retrieve the list of txt files in [`github.com/ANHIG/IMGTHLA/alignments`](https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments) and return a list of gene names derived from the file names.
 #'
 #' @param release Default is "latest". Should be a release name like "3.51.0".
+#' @param type Return `"{gene}_{type}"` (e.g. "DRB1_prot") instead of `"{gene}"` (e.g. "DRB1").
 #' @param overwrite Overwrite the existing `genes.json` file with a new one from GitHub
 #' @param verbose If TRUE, print messages along the way.
 #' @return A character vector of HLA gene names like "DRB1"
@@ -132,9 +133,10 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 #' @examples
 #' \donttest{
 #' hla_genes() 
+#' hla_genes(type = TRUE) 
 #' }
 #' @export
-hla_genes <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
+hla_genes <- function(release = "latest", type = FALSE, overwrite = FALSE, verbose = FALSE) {
   hlabud_dir <- get_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   release <- get_release(release)
@@ -152,7 +154,11 @@ hla_genes <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
   }
   j <- read_json(genes_file)
   genes <- sapply(j, "[[", "name")
-  genes <- unique(str_extract(genes, "^[^_]+"))
+  if (type) {
+    genes <- unique(str_extract(genes, "^[^.]+"))
+  } else {
+    genes <- unique(str_extract(genes, "^[^_]+"))
+  }
   return(genes)
 }
 

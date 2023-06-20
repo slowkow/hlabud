@@ -6,7 +6,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r,include=FALSE}
+```{r setup, include=FALSE}
 #output:
 #  prettydoc::html_pretty:
 #    css: custom.css
@@ -105,7 +105,7 @@ What amino acid positions are different between the DRB1\*04:174 and DRB1\*15:15
 
 With hlabud, we can find the answer with a few lines of code:
 
-```{r}
+```{r drb1_dosage_amino}
 library(hlabud)
 a <- hla_alignments("DRB1")
 dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
@@ -118,7 +118,7 @@ The two genotypes are nearly identical, but the amino acid at position 9 is diff
 
 It is just as easy to find the nucleotides that distinguish the two alleles:
 
-```{r}
+```{r drb1_dosage_nucleotide}
 n <- hla_alignments("DRB1", type = "nuc")
 dosage(c("DRB1*04:174", "DRB1*15:152"), n$onehot)
 ```
@@ -130,7 +130,7 @@ dosage(c("DRB1*04:174", "DRB1*15:152"), n$onehot)
 
 The quickest way to get hlabud is to install from GitHub:
 
-```{r, eval=FALSE}
+```{r install, eval=FALSE}
 # install.packages("devtools")
 devtools::install_github("slowkow/hlabud")
 ```
@@ -322,7 +322,7 @@ For example, here is a UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` al
 uamp(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
 ```
 
-```{r umap1, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r umap-2digit, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
 library(uwot)
 
@@ -388,7 +388,7 @@ p
 
 Or we can represent each amino acid at position 13 with a different color:
 
-```{r umap-P13, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r umap-pos13, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
 my_position <- "pos13"
 a$umap$color <- as.character(a$alleles[,my_position])
@@ -432,14 +432,14 @@ If you use this data, please cite the latest manuscript about Allele Frequency N
 
 - Gonzalez-Galarza FF, McCabe A, Santos EJMD, Jones J, Takeshita L, Ortega-Rivera ND, et al. [Allele frequency net database (AFND) 2020 update: gold-standard data classification, open access genotype data and new query tools.](https://pubmed.ncbi.nlm.nih.gov/31722398) Nucleic Acids Res. 2020;48: D783–D788. doi:10.1093/nar/gkz1029
 
-```{r, afnd}
+```{r afnd}
 af <- hla_frequencies()
 af
 ```
 
 Plot the frequency of a specific allele (DQB1*02:01) in populations with more than 1000 sampled individuals:
 
-```{r, fig.dpi = 300, fig.width = 10, fig.height = 8}
+```{r afnd_dqb1_02_01, fig.dpi = 300, fig.width = 10, fig.height = 8}
 my_allele <- "DQB1*02:01"
 my_af <- af %>% filter(allele == my_allele) %>%
   filter(n > 1000) %>%
@@ -473,7 +473,7 @@ Here are a few examples of how to download releases or get a list of release nam
 
 Download the latest release (default) or a specific release:
 
-```{r, eval=FALSE}
+```{r install_hla, eval=FALSE}
 # Download all of the data (120MB) for the latest IMGTHLA release
 install_hla(release = "latest")
 
@@ -483,7 +483,7 @@ install_hla(release = "3.51.0")
 
 Optionally, get or set the directory hlabud uses to store the data:
 
-```{r, eval=FALSE}
+```{r hlabud_dir, eval=FALSE}
 getOption("hlabud_dir")
 #> [1] "/home/username/.local/share/hlabud"
 
@@ -493,7 +493,7 @@ options(hlabud_dir = "/path/to/my/dir")
 
 List all releases:
 
-```{r, eval=FALSE}
+```{r hla_releases, eval=FALSE}
 hla_releases()
 #>  [1] "3.51.0"   "3.50.0"   "3.49.0"   "3.48.0"   "3.47.0"   "3.46.0"   "3.45.1"   "3.45.01"
 #>  [9] "3.45.0.1" "3.45.0"   "3.44.1"   "3.44.0"   "3.43.0"   "3.42.0"   "3.41.2"   "3.41.0"
@@ -518,14 +518,14 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 
 We can get a list of the release names:
 
-```{r}
+```{r releases}
 releases <- hla_releases()
 releases
 ```
 
 Then we can get the allele names for each release:
 
-```{r}
+```{r hla_alleles}
 my_alleles <- rbindlist(lapply(releases, function(release) {
   retval <- hla_alleles(release = release)
   retval$release <- release
@@ -535,14 +535,14 @@ my_alleles <- rbindlist(lapply(releases, function(release) {
 
 Next, count how many alleles we have in each release:
 
-```{r}
+```{r alleles_per_release_count}
 d <- my_alleles %>% count(release) %>% filter(n > 1)
 d
 ```
 
 And plot the number of alleles as a line plot:
 
-```{r, fig.height = 6}
+```{r alleles_per_release, fig.height = 6}
 ggplot(d) +
   aes(x = release, y = n, group = 1) +
   geom_line() +
@@ -555,7 +555,7 @@ ggplot(d) +
   )
 ```
 
-```{r, fig.height = 12}
+```{r alleles_per_release_and_gene, fig.height = 12}
 d2 <- my_alleles %>% mutate(gene = str_split_fixed(Allele, "\\*", 2)[,1]) %>% count(release, gene)
 ggplot() +
   aes(x = release, y = n) +

@@ -2,7 +2,7 @@
 
 Kamil Slowikowski
 
-2023-06-19
+2023-06-20
 
 [hlabud](https://github.com/slowkow/hlabud) is an R package that
 provides functions to facilitate download and analysis of human
@@ -278,7 +278,7 @@ acid at each position.
 
     uamp(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
 
-![](examples_files/figure-markdown_strict/umap1-1.png)
+![](examples_files/figure-markdown_strict/umap-2digit-1.png)
 
 We can highlight which alleles have amino acid H at position 13:
 
@@ -287,7 +287,7 @@ We can highlight which alleles have amino acid H at position 13:
 Or we can represent each amino acid at position 13 with a different
 color:
 
-![](examples_files/figure-markdown_strict/umap-P13-1.png)
+![](examples_files/figure-markdown_strict/umap-pos13-1.png)
 
 # Get HLA allele frequencies from Allele Frequency Net Database (AFND)
 
@@ -341,7 +341,7 @@ with more than 1000 sampled individuals:
         caption = "Data from AFND http://allelefrequencies.net"
       )
 
-![](examples_files/figure-markdown_strict/unnamed-chunk-15-1.png)
+![](examples_files/figure-markdown_strict/afnd_dqb1_02_01-1.png)
 
 See
 [github.com/slowkow/allelefrequencies](https://github.com/slowkow/allelefrequencies)
@@ -476,7 +476,7 @@ And plot the number of alleles as a line plot:
         axis.ticks.x = element_blank(),
       )
 
-![](examples_files/figure-markdown_strict/unnamed-chunk-22-1.png)
+![](examples_files/figure-markdown_strict/alleles_per_release-1.png)
 
     d2 <- my_alleles %>% mutate(gene = str_split_fixed(Allele, "\\*", 2)[,1]) %>% count(release, gene)
     ggplot() +
@@ -501,4 +501,4 @@ And plot the number of alleles as a line plot:
         axis.ticks.x = element_blank(),
       )
 
-![](examples_files/figure-markdown_strict/unnamed-chunk-23-1.png)
+![](examples_files/figure-markdown_strict/alleles_per_release_and_gene-1.png)

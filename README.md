@@ -63,14 +63,16 @@ how to use hlabud in your analyses.
     matrix](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#convert-genotypes-to-a-dosage-matrix)
 -   [Logistic regression association for amino acid
     positions](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#logistic-regression-association-for-amino-acid-positions)
--   [UMAP embedding of 3,486 HLA-DRB1
-    alleles](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#umap-embedding-of-3486-hla-drb1-alleles)
+-   [UMAP embedding of 3,516 HLA-DRB1
+    alleles](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#umap-embedding-of-3516-hla-drb1-alleles)
 -   [Download and unpack all data from the latest IMGTHLA
     release](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#download-and-unpack-all-data-from-the-latest-imgthla-release)
 
-<a href="https://github.com/slowkow/hlabud/tree/main/vignettes/examples.md">
-<img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/glm-volcano-1.png">
-<img width="49%" src="https://github.com/slowkow/hlabud/raw/main/vignettes/examples_files/figure-html/umap1-1.png">
+<a href="vignettes/examples.md#logistic-regression-association-for-amino-acid-positions">
+<img width="49%" src="vignettes/examples_files/figure-html/glm-volcano-1.png">
+</a>
+<a href="vignettes/examples.md#umap-embedding-of-3516-hla-drb1-alleles">
+<img width="49%" src="vignettes/examples_files/figure-html/umap-2digit-1.png">
 </a>
 
 # Citation
