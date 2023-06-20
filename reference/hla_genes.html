@@ -52,13 +52,17 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hla_genes</span><span class="op">(</span>release <span class="op">=</span> <span class="st">"latest"</span>, overwrite <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hla_genes</span><span class="op">(</span>release <span class="op">=</span> <span class="st">"latest"</span>, type <span class="op">=</span> <span class="cn">FALSE</span>, overwrite <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>release</dt>
 <dd><p>Default is "latest". Should be a release name like "3.51.0".</p></dd>
+
+
+<dt>type</dt>
+<dd><p>Return <code>"{gene}_{type}"</code> (e.g. "DRB1_prot") instead of <code>"{gene}"</code> (e.g. "DRB1").</p></dd>
 
 
 <dt>overwrite</dt>
@@ -90,6 +94,29 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "G"      "HFE"    "H"      "J"      "K"      "L"      "MICA"   "MICB"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [33] "N"      "P"      "S"      "TAP1"   "TAP2"   "T"      "U"      "V"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [41] "W"      "Y"     </span>
+<span class="r-in"><span><span class="fu">hla_genes</span><span class="op">(</span>type <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "A_gen"       "A_nuc"       "A_prot"      "B_gen"       "B_nuc"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] "B_prot"      "C_gen"       "C_nuc"       "C_prot"      "ClassI_nuc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [11] "ClassI_prot" "DMA_gen"     "DMA_nuc"     "DMA_prot"    "DMB_gen"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [16] "DMB_nuc"     "DMB_prot"    "DOA_gen"     "DOA_nuc"     "DOA_prot"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [21] "DOB_gen"     "DOB_nuc"     "DOB_prot"    "DPA1_gen"    "DPA1_nuc"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [26] "DPA1_prot"   "DPA2_gen"    "DPA2_nuc"    "DPB1_gen"    "DPB1_nuc"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [31] "DPB1_prot"   "DPB2_gen"    "DPB2_nuc"    "DQA1_gen"    "DQA1_nuc"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] "DQA1_prot"   "DQA2_gen"    "DQA2_nuc"    "DQA2_prot"   "DQB1_gen"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [41] "DQB1_nuc"    "DQB1_prot"   "DQB2_gen"    "DQB2_nuc"    "DQB2_prot"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [46] "DRA_gen"     "DRA_nuc"     "DRA_prot"    "DRB1_gen"    "DRB1_nuc"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [51] "DRB1_prot"   "DRB3_gen"    "DRB3_nuc"    "DRB3_prot"   "DRB4_gen"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [56] "DRB4_nuc"    "DRB4_prot"   "DRB5_gen"    "DRB5_nuc"    "DRB5_prot"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61] "DRB_nuc"     "DRB_prot"    "E_gen"       "E_nuc"       "E_prot"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [66] "F_gen"       "F_nuc"       "F_prot"      "G_gen"       "G_nuc"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] "G_prot"      "HFE_gen"     "HFE_nuc"     "HFE_prot"    "H_gen"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [76] "H_nuc"       "J_gen"       "J_nuc"       "K_gen"       "K_nuc"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [81] "L_gen"       "L_nuc"       "MICA_gen"    "MICA_nuc"    "MICA_prot"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [86] "MICB_gen"    "MICB_nuc"    "MICB_prot"   "N_gen"       "N_nuc"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [91] "P_gen"       "S_gen"       "S_nuc"       "TAP1_gen"    "TAP1_nuc"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [96] "TAP1_prot"   "TAP2_gen"    "TAP2_nuc"    "TAP2_prot"   "T_gen"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [101] "T_nuc"       "U_gen"       "U_nuc"       "V_gen"       "V_nuc"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [106] "W_gen"       "W_nuc"       "Y_gen"       "Y_nuc"      </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

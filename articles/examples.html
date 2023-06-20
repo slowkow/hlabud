@@ -82,7 +82,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2023-06-19</p>
+<p>2023-06-20</p>
 <p><a href="https://github.com/slowkow/hlabud" class="external-link">hlabud</a> is an R
 package that provides functions to facilitate download and analysis of
 human leukocyte antigen (HLA) genotype sequence alignments from <a href="https://github.com/ANHIG/IMGTHLA" class="external-link">IMGTHLA</a> in R.</p>
@@ -347,12 +347,12 @@ encoded as a one-hot amino acid matrix with 1482 columns, one for each
 amino acid at each position.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uamp</span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span>, n_epochs <span class="op">=</span> <span class="fl">200</span>, min_dist <span class="op">=</span> <span class="fl">1</span>, spread <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/umap1-1.png" width="864"></p>
+<p><img src="examples_files/figure-html/umap-2digit-1.png" width="864"></p>
 <p>We can highlight which alleles have amino acid H at position 13:</p>
 <p><img src="examples_files/figure-html/umap-pos13_H-1.png" width="864"></p>
 <p>Or we can represent each amino acid at position 13 with a different
 color:</p>
-<p><img src="examples_files/figure-html/umap-P13-1.png" width="864"></p>
+<p><img src="examples_files/figure-html/umap-pos13-1.png" width="864"></p>
 </div>
 <div class="section level2">
 <h2 id="get-hla-allele-frequencies-from-allele-frequency-net-database-afnd">Get HLA allele frequencies from Allele Frequency Net Database
@@ -405,7 +405,7 @@ with more than 1000 sampled individuals:</p>
 <span>    title <span class="op">=</span>  <span class="fu">glue</span><span class="op">(</span><span class="st">"Frequency of {my_allele} across {length(unique(my_af$population))} populations"</span><span class="op">)</span>,</span>
 <span>    caption <span class="op">=</span> <span class="st">"Data from AFND http://allelefrequencies.net"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/unnamed-chunk-15-1.png" width="960"></p>
+<p><img src="examples_files/figure-html/afnd_dqb1_02_01-1.png" width="960"></p>
 <p>See <a href="https://github.com/slowkow/allelefrequencies" class="external-link">github.com/slowkow/allelefrequencies</a>
 for more examples of how we might use this data.</p>
 </div>
@@ -529,7 +529,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <span>    axis.text.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    axis.ticks.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
+<p><img src="examples_files/figure-html/alleles_per_release-1.png" width="700"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="va">my_alleles</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>gene <span class="op">=</span> <span class="fu">str_split_fixed</span><span class="op">(</span><span class="va">Allele</span>, <span class="st">"\\*"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">count</span><span class="op">(</span><span class="va">release</span>, <span class="va">gene</span><span class="op">)</span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -553,7 +553,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <span>    axis.text.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    axis.ticks.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
+<p><img src="examples_files/figure-html/alleles_per_release_and_gene-1.png" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
