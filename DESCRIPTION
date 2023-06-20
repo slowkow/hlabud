@@ -1,9 +1,9 @@
 Package: hlabud
 Title: Methods for Access and Analysis of the Human Leukocyte Antigen (HLA) Gene Sequence Alignments from IMGTHLA
 Version: 1.0.0
-Authors@R: 
-    person("Kamil", "Slowikowski", , "kslowikowski@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-2843-6370"))
+Authors@R: c(
+    person("Kamil", "Slowikowski", email = "kslowikowski@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2843-6370"))
+    )
 Description: hlabud provides methods for retrieving sequence alignment data from the IMGTHLA database, and for converting the sequence alignments into R matrices ready for downstream analysis. The vignette shows examples of how to use the data with logistic regression and dimensionality reduction.
 License: GPL (>= 3)
 Encoding: UTF-8

@@ -1,4 +1,6 @@
-.PHONY: all clean install
+.PHONY: all clean install check
+
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 all: README.md vignettes/examples.md vignettes/examples.html docs/articles/examples.html
 
@@ -9,7 +11,7 @@ install:
 	R -e 'devtools::document(); devtools::install()'
 
 check:
-	R -e 'devtools::document(); devtools::check()'
+	R -e 'devtools::document(); rcmdcheck::rcmdcheck()'
 
 README.md: README.Rmd
 	R -e 'devtools::install_deps(".", TRUE)'

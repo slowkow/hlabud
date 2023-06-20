@@ -33,5 +33,6 @@
 #' @importFrom utils download.file
 #' @importFrom utils untar
 #' @importFrom utils read.table
+#' @importFrom utils read.delim
 ## usethis namespace: end
 NULL
