@@ -161,14 +161,14 @@ In the image above, I manually rotated the structure with my mouse and added mor
 
 Python:
 
-- https://github.com/nglviewer/nglview
+* https://github.com/nglviewer/nglview
 
 Javascript:
 
-- https://github.com/nglviewer/ngl
-- https://github.com/biasmv/pv
+* https://github.com/nglviewer/ngl
+* https://github.com/biasmv/pv
 
 R:
 
-- https://www.raymolecule.com
+* https://www.raymolecule.com
 
