@@ -47,10 +47,10 @@ See the [usage examples](articles/examples.html) to get some ideas for how to us
 - [Download and unpack all data from the latest IMGTHLA release](articles/examples.html#download-and-unpack-all-data-from-the-latest-imgthla-release)
 
 <a href="articles/examples.html#logistic-regression-association-for-amino-acid-positions">
-<img width="49%" src="vignettes/examples_files/figure-html/glm-volcano-1.png">
+<img width="49%" src="articles/examples_files/figure-html/glm-volcano-1.png">
 </a>
 <a href="articles/examples.html#umap-embedding-of-3516-hla-drb1-alleles">
-<img width="49%" src="vignettes/examples_files/figure-html/umap-2digit-1.png">
+<img width="49%" src="articles/examples_files/figure-html/umap-2digit-1.png">
 </a>
 
 

@@ -138,10 +138,9 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 #' Retrieve the list of txt files in [`github.com/ANHIG/IMGTHLA/alignments`](https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments) and return a list of gene names derived from the file names.
 #'
 #' @param release Default is "latest". Should be a release name like "3.51.0".
-#' @param type Return `"{gene}_{type}"` (e.g. "DRB1_prot") instead of `"{gene}"` (e.g. "DRB1").
 #' @param overwrite Overwrite the existing `genes.json` file with a new one from GitHub
 #' @param verbose If TRUE, print messages along the way.
-#' @return A character vector of HLA gene names like "DRB1"
+#' @return A tibble with two columns: HLA gene names ("A", "DRB1") and types ("nuc", "gen", "prot").
 #' @seealso [hla_releases()] to get a complete list of all release names.
 #' @examples
 #' \donttest{
@@ -176,7 +175,7 @@ hla_genes <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
   # }
   # Exclude "ClassI", because it is an alignment of 3 HLA genes A, B, C
   # genes <- genes[!str_detect(genes, "ClassI")]
-  genes <- genes %>% filter(gene != "ClassI") %>% as_tibble
+  genes <- genes[genes$gene != "ClassI",] %>% as_tibble
   return(genes)
 }
 

@@ -19,3 +19,5 @@ _files/
 ^\.github$
 ^paper.md$
 ^paper.bib$
+^doc$
+^vignettes/articles$

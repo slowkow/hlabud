@@ -1,7 +1,7 @@
 ---
-title: "Visualizing HLA protein structures"
+title: "Visualize HLA protein structures"
 vignette: >
-  %\VignetteIndexEntry{hlabud usage examples}
+  %\VignetteIndexEntry{Visualize HLA protein structures}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -50,7 +50,7 @@ Here is an example of how to do this with the [NGLVieweR] R package by [Niels va
 [NGLVieweR]: https://github.com/nvelden/NGLVieweR
 [Niels van der Velden]: https://www.nielsvandervelden.com/
 
-```{r, nglviewer-2bvp}
+```{r, nglviewer-2bvp, eval=FALSE}
 library(NGLVieweR)
 library(magrittr)
 my_sele <- "9:A"
@@ -98,11 +98,12 @@ NGLVieweR("2bvp") %>%
   setSpin()
 ```
 
+<img src="https://github.com/slowkow/ggrepel/assets/209714/a766d6c3-0686-4ef9-8dd4-36131cf2e0a3"></img>
+
 In the view above, we see the blue peptide and the red HLA-B protein.
 The tyrosine at position 9 is highlighted with a `ball+stick` representation, and it is also labeled with a text label.
-The structure is slowly spinning, so we can get a better look at it from all angles.
 
-Also, try using the mouse to drag the structure and rotate it manually!
+This is just a screenshot, but when you run the code for yourself you will see that the structure is slowly spinning, so we can get a better look at it from all angles.
 
 We can use hlabud to answer some questions about HLA-B Tyr9 (tyrosine at position 9).
 
@@ -152,30 +153,22 @@ alias pymol=/Applications/PyMOL.app/Contents/MacOS/PyMOL
 pymol -c script.pml
 ```
 
-<img src="./hla-dqb1-13-45.png"></img>
+<img src="https://github.com/slowkow/ggrepel/assets/209714/4843a850-a4fd-4832-9600-0b8e9c1bb904"></img>
 
-I manually edited the PNG file with Powerpoint to add more text labels like `"PDB: 7kei"`.
-
-Consider spinning the structure manually with your mouse before saving the png file.
-
-
-# nglview
-
-```{python nglview, eval=FALSE}
-import nglview
-import time
-view = nglview.show_pdbid("2bvp")
-view.add_cartoon()
-view.add_representation('ball+stick', selection='9:A')
-im = view.render_image()
-while not im.value:
-  time.sleep(0.1)
-with open(f'2bvp_pos9.png', 'wb') as fh:
-  fh.write(im.value)
-```
-
+In the image above, I manually rotated the structure with my mouse and added more text labels like `"PDB: 7kei"` after saving the file.
 
 # Related work
 
+Python:
+
+- https://github.com/nglviewer/nglview
+
+Javascript:
+
+- https://github.com/nglviewer/ngl
 - https://github.com/biasmv/pv
+
+R:
+
+- https://www.raymolecule.com
 

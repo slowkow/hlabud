@@ -12,11 +12,9 @@ hla_genes(release = "latest", overwrite = FALSE, verbose = FALSE)
 \item{overwrite}{Overwrite the existing \code{genes.json} file with a new one from GitHub}
 
 \item{verbose}{If TRUE, print messages along the way.}
-
-\item{type}{Return \code{"{gene}_{type}"} (e.g. "DRB1_prot") instead of \code{"{gene}"} (e.g. "DRB1").}
 }
 \value{
-A character vector of HLA gene names like "DRB1"
+A tibble with two columns: HLA gene names ("A", "DRB1") and types ("nuc", "gen", "prot").
 }
 \description{
 Retrieve the list of txt files in \href{https://github.com/ANHIG/IMGTHLA/tree/Latest/alignments}{\code{github.com/ANHIG/IMGTHLA/alignments}} and return a list of gene names derived from the file names.
