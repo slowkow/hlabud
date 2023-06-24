@@ -9,11 +9,6 @@ template:
 
 navbar:
   title: "hlabud"
-  left:
-    - text: "Examples"
-      href: articles/examples.html
-    - text: "Reference"
-      href: reference/index.html
   right:
     - icon: fa-github
       text: GitHub

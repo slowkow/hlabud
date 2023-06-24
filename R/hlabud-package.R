@@ -5,6 +5,7 @@
 #' @importFrom curl curl_download
 #' @importFrom dplyr group_by
 #' @importFrom dplyr mutate
+#' @importFrom dplyr filter
 #' @importFrom dplyr n
 #' @importFrom dplyr ungroup
 #' @importFrom glue glue

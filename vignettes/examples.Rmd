@@ -15,6 +15,7 @@ vignette: >
 #    toc: true
 #    keep_md: true
 options(width=80)
+
 library(data.table)
 library(dplyr)
 library(parameters)

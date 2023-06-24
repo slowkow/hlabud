@@ -1,8 +1,8 @@
-.PHONY: all clean install check
+.PHONY: all clean install check test
 
-ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+# ROOT_DIR:=$(shell dirname "$(realpath $(firstword $(MAKEFILE_LIST)))")
 
-all: README.md vignettes/examples.md vignettes/examples.html docs/articles/examples.html
+all: README.md vignettes/examples.md vignettes/examples.html docs/articles/examples.html vignettes/visualize-hla-structure.html
 
 clean:
 	rm -rf README_{files,cache} README.{md,html} vignettes/examples_{files,cache} vignettes/examples.{md,html} docs/
@@ -12,6 +12,9 @@ install:
 
 check:
 	R -e 'devtools::document(); rcmdcheck::rcmdcheck()'
+
+test:
+	R -e 'devtools::test()'
 
 README.md: README.Rmd
 	R -e 'devtools::install_deps(".", TRUE)'
@@ -28,3 +31,5 @@ docs/articles/examples.html: vignettes/examples.Rmd index.md man/*.Rd
 	R -e 'pkgdown::build_site()'
 	rm -f docs/paper.*
 
+vignettes/visualize-hla-structure.html: vignettes/visualize-hla-structure.Rmd
+	R -e 'devtools::build_rmd("vignettes/visualize-hla-structure.Rmd")'

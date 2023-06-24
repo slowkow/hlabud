@@ -2,7 +2,7 @@
 
 Kamil Slowikowski
 
-2023-06-20
+2023-06-24
 
 [hlabud](https://github.com/slowkow/hlabud) is an R package that
 provides functions to facilitate download and analysis of human
@@ -33,9 +33,9 @@ alleles:
 
     n <- hla_alignments("DRB1", type = "nuc")
     dosage(c("DRB1*04:174", "DRB1*15:152"), n$onehot)
-    #>             pos22_C pos22_T
-    #> DRB1*04:174       0       1
-    #> DRB1*15:152       1       0
+    #>             pos109_C pos109_T
+    #> DRB1*04:174        0        1
+    #> DRB1*15:152        1        0
 
 -   position 22 T in DRB1\*04:174
 -   position 22 C in DRB1\*15:152
@@ -64,7 +64,6 @@ release:
 
     library(hlabud)
     a <- hla_alignments(gene = "DRB1", verbose = TRUE)
-    #> hlabud is using IMGTHLA release 3.52.0
     #> Reading /Users/ks38/Library/Application Support/hlabud/3.52.0/alignments/DRB1_prot.txt
 
 The `a` object is a list with three items:

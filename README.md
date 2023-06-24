@@ -36,9 +36,9 @@ n <- hla_alignments("DRB1", type = "nuc")
 dosage(c("DRB1*04:174", "DRB1*15:152"), n$onehot)
 ```
 
-    ##             pos22_C pos22_T
-    ## DRB1*04:174       0       1
-    ## DRB1*15:152       1       0
+    ##             pos109_C pos109_T
+    ## DRB1*04:174        0        1
+    ## DRB1*15:152        1        0
 
 -   position 22 T in DRB1\*04:174
 -   position 22 C in DRB1\*15:152

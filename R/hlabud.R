@@ -1,4 +1,17 @@
 
+## Convert one letter amino acid codes to three letter amino acid codes.
+##
+## @keywords internal
+#one_to_three <- function(my_names) {
+#  dict <- c(
+#    "A" = "Ala", "C" = "Cys", "D" = "Asp", "E" = "Glu", "F" = "Phe", "G" = "Gly",
+#    "H" = "His", "I" = "Ile", "K" = "Lys", "L" = "Leu", "M" = "Met", "N" = "Asn",
+#    "P" = "Pro", "Q" = "Gln", "R" = "Arg", "S" = "Ser", "T" = "Thr", "V" = "Val",
+#    "W" = "Trp", "Y" = "Tyr", "*" = "Ter"
+#  )
+#  dict[my_names]
+#}
+
 #' @keywords internal
 mkdir <- function(path) {
   if (!file.exists(path)) {
@@ -133,10 +146,9 @@ install_hla <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 #' @examples
 #' \donttest{
 #' hla_genes() 
-#' hla_genes(type = TRUE) 
 #' }
 #' @export
-hla_genes <- function(release = "latest", type = FALSE, overwrite = FALSE, verbose = FALSE) {
+hla_genes <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
   hlabud_dir <- get_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
   release <- get_release(release)
@@ -154,11 +166,17 @@ hla_genes <- function(release = "latest", type = FALSE, overwrite = FALSE, verbo
   }
   j <- read_json(genes_file)
   genes <- sapply(j, "[[", "name")
-  if (type) {
-    genes <- unique(str_extract(genes, "^[^.]+"))
-  } else {
-    genes <- unique(str_extract(genes, "^[^_]+"))
-  }
+  genes <- unique(str_extract(genes, "^[^.]+"))
+  genes <- str_split_fixed(genes, "_", 2) %>% as.data.frame
+  colnames(genes) <- c("gene", "type")
+  # if (type) {
+  #   genes <- unique(str_extract(genes, "^[^.]+"))
+  # } else {
+  #   genes <- unique(str_extract(genes, "^[^_]+"))
+  # }
+  # Exclude "ClassI", because it is an alignment of 3 HLA genes A, B, C
+  # genes <- genes[!str_detect(genes, "ClassI")]
+  genes <- genes %>% filter(gene != "ClassI") %>% as_tibble
   return(genes)
 }
 
@@ -275,27 +293,26 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
   if (!type %in% c("nuc", "gen", "prot")) {
     stop("Unrecognized type '{type}' not in: nuc gen prot")
   }
-  if (verbose) { message(glue("hlabud is using IMGTHLA release {release}")) }
   # 
   genes_file <- file.path(hlabud_dir, release, "genes.json")
   if (!file.exists(genes_file)) {
     hla_genes()
   }
+  # Get the file names from GitHub
   genes <- read_json(genes_file)
-  genes <- genes[which(str_detect(sapply(genes, "[[", "name"), gene))]
-  #
-  my_names <- sapply(genes, "[[", "name")
-  my_urls <- sapply(genes, "[[", "download_url")
-  i <- which(str_detect(my_names, type))
-  if (length(i) == 0) {
+  file_names <- sapply(genes, "[[", "name")
+  # Look for an exact match to the file we want
+  i <- which(file_names == glue("{gene}_{type}.txt"))
+  if (length(i) != 1) {
     message(glue("IMGT/HLA does not provide {type} for {gene}"))
     return()
   }
+  genes <- genes[[i]]
   #
-  my_name <- my_names[i]
+  my_name <- genes$name
+  my_url <- genes$download_url
   my_type <- str_replace(my_name, "^.+_(\\w+)\\..+", "\\1")
   my_file <- file.path(hlabud_dir, release, "alignments", my_name)
-  my_url <- my_urls[i]
   if (!file.exists(my_file)) {
     if (verbose) { message(glue("Downloading {my_url}")) }
     lines <- readLines(my_url)
@@ -304,14 +321,14 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
     writeLines(lines, my_file)
   }
   if (verbose) { message(glue("Reading {my_file}")) }
-  return(read_alignment(my_file))
+  return(read_alignments(my_file))
 }
 
 #' Read an alignment file `*_(nuc|gen|prot).txt` from IMGTHLA
 #'
 #' This function reads the txt files that are provided by IMGTHLA.
 #'
-#' Consider using [`hla_alignments()`] instead of this function. If you already have your own txt file that you want to read, then you can read it with `read_alignment("myfile.txt")`.
+#' Consider using [`hla_alignments()`] instead of this function. If you already have your own txt file that you want to read, then you can read it with `read_alignments("myfile.txt")`.
 #'
 #' These are the sequences contained in each file:
 #' - `{gene}_prot.txt` has the amino acid sequence for each HLA allele.
@@ -333,12 +350,14 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
 #'   "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
 #'   "alignments/DRB1_prot.txt"
 #' )
-#' a <- read_alignment(my_file)
+#' a <- read_alignments(my_file)
 #' head(a$sequences)
 #' a$alleles[1:5,1:5]
 #' a$onehot[1:5,1:5]
 #' @export
-read_alignment <- function(my_file) {
+read_alignments <- function(my_file) {
+  # Here is some ugly parsing code
+  # Maybe one day we can switch to using a BNF parser, e.g. the {rly} R package
   my_type <- str_remove(str_split_fixed(basename(my_file), "_", 2)[,2], ".txt")
   my_gene <- str_split_fixed(basename(my_file), "_", 2)[,1]
   lines <- readLines(my_file)
@@ -348,11 +367,20 @@ read_alignment <- function(my_file) {
     al_i <- which(str_detect(lines, "Prot.+ 1$"))
     pre <- lines[al_i]
     pre_i <- str_locate(pre, "-")[1,1]
-    pre_j <- str_locate(pre, "1")[1,1]
-    n_pre <- nchar(str_replace_all(substr(lines[al_i + 2], pre_i, pre_j - 1), " ", ""))
+    if (is.na(pre_i)) {
+      n_pre <- 0
+    } else {
+      pre_j <- str_locate(pre, "1")[1,1]
+      n_pre <- nchar(str_replace_all(substr(lines[al_i + 2], pre_i, pre_j - 1), " ", ""))
+    }
   } else if (my_type == "nuc") {
-    al_i <- which(str_detect(lines, "AA codon"))
-    n_pre <- 3 * abs(as.numeric(str_remove(lines[al_i][1], " *AA codon +")))
+    al_i <- which(str_detect(lines, "cDNA"))
+    n_pre <- as.numeric(str_remove(lines[al_i][1], " *cDNA +"))
+    if (n_pre > 0) {
+      n_pre <- 0
+    } else {
+      n_pre <- 3 * abs(n_pre)
+    }
   } else if (my_type == "gen") {
     al_i <- which(str_detect(lines, "gDNA"))
     n_pre <- abs(as.numeric(str_remove(lines[al_i][1], " *gDNA +")))
@@ -371,6 +399,7 @@ read_alignment <- function(my_file) {
   al$seq <- str_replace_all(al$seq, " ", "")
   #
   oh <- get_onehot(al, n_pre)
+
   return(list(
     sequences = as_tibble(al),
     alleles = oh$alleles,
@@ -385,19 +414,26 @@ read_alignment <- function(my_file) {
 #' @param n_pre The number of amino acid sequences before position 1.
 #' @keywords internal
 get_onehot <- function(al, n_pre) {
+  # Split the sequences into character vectors
   seq_chars <- str_split(al$seq, "")
+  # The first sequence is the reference
   ref_chars <- seq_chars[[1]]
+  # Not all sequences are the same length, so we need to know the range
   max_chars <- max(sapply(seq_chars, length))
   min_chars <- min(sapply(seq_chars, length))
+  # Skip the reference (first sequence), and loop through the remaining sequences
   for (i in 2:length(seq_chars)) {
+    # The "-" character indicates identity to the reference
     ix <- which(seq_chars[[i]] == "-")
     ix <- ix[ix < length(ref_chars)]
     seq_chars[[i]][ix] <- ref_chars[ix]
     seq_len <- length(seq_chars[[i]])
+    # If necessary, add "*" characters to pad the length of this sequence
     if (seq_len < max_chars) {
       seq_chars[[i]] <- c(seq_chars[[i]], rep("*", max_chars - seq_len))
     }
   }
+  # If necessary, add "*" characters to pad the length of the reference sequence
   if (length(ref_chars) < max_chars) {
     ref_chars <- c(ref_chars, rep("*", max_chars - length(ref_chars)))
     seq_chars[[1]] <- ref_chars
@@ -415,9 +451,15 @@ get_onehot <- function(al, n_pre) {
   #######################################################################
   alleles <- do.call(rbind, seq_chars)
   rownames(alleles) <- al$allele
-  colnames(alleles) <- str_replace_all(
-    sprintf("pos%s", c(-n_pre:-1, 1:(ncol(alleles) - n_pre))), "-", "n"
-  )
+  if (n_pre > 0) {
+    colnames(alleles) <- str_replace_all(
+      sprintf("pos%s", c(-n_pre:-1, 1:(ncol(alleles) - n_pre))), "-", "n"
+    )
+  } else if (n_pre == 0) {
+    colnames(alleles) <- str_replace_all(
+      sprintf("pos%s", c(1:ncol(alleles))), "-", "n"
+    )
+  }
   # colnames(alleles) <- sprintf("P%s", seq(ncol(alleles)))
   # keep positions with more than 1 allele
   alleles <- alleles[,apply(alleles, 2, function(x) length(unique(x))) > 1, drop = FALSE]
@@ -431,6 +473,8 @@ get_onehot <- function(al, n_pre) {
   # Discard positions where we don't know the allele
   retval <- retval[,!str_detect(colnames(retval), "\\*")]
   colnames(retval) <- str_replace(colnames(retval), "=", "_")
+  # Rename "." to "gap" so we can use these names in formulas
+  colnames(retval) <- str_replace(colnames(retval), "\\.", "gap")
   return(list(alleles = as.matrix(alleles), onehot = retval))
 }
 
@@ -455,7 +499,7 @@ get_onehot <- function(al, n_pre) {
 #'   "5f2c562056f8ffa89aeea0631f2a52300ee0de17",
 #'   "alignments/DRB1_prot.txt"
 #' )
-#' a <- read_alignment(DRB1_file)
+#' a <- read_alignments(DRB1_file)
 #' genotypes <- c(
 #'   "DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02",
 #'   "DRB1*04:174,DRB1*15:152",

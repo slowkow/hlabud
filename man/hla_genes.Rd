@@ -4,16 +4,16 @@
 \alias{hla_genes}
 \title{Get HLA gene names from IMGTHLA}
 \usage{
-hla_genes(release = "latest", type = FALSE, overwrite = FALSE, verbose = FALSE)
+hla_genes(release = "latest", overwrite = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{release}{Default is "latest". Should be a release name like "3.51.0".}
 
-\item{type}{Return \code{"{gene}_{type}"} (e.g. "DRB1_prot") instead of \code{"{gene}"} (e.g. "DRB1").}
-
 \item{overwrite}{Overwrite the existing \code{genes.json} file with a new one from GitHub}
 
 \item{verbose}{If TRUE, print messages along the way.}
+
+\item{type}{Return \code{"{gene}_{type}"} (e.g. "DRB1_prot") instead of \code{"{gene}"} (e.g. "DRB1").}
 }
 \value{
 A character vector of HLA gene names like "DRB1"
@@ -24,7 +24,6 @@ Retrieve the list of txt files in \href{https://github.com/ANHIG/IMGTHLA/tree/La
 \examples{
 \donttest{
 hla_genes() 
-hla_genes(type = TRUE) 
 }
 }
 \seealso{
