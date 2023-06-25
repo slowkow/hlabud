@@ -4,10 +4,10 @@
 \alias{read_alignments}
 \title{Read an alignment file \verb{*_(nuc|gen|prot).txt} from IMGTHLA}
 \usage{
-read_alignments(my_file)
+read_alignments(file)
 }
 \arguments{
-\item{my_file}{File name for a txt file from IMGTHLA like "DQB1_prot.txt"}
+\item{file}{File name for a txt file from IMGTHLA like "DQB1_prot.txt"}
 }
 \value{
 A list with a dataframe called \code{sequences} and two matrices \code{alleles} and \code{onehot}.

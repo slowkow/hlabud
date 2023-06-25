@@ -37,9 +37,6 @@ alleles:
     #> DRB1*04:174        0        1
     #> DRB1*15:152        1        0
 
--   position 22 T in DRB1\*04:174
--   position 22 C in DRB1\*15:152
-
 # Installation
 
 The quickest way to get hlabud is to install from GitHub:

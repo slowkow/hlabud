@@ -2,7 +2,7 @@
 
 # ROOT_DIR:=$(shell dirname "$(realpath $(firstword $(MAKEFILE_LIST)))")
 
-all: README.md vignettes/articles/examples.md vignettes/articles/examples.html docs/articles/examples.html vignettes/articles/visualize-hla-structure.html
+all: README.md vignettes/articles/examples.md vignettes/articles/examples.html docs/index.html vignettes/articles/visualize-hla-structure.html
 
 clean:
 	rm -rf README_{files,cache} README.{md,html} vignettes/articles/examples_{files,cache} vignettes/articles/examples.{md,html} docs/
@@ -27,9 +27,10 @@ vignettes/articles/examples.md: vignettes/articles/examples.Rmd
 vignettes/articles/examples.html: vignettes/articles/examples.Rmd vignettes/articles/custom.css
 	R -e 'devtools::build_rmd("vignettes/articles/examples.Rmd")'
 
-docs/articles/examples.html: vignettes/articles/examples.Rmd index.md man/*.Rd
-	R -e 'pkgdown::build_site()'
-	rm -f docs/paper.*
-
 vignettes/articles/visualize-hla-structure.html: vignettes/articles/visualize-hla-structure.Rmd
 	R -e 'devtools::build_rmd("vignettes/articles/visualize-hla-structure.Rmd")'
+
+docs/index.html: vignettes/articles/examples.html index.md man/*.Rd
+	R -e 'pkgdown::build_articles(); pkgdown::build_site()'
+	rm -f docs/paper.*
+

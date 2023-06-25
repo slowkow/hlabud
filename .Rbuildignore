@@ -21,3 +21,4 @@ _files/
 ^paper.bib$
 ^doc$
 ^vignettes/articles$
+^optimize-figures.sh$

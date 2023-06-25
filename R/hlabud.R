@@ -342,7 +342,7 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
 #'
 #' The matrix `alleles` has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
 #' The matrix `onehot` has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
-#' @param my_file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
+#' @param file File name for a txt file from IMGTHLA like "DQB1_prot.txt"
 #' @examples
 #' my_file <- file.path(
 #'   "https://github.com/ANHIG/IMGTHLA/raw",
@@ -354,12 +354,12 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
 #' a$alleles[1:5,1:5]
 #' a$onehot[1:5,1:5]
 #' @export
-read_alignments <- function(my_file) {
+read_alignments <- function(file) {
   # Here is some ugly parsing code
   # Maybe one day we can switch to using a BNF parser, e.g. the {rly} R package
-  my_type <- str_remove(str_split_fixed(basename(my_file), "_", 2)[,2], ".txt")
-  my_gene <- str_split_fixed(basename(my_file), "_", 2)[,1]
-  lines <- readLines(my_file)
+  my_type <- str_remove(str_split_fixed(basename(file), "_", 2)[,2], ".txt")
+  my_gene <- str_split_fixed(basename(file), "_", 2)[,1]
+  lines <- readLines(file)
   #
   if (my_type == "prot") {
     # Many amino acids are located before the position labeled as "1"
