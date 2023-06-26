@@ -12,9 +12,9 @@ authors:
     affiliation: "1, 2, 3, 4"
   - name: Alexandra-Chloé Villani
 	orcid: 0000-0001-7461-0408
-    affiliation: "1, 2, 3, 4, 5"
+    affiliation: "1, 2, 3, 4"
 affiliations:
-  - name: Center for Immunology and Inflammatory Diseases, Department of Medicine, Massachusetts General Hospital, Boston, MA, USA 
+  - name: Center for Immunology and Inflammatory Diseases, Division of Rheumatology, Allergy an Immunology, Department of Medicine, Massachusetts General Hospital, Boston, MA, USA
     index: 1
   - name: Massachusetts General Hospital, Cancer Center, Boston, MA, USA 
     index: 2
@@ -22,8 +22,6 @@ affiliations:
     index: 3
   - name: Harvard Medical School, Boston, MA, USA
 	index: 4
-  - name: Division of Rheumatology, North Shore Physicians Group, Department of Medicine, Mass General Brigham Healthcare Center, Lynn, MA, USA
-	index: 5
 date: 12 June 2023
 bibliography: paper.bib
 
@@ -51,6 +49,10 @@ The documentation includes usage examples for analysis of the one-hot encoding o
 
 `hlabud` can be used by biomedical researchers, but it can also be used by students in courses that teach immunology, genetics, and bioinformatics.
 Interested readers might also consider another R package called `BIGDAWG` that provides functions for chi-squared Hardy-Weinberg and case-control association tests of highly polymorphic genetic data like HLA genotypes [@Pappas2016].
+
+# Acknowledgments
+
+This work was supported by a NIAID grant T32AR007258 (to K.S.) and the National Institute of Health Director’s New Innovator Award (DP2CA247831; to A.C.V.)
 
 
 # References
