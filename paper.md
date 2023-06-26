@@ -35,7 +35,7 @@ The single-nucleotide polymorphisms (SNPs) encoding different amino acids in HLA
 The fields of immunology and genomics aim to discover molecular factors, such as HLA genotypes, that explain the functions of the human immune system in health and disease.
 Analysis of this genotype data requires computational methods for managing collections of genetic data and transforming data into different encodings for downstream analyses [@Sakaue2022].
 
--![HLA-DRB1 genotypes embedded with UMAP](vignettes/articles/examples_files/figure-html/umap1-1.png)
+-![HLA-DRB1 genotypes embedded with UMAP](vignettes/articles/examples_files/figure-html/umap-pos13-1.png)
 
 
 # Statement of need
