@@ -5,8 +5,8 @@
 hlabud provides methods to retrieve sequence alignment data from
 [IMGTHLA](https://github.com/ANHIG/IMGTHLA) and convert the data into
 convenient R matrices ready for downstream analysis. The
-[vignette](vignettes/examples.md) shows examples of how to use the data
-with logistic regression and dimensionality reduction.
+[vignette](vignettes/articles/examples.md) shows examples of how to use
+the data with logistic regression and dimensionality reduction.
 
 For example, let’s consider a simple question about two HLA genotypes
 DRB1\*04:174 and DRB1\*15:152. What amino acid positions are different
@@ -54,25 +54,25 @@ devtools::install_github("slowkow/hlabud")
 
 # Examples
 
-See the [usage examples](vignettes/examples.md) to get some ideas for
-how to use hlabud in your analyses.
+See the [usage examples](vignettes/articles/examples.md) to get some
+ideas for how to use hlabud in your analyses.
 
 -   [Get a one-hot encoded matrix for all HLA-DRB1
-    alleles](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#get-a-one-hot-encoded-matrix-for-all-hla-drb1-alleles)
+    alleles](https://github.com/slowkow/hlabud/blob/main/vignettes/articles/examples.md#get-a-one-hot-encoded-matrix-for-all-hla-drb1-alleles)
 -   [Convert genotypes to a dosage
-    matrix](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#convert-genotypes-to-a-dosage-matrix)
+    matrix](https://github.com/slowkow/hlabud/blob/main/vignettes/articles/examples.md#convert-genotypes-to-a-dosage-matrix)
 -   [Logistic regression association for amino acid
-    positions](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#logistic-regression-association-for-amino-acid-positions)
+    positions](https://github.com/slowkow/hlabud/blob/main/vignettes/articles/examples.md#logistic-regression-association-for-amino-acid-positions)
 -   [UMAP embedding of 3,516 HLA-DRB1
-    alleles](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#umap-embedding-of-3516-hla-drb1-alleles)
+    alleles](https://github.com/slowkow/hlabud/blob/main/vignettes/articles/examples.md#umap-embedding-of-3516-hla-drb1-alleles)
 -   [Download and unpack all data from the latest IMGTHLA
-    release](https://github.com/slowkow/hlabud/blob/main/vignettes/examples.md#download-and-unpack-all-data-from-the-latest-imgthla-release)
+    release](https://github.com/slowkow/hlabud/blob/main/vignettes/articles/examples.md#download-and-unpack-all-data-from-the-latest-imgthla-release)
 
-<a href="vignettes/examples.md#logistic-regression-association-for-amino-acid-positions">
-<img width="49%" src="vignettes/examples_files/figure-html/glm-volcano-1.png">
+<a href="vignettes/articles/examples.md#logistic-regression-association-for-amino-acid-positions">
+<img width="49%" src="vignettes/articles/examples_files/figure-html/glm-volcano-1.png">
 </a>
-<a href="vignettes/examples.md#umap-embedding-of-3516-hla-drb1-alleles">
-<img width="49%" src="vignettes/examples_files/figure-html/umap-2digit-1.png">
+<a href="vignettes/articles/examples.md#umap-embedding-of-3516-hla-drb1-alleles">
+<img width="49%" src="vignettes/articles/examples_files/figure-html/umap-2digit-1.png">
 </a>
 
 # Citation

@@ -31,6 +31,7 @@ vignettes/articles/visualize-hla-structure.html: vignettes/articles/visualize-hl
 	R -e 'devtools::build_rmd("vignettes/articles/visualize-hla-structure.Rmd")'
 
 docs/index.html: vignettes/articles/examples.html index.md man/*.Rd
-	R -e 'pkgdown::build_articles(); pkgdown::build_site()'
+	rm -rf docs/
+	R -e 'pkgdown::init_site(); pkgdown::build_articles(); pkgdown::build_site()'
 	rm -f docs/paper.*
 

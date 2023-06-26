@@ -2,7 +2,7 @@
 
 Kamil Slowikowski
 
-2023-06-24
+2023-06-26
 
 [hlabud](https://github.com/slowkow/hlabud) is an R package that
 provides functions to facilitate download and analysis of human
