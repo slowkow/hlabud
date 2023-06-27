@@ -13,10 +13,16 @@
     <loc>https://slowkow.github.io/hlabud/articles/index.html</loc>
   </url>
   <url>
+    <loc>https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html</loc>
+  </url>
+  <url>
     <loc>https://slowkow.github.io/hlabud/authors.html</loc>
   </url>
   <url>
     <loc>https://slowkow.github.io/hlabud/index.html</loc>
+  </url>
+  <url>
+    <loc>https://slowkow.github.io/hlabud/paper.html</loc>
   </url>
   <url>
     <loc>https://slowkow.github.io/hlabud/reference/dosage.html</loc>
@@ -55,6 +61,6 @@
     <loc>https://slowkow.github.io/hlabud/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://slowkow.github.io/hlabud/reference/read_alignment.html</loc>
+    <loc>https://slowkow.github.io/hlabud/reference/read_alignments.html</loc>
   </url>
 </urlset>
