@@ -70,8 +70,7 @@
 
 
 
-
-<div class="row">
+<script src="visualize-hla-structure_files/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="visualize-hla-structure_files/NGLVieweR-2.0.0/./lib/NGL-2.0.0/ngl.js"></script><script src="visualize-hla-structure_files/helperFunctions-1/./lib/helperFunctions.js"></script><script src="visualize-hla-structure_files/NGLVieweR-binding-1.3.1/NGLVieweR.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Visualize HLA protein structures</h1>
             
@@ -86,7 +85,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2023-06-27</p>
+<p>2023-06-29</p>
 <p>In this vignette, we explore a few different methods for visualizing
 the molecular structure of HLA proteins. First, we’ll look at an example
 of how to use the <a href="https://github.com/nvelden/NGLVieweR" class="external-link">NGLVieweR</a> R package to
@@ -162,13 +161,11 @@ Velden</a>:</p>
 <span>    z_offSet <span class="op">=</span> <span class="op">-</span><span class="fl">20</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/NGLVieweR/man/setSpin.html" class="external-link">setSpin</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="https://github.com/slowkow/ggrepel/assets/209714/a766d6c3-0686-4ef9-8dd4-36131cf2e0a3"></p>
-<p>In the view above, we see the blue peptide and the red HLA-B protein.
+<div class="NGLVieweR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9ba63d0ca68de9d9ef67" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-9ba63d0ca68de9d9ef67">{"x":{"data":"rcsb://2bvp.pdb","type":"code","stageParameters":{"backgroundColor":"white","zoomSpeed":1,"cameraFov":60},"addRepresentation":{"type":["cartoon","ball+stick","label"],"values":[[],{"sele":"9:A"},{"sele":"9:A","labelType":"format","labelFormat":"[%(resname)s]%(resno)s","labelGrouping":"residue","color":"black","fontFamiliy":"sans-serif","xOffset":1,"yOffset":0,"zOffset":0,"fixedSize":true,"radiusType":1,"radiusSize":5.5,"showBackground":true}]},"setQuality":"medium","setRock":false,"toggleRock":false,"setSpin":true,"setFocus":0,"toggleSpin":false,"zoomMove":{"center":"9:A","zoom":"9:A","duration":0,"z_offSet":-20}},"evals":[],"jsHooks":[]}</script><p>In the view above, we see the blue peptide and the red HLA-B protein.
 The tyrosine at position 9 is highlighted with a <code>ball+stick</code>
-representation, and it is also labeled with a text label.</p>
-<p>This is just a screenshot, but when you run the code for yourself you
-will see that the structure is slowly spinning, so we can get a better
-look at it from all angles.</p>
+representation, and it is also labeled with a text label. The structure
+is rotating so we can getter a better view.</p>
 <p>We can use hlabud to answer some questions about HLA-B Tyr9 (tyrosine
 at position 9).</p>
 <p>For example, which HLA-B alleles have this amino acid position?</p>
@@ -186,10 +183,16 @@ at position 9).</p>
 <div class="section level2">
 <h2 id="pymol">PyMOL<a class="anchor" aria-label="anchor" href="#pymol"></a>
 </h2>
-<p>Here is a bash script we can use to:</p>
+<p><a href="#pymol">PyMOL</a> is one of my favorite methods for
+visualizing protein structures, because it allows us to <a href="https://pymolwiki.org/index.php/Mutagenesis" class="external-link">change a residue</a>
+in an existing protein and visualize the new mutated protein.</p>
+<p>It only takes few lines of PyMOL to create a nice figure.</p>
+<p>For example, if we want to quickly highlight positions 13 and 45 in
+HLA-DQB1, this snippet of PyMOL code will produce the figure below.</p>
+<p>Here is a Bash script that will:</p>
 <ol style="list-style-type: decimal">
 <li>Write a PyMOL script</li>
-<li>Run the script with the <code>pymol</code> command</li>
+<li>Run the PyMOL script with the <code>pymol</code> command</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -213,13 +216,25 @@ at position 9).</p>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> pymol=/Applications/PyMOL.app/Contents/MacOS/PyMOL</span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="ex">pymol</span> <span class="at">-c</span> script.pml</span></code></pre></div>
+<p>Here is what the PyMOL script will do:</p>
+<ol style="list-style-type: decimal">
+<li>Load a structure from the <a href="https://www.rcsb.org/" class="external-link">Protein
+Data Bank (PDB)</a>. <code>7kei</code> is the identifier for <a href="https://www.rcsb.org/structure/7KEI" class="external-link">a published protein
+structure</a>.</li>
+<li>Color the HLA-DQA1 protein teal.</li>
+<li>Color the HLA-DQB1 protein orange.</li>
+<li>Color the peptide purple.</li>
+<li>We color residues 13 and 45 in HLA-DQB1 red.</li>
+<li>Label those residues with their positions and names.</li>
+<li>Write a PNG file with a view of the structure.</li>
+</ol>
 <p><img src="https://github.com/slowkow/ggrepel/assets/209714/4843a850-a4fd-4832-9600-0b8e9c1bb904"></p>
 <p>In the image above, I manually rotated the structure with my mouse
 and added more text labels like <code>"PDB: 7kei"</code> after saving
 the file.</p>
 </div>
 <div class="section level2">
-<h2 id="related-work">Related work<a class="anchor" aria-label="anchor" href="#related-work"></a>
+<h2 id="other-pdb-viewers">Other PDB viewers<a class="anchor" aria-label="anchor" href="#other-pdb-viewers"></a>
 </h2>
 <p>Python:</p>
 <ul>
@@ -227,6 +242,8 @@ the file.</p>
 </ul>
 <p>Javascript:</p>
 <ul>
+<li><a href="https://www.rcsb.org/3d-view" class="external-link uri">https://www.rcsb.org/3d-view</a></li>
+<li><a href="https://www.ncbi.nlm.nih.gov/Structure/icn3d/full.html?mmdbid=7kei&amp;bu=1" class="external-link uri">https://www.ncbi.nlm.nih.gov/Structure/icn3d/full.html?mmdbid=7kei&amp;bu=1</a></li>
 <li><a href="https://github.com/nglviewer/ngl" class="external-link uri">https://github.com/nglviewer/ngl</a></li>
 <li><a href="https://github.com/biasmv/pv" class="external-link uri">https://github.com/biasmv/pv</a></li>
 </ul>
