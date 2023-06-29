@@ -50,7 +50,7 @@ Here is an example of how to do this with the [NGLVieweR] R package by [Niels va
 [NGLVieweR]: https://github.com/nvelden/NGLVieweR
 [Niels van der Velden]: https://www.nielsvandervelden.com/
 
-```{r, nglviewer-2bvp, eval=FALSE}
+```{r, nglviewer-2bvp}
 library(NGLVieweR)
 library(magrittr)
 my_sele <- "9:A"
@@ -98,12 +98,10 @@ NGLVieweR("2bvp") %>%
   setSpin()
 ```
 
-<img src="https://github.com/slowkow/ggrepel/assets/209714/a766d6c3-0686-4ef9-8dd4-36131cf2e0a3"></img>
 
 In the view above, we see the blue peptide and the red HLA-B protein.
 The tyrosine at position 9 is highlighted with a `ball+stick` representation, and it is also labeled with a text label.
-
-This is just a screenshot, but when you run the code for yourself you will see that the structure is slowly spinning, so we can get a better look at it from all angles.
+The structure is rotating so we can getter a better view.
 
 We can use hlabud to answer some questions about HLA-B Tyr9 (tyrosine at position 9).
 
@@ -123,10 +121,16 @@ sum(a$onehot[,"pos9_Y"] == 1) / nrow(a$onehot)
 
 # PyMOL
 
-Here is a bash script we can use to:
+[PyMOL] is one of my favorite methods for visualizing protein structures, because it allows us to [change a residue][mutagenesis] in an existing protein and visualize the new mutated protein.
+
+It only takes few lines of PyMOL to create a nice figure.
+
+For example, if we want to quickly highlight positions 13 and 45 in HLA-DQB1, this snippet of PyMOL code will produce the figure below.
+
+Here is a Bash script that will:
 
 1. Write a PyMOL script
-2. Run the script with the `pymol` command
+2. Run the PyMOL script with the `pymol` command
 
 ```{bash, eval=FALSE}
 #!/usr/bin/env bash
@@ -153,11 +157,21 @@ alias pymol=/Applications/PyMOL.app/Contents/MacOS/PyMOL
 pymol -c script.pml
 ```
 
+Here is what the PyMOL script will do:
+
+1. Load a structure from the [Protein Data Bank (PDB)](https://www.rcsb.org/). `7kei` is the identifier for [a published protein structure](https://www.rcsb.org/structure/7KEI).
+2. Color the HLA-DQA1 protein teal.
+3. Color the HLA-DQB1 protein orange.
+4. Color the peptide purple.
+5. We color residues 13 and 45 in HLA-DQB1 red.
+6. Label those residues with their positions and names.
+7. Write a PNG file with a view of the structure.
+
 <img src="https://github.com/slowkow/ggrepel/assets/209714/4843a850-a4fd-4832-9600-0b8e9c1bb904"></img>
 
 In the image above, I manually rotated the structure with my mouse and added more text labels like `"PDB: 7kei"` after saving the file.
 
-# Related work
+# Other PDB viewers
 
 Python:
 
@@ -165,10 +179,14 @@ Python:
 
 Javascript:
 
+* https://www.rcsb.org/3d-view
+* https://www.ncbi.nlm.nih.gov/Structure/icn3d/full.html?mmdbid=7kei&bu=1
 * https://github.com/nglviewer/ngl
 * https://github.com/biasmv/pv
 
 R:
 
 * https://www.raymolecule.com
+
+[mutagenesis]: https://pymolwiki.org/index.php/Mutagenesis
 
