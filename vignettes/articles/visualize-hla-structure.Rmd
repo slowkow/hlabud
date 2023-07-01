@@ -51,6 +51,7 @@ Here is an example of how to do this with the [NGLVieweR] R package by [Niels va
 [Niels van der Velden]: https://www.nielsvandervelden.com/
 
 ```{r, nglviewer-2bvp}
+# devtools::install_github("nvelden/NGLVieweR") # we need the latest version
 library(NGLVieweR)
 library(magrittr)
 my_sele <- "9:A"
@@ -58,7 +59,7 @@ NGLVieweR("2bvp") %>%
   stageParameters(
     backgroundColor = "white",
     zoomSpeed = 1,
-    cameraFov = 60
+    cameraFov = 80
   ) %>%
   addRepresentation(
     type = "cartoon"
@@ -95,7 +96,9 @@ NGLVieweR("2bvp") %>%
     duration = 0, # animation time in ms
     z_offSet = -20
   ) %>%
-  setSpin()
+  setRotation(190,0,190) %>%
+  setScale(1.2) %>%
+  setRock()
 ```
 
 

@@ -22,3 +22,4 @@ _files/
 ^doc$
 ^vignettes/articles$
 ^optimize-figures.sh$
+^R/GranthamDist/
