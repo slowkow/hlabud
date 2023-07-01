@@ -7,11 +7,11 @@ tags:
   - bioinformatics
 authors:
   - name: Kamil Slowikowski
-	orcid: 0000-0002-2843-6370
-	corresponding: true
+    orcid: 0000-0002-2843-6370
+    corresponding: true
     affiliation: "1, 2, 3, 4"
   - name: Alexandra-Chloé Villani
-	orcid: 0000-0001-7461-0408
+    orcid: 0000-0001-7461-0408
     affiliation: "1, 2, 3, 4"
 affiliations:
   - name: Center for Immunology and Inflammatory Diseases, Division of Rheumatology, Allergy an Immunology, Department of Medicine, Massachusetts General Hospital, Boston, MA, USA
@@ -21,7 +21,7 @@ affiliations:
   - name: Broad Institute of Massachusetts Institute of Technology and Harvard, Cambridge, MA, USA
     index: 3
   - name: Harvard Medical School, Boston, MA, USA
-	index: 4
+    index: 4
 date: 12 June 2023
 bibliography: paper.bib
 
