@@ -96,9 +96,7 @@ NGLVieweR("2bvp") %>%
     duration = 0, # animation time in ms
     z_offSet = -20
   ) %>%
-  setRotation(190,0,190) %>%
-  setScale(1.2) %>%
-  setRock()
+  setSpin()
 ```
 
 
