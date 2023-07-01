@@ -81,9 +81,8 @@ ideas for how to use hlabud in your analyses.
 you use `hlabud` then please cite the IMGT/HLA paper:
 
 -   Robinson J, Barker DJ, Georgiou X, Cooper MA, Flicek P, Marsh SGE.
-    [IPD-IMGT/HLA
-    Database.](https://www.ncbi.nlm.nih.gov/pubmed/31667505) Nucleic
-    Acids Res. 2020;48: D948–D955. <doi:10.1093/nar/gkz950>
+    [IPD-IMGT/HLA Database.](https://pubmed.ncbi.nlm.nih.gov/31667505/)
+    Nucleic Acids Res. 2020;48: D948–D955. <doi:10.1093/nar/gkz950>
 
 `hlabud` also provides access to the data in Allele Frequency Net
 Database (AFND). Therefore, if you use `hlabud::hla_frequencies()` then
@@ -108,15 +107,15 @@ figures help to build intuition:
 
 -   La Gruta NL, Gras S, Daley SR, Thomas PG, Rossjohn J. [Understanding
     the drivers of MHC restriction of T cell
-    receptors.](https://www.ncbi.nlm.nih.gov/pubmed/29636542) Nat Rev
+    receptors.](https://pubmed.ncbi.nlm.nih.gov/29636542/) Nat Rev
     Immunol. 2018;18: 467–478.
 
 Learn about the conventions for HLA nomenclature:
 
 -   Marsh SGE, Albert ED, Bodmer WF, Bontrop RE, Dupont B, Erlich HA, et
     al. [Nomenclature for factors of the HLA system,
-    2010.](https://www.ncbi.nlm.nih.gov/pubmed/20356336) Tissue
-    Antigens. 2010;75: 291–455.
+    2010.](https://pubmed.ncbi.nlm.nih.gov/20356336/) Tissue Antigens.
+    2010;75: 291–455.
 
 For case-control analysis of HLA genotype data, consider the
 [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package

@@ -17,7 +17,7 @@ test:
 	R -e 'devtools::test()'
 
 README.md: README.Rmd
-	R -e 'devtools::install_deps(".", TRUE)'
+	# R -e 'devtools::install_deps(".", TRUE)'
 	R -e 'rmarkdown::render("README.Rmd", "all")'
 
 vignettes/articles/examples.md: vignettes/articles/examples.Rmd
