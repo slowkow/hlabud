@@ -458,6 +458,35 @@ ggplot(my_af) +
 See [github.com/slowkow/allelefrequencies](https://github.com/slowkow/allelefrequencies) for more examples of how we might use this data.
 
 
+# Compute HLA divergence with the Grantham distance matrix
+
+If two HLA alleles have a similar amino acid sequence, then they are more likely to present similar antigens than two alleles with different amino acid sequences.
+
+On the other hand, we might expect that an individual with two highly dissimilar alleles might be more likely to present a greater number of different antigens, resulting in what is called a *divergent allele advantage* (https://doi.org/10.1007/BF02918202).
+
+We can compute the divergence for a set of individuals like this:
+
+```{r div-grantham}
+my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27", "A*24:381,A*33:85")
+
+hla_divergence(my_genos, method = "grantham")
+```
+
+By default, this function uses the amino acid distance matrix from Granthan 1974 (https://doi.org/10.1126/science.185.4154.862).
+
+Alternatively, we can choose to use a uniform matrix instead (diagonal values are 0, all non-diagonal values are equal to 1):
+
+```{r div-uniform}
+hla_divergence(my_genos, method = "uniform")
+```
+
+The amino acid distance matrix is easily accessible, and we provide two built-in options `"grantham"` and `"uniform"`:
+
+```{r amino-dist}
+amino_distance_matrix(method = "uniform")
+```
+
+
 # Download and unpack all data from the latest IMGTHLA release
 
 If you only want to use `hla_alignments()`, then you don't need `install_hla()` because data files are downloaded automatically as needed and cached for future use.

@@ -6,7 +6,16 @@
 \alias{hlabud-package}
 \title{hlabud: Methods for Access and Analysis of the Human Leukocyte Antigen (HLA) Gene Sequence Alignments from IMGTHLA}
 \description{
-hlabud provides methods for retrieving sequence alignment data from the IMGTHLA database by Robinson et al (2020) \doi{10.1093/nar/gkz950}, and for converting the sequence alignments into R matrices ready for downstream analysis. Data is downloaded lazily, as-needed, and cached in a user-configurable folder. The vignette shows examples of how to analyze the data with logistic regression and dimensionality reduction.
+Fetch sequence alignment data from the IMGTHLA database by Robinson et al (2020) \doi{10.1093/nar/gkz950}, automatically convert the sequence alignments into convenient R matrices ready for downstream analysis. The vignette shows examples of using the one-hot encoding of the data with logistic regression and dimensionality reduction. Data is downloaded lazily, as-needed, and cached in a user-configurable folder.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/slowkow/hlabud}
+  \item \url{https://slowkow.github.io/hlabud}
+  \item Report bugs at \url{https://github.com/slowkow/hlabud/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Kamil Slowikowski \email{kslowikowski@gmail.com} (\href{https://orcid.org/0000-0002-2843-6370}{ORCID})

@@ -4,11 +4,13 @@ Version: 1.0.0
 Authors@R: c(
     person("Kamil", "Slowikowski", email = "kslowikowski@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2843-6370"))
     )
-Description: hlabud provides methods for retrieving sequence alignment data from the IMGTHLA database by Robinson et al (2020) <doi:10.1093/nar/gkz950>, and for converting the sequence alignments into R matrices ready for downstream analysis. Data is downloaded lazily, as-needed, and cached in a user-configurable folder. The vignette shows examples of how to analyze the data with logistic regression and dimensionality reduction.
+Description: Fetch sequence alignment data from the IMGTHLA database by Robinson et al (2020) <doi:10.1093/nar/gkz950>, automatically convert the sequence alignments into convenient R matrices ready for downstream analysis. The vignette shows examples of using the one-hot encoding of the data with logistic regression and dimensionality reduction. Data is downloaded lazily, as-needed, and cached in a user-configurable folder. 
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+URL: https://github.com/slowkow/hlabud, https://slowkow.github.io/hlabud
+BugReports: https://github.com/slowkow/hlabud/issues
 Depends: 
     R (>= 2.10)
 LazyData: true
@@ -40,5 +42,4 @@ Suggests:
     scales,
     testthat (>= 3.0.0),
     uwot
-VignetteBuilder: knitr
 Config/testthat/edition: 3
