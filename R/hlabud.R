@@ -1,16 +1,16 @@
 
-## Convert one letter amino acid codes to three letter amino acid codes.
-##
-## @keywords internal
-#one_to_three <- function(my_names) {
-#  dict <- c(
-#    "A" = "Ala", "C" = "Cys", "D" = "Asp", "E" = "Glu", "F" = "Phe", "G" = "Gly",
-#    "H" = "His", "I" = "Ile", "K" = "Lys", "L" = "Leu", "M" = "Met", "N" = "Asn",
-#    "P" = "Pro", "Q" = "Gln", "R" = "Arg", "S" = "Ser", "T" = "Thr", "V" = "Val",
-#    "W" = "Trp", "Y" = "Tyr", "*" = "Ter"
-#  )
-#  dict[my_names]
-#}
+#' Convert one letter amino acid codes to three letter amino acid codes
+#'
+#' @keywords internal
+one_to_three <- function(aminos) {
+  dict <- c(
+    "A" = "Ala", "C" = "Cys", "D" = "Asp", "E" = "Glu", "F" = "Phe", "G" = "Gly",
+    "H" = "His", "I" = "Ile", "K" = "Lys", "L" = "Leu", "M" = "Met", "N" = "Asn",
+    "P" = "Pro", "Q" = "Gln", "R" = "Arg", "S" = "Ser", "T" = "Thr", "V" = "Val",
+    "W" = "Trp", "Y" = "Tyr", "*" = "Ter"
+  )
+  dict[aminos]
+}
 
 #' @keywords internal
 mkdir <- function(path) {
@@ -295,7 +295,7 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
   # 
   genes_file <- file.path(hlabud_dir, release, "genes.json")
   if (!file.exists(genes_file)) {
-    hla_genes()
+    hla_genes(release = release)
   }
   # Get the file names from GitHub
   genes <- read_json(genes_file)

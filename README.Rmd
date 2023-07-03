@@ -14,7 +14,7 @@ output:
 
 [![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
 
-hlabud provides methods to retrieve sequence alignment data from [IMGTHLA] and convert the data into convenient R matrices ready for downstream analysis. The [vignette](vignettes/articles/examples.md) shows examples of how to use the data with logistic regression and dimensionality reduction.
+hlabud provides methods to retrieve sequence alignment data from [IMGTHLA] and convert the data into convenient R matrices ready for downstream analysis. See the [usage examples](https://slowkow.github.io/hlabud/articles/examples.html) to learn how to use the data with logistic regression and dimensionality reduction. We also share tips on how to [visualize the 3D molecular structure](https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html) of HLA proteins and highlight specific amino acid residues.
 
 [IMGTHLA]: https://github.com/ANHIG/IMGTHLA
 

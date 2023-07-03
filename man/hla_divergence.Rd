@@ -2,9 +2,13 @@
 % Please edit documentation in R/hla_divergence.R
 \name{hla_divergence}
 \alias{hla_divergence}
-\title{Calculate the divergence for each individual's HLA alleles.}
+\title{Calculate HLA divergence for each individual}
 \usage{
-hla_divergence(alleles = c("A*01:01,A*02:01"), method = "grantham")
+hla_divergence(
+  alleles = c("A*01:01,A*02:01"),
+  method = "grantham",
+  release = "latest"
+)
 }
 \arguments{
 \item{alleles}{A character vector of comma-delimited alleles for each individual. We usually expect two alleles per individual, but it is possible to have more (or fewer) copies due to copy number alterations. This function still works when each individual has a different number of alleles.}
@@ -16,13 +20,13 @@ A dataframe with divergence for each individual.
 }
 \description{
 First, we convert each allele name (e.g. \code{A*01:01}) to an amino acid sequence.
-Next, we compare the amino acids at each postion with the amino acid distance matrix by Grantham 1974 (doi:10.1126/science.185.4154.862).
-The divergence is the sum of the distances at each position, divided by the total sequence length.
+The divergence is the sum of the distances between each pair of amino acids at each position, divided by the total sequence length.
+The amino acid distance matrix we use is the one published by Grantham 1974 (doi:10.1126/science.185.4154.862), based on three physical properties of amino acids (composition, polarity, and molecular volume) that are correlated with an estimate of relative substitution frequency.
 }
 \details{
-This code is a translation of the \href{https://sourceforge.net/projects/granthamdist}{original Perl code} by \href{https://orcid.org/0000-0002-7203-0044}{Tobias Lenz}, which was published in Pierini & Lenz 2018 MolBiolEvol (doi:10.1093/molbev/msy116).
+The code in this function is a translation of the \href{https://sourceforge.net/projects/granthamdist}{original Perl code} by \href{https://orcid.org/0000-0002-7203-0044}{Tobias Lenz}, which was published in Pierini & Lenz 2018 MolBiolEvol (https://doi.org/10.1093/molbev/msy116).
 
-Only amino acids that are one of the 20 amino acids are considered in the divergence calculation. Gaps do not count.
+When comparing two amino acid sequences, only characters that are one of the 20 amino acids are considered in the divergence calculation, so gaps (and any other characters) do not count.
 }
 \examples{
 my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27", "A*24:381,A*33:85", "A*01:01:,A*01:01,A*02:01")

@@ -460,11 +460,11 @@ See [github.com/slowkow/allelefrequencies](https://github.com/slowkow/allelefreq
 
 # Compute HLA divergence with the Grantham distance matrix
 
-If two HLA alleles have a similar amino acid sequence, then they are more likely to present similar antigens than two alleles with different amino acid sequences.
+Each HLA allele binds a specific set of peptides. So, an individual with two highly dissimilar alleles can bind a greater number of different peptides than a homozygous individual (https://doi.org/10.1007/BF02918202):
 
-On the other hand, we might expect that an individual with two highly dissimilar alleles might be more likely to present a greater number of different antigens, resulting in what is called a *divergent allele advantage* (https://doi.org/10.1007/BF02918202).
+> Each MHC class II allele has the capacity to bind and present a specific set of peptides from processed antigens. The inability of a specific class II allele to bind and present a fragment derived from a processed antigen results in the loss of immune responsiveness for that antigen in individuals homozygous for that class II allele.
 
-We can compute the divergence for a set of individuals like this:
+We can compute an HLA divergence metric for a set of individuals like this:
 
 ```{r div-grantham}
 my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27", "A*24:381,A*33:85")
@@ -472,7 +472,13 @@ my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27", "A*24:381,A*33:85")
 hla_divergence(my_genos, method = "grantham")
 ```
 
-By default, this function uses the amino acid distance matrix from Granthan 1974 (https://doi.org/10.1126/science.185.4154.862).
+The divergence for a homozygote is equal to zero, by definition:
+
+```{r div-homozygote}
+hla_divergence("A*01:01,A*01:01")
+```
+
+By default, we use the amino acid distance matrix from Granthan 1974 (https://doi.org/10.1126/science.185.4154.862).
 
 Alternatively, we can choose to use a uniform matrix instead (diagonal values are 0, all non-diagonal values are equal to 1):
 

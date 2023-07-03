@@ -54,13 +54,13 @@ V	64	96	133	152	192	96	121	109	84	29	32	97	21	50	68	124	69	88	55	0")
 
 }
 
-#' Calculate the divergence for each individual's HLA alleles.
+#' Calculate HLA divergence for each individual
 #'
 #' First, we convert each allele name (e.g. `A*01:01`) to an amino acid sequence.
-#' Next, we compare the amino acids at each postion with the amino acid distance matrix by Grantham 1974 (doi:10.1126/science.185.4154.862).
-#' The divergence is the sum of the distances at each position, divided by the total sequence length.
-#'
-#' This code is a translation of the [original Perl code](https://sourceforge.net/projects/granthamdist) by [Tobias Lenz](https://orcid.org/0000-0002-7203-0044), which was published in Pierini & Lenz 2018 MolBiolEvol (doi:10.1093/molbev/msy116).
+#' The divergence is the sum of the distances between each pair of amino acids at each position, divided by the total sequence length.
+#' The amino acid distance matrix we use is the one published by Grantham 1974 (doi:10.1126/science.185.4154.862), based on three physical properties of amino acids (composition, polarity, and molecular volume) that are correlated with an estimate of relative substitution frequency.
+#' 
+#' The code in this function is a translation of the [original Perl code](https://sourceforge.net/projects/granthamdist) by [Tobias Lenz](https://orcid.org/0000-0002-7203-0044), which was published in Pierini & Lenz 2018 MolBiolEvol (https://doi.org/10.1093/molbev/msy116).
 #'
 #' When comparing two amino acid sequences, only characters that are one of the 20 amino acids are considered in the divergence calculation, so gaps (and any other characters) do not count.
 #'
@@ -74,7 +74,11 @@ V	64	96	133	152	192	96	121	109	84	29	32	97	21	50	68	124	69	88	55	0")
 #' # This is equivalent
 #' hla_divergence(my_genos, method = amino_distance_matrix("grantham"))
 #' @export
-hla_divergence <- function(alleles = c("A*01:01,A*02:01"), method = "grantham") {
+hla_divergence <- function(alleles = c("A*01:01,A*02:01"), method = "grantham", release = "latest") {
+
+  # FIXME:
+  # > hla_divergence("DRB1*01:01,DRB1*02:01")
+  # Error in a$alleles[my_alleles, ] : invalid subscript type 'list'
 
   aminos <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M",
     "F", "P", "S", "T", "W", "Y", "V")
@@ -95,7 +99,7 @@ hla_divergence <- function(alleles = c("A*01:01,A*02:01"), method = "grantham") 
 
   my_gene <- unique(str_split_fixed(alleles, "\\*", 2)[,1])
   stopifnot(length(my_gene) == 1)
-  a <- hla_alignments(my_gene)
+  a <- hla_alignments(my_gene, release = release)
 
   retval <- sapply(alleles, function(my_allele) {
 
@@ -123,7 +127,7 @@ hla_divergence <- function(alleles = c("A*01:01,A*02:01"), method = "grantham") 
               }
             }
           }
-          distance = distanceSum / sequenceLength # Average over sequence length
+          distance <- distanceSum / sequenceLength # Average over sequence length
           x <- my_alleles[i]
           y <- my_alleles[j]
           if (!(x %in% allelePairs)) {

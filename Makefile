@@ -20,6 +20,9 @@ README.md: README.Rmd
 	# R -e 'devtools::install_deps(".", TRUE)'
 	R -e 'rmarkdown::render("README.Rmd", "all")'
 
+index.md: index.Rmd
+	R -e 'rmarkdown::render("index.Rmd", "md_document")'
+
 vignettes/articles/examples.html: vignettes/articles/examples.Rmd vignettes/articles/custom.css
 	R -e 'devtools::build_rmd("vignettes/articles/examples.Rmd")'
 
