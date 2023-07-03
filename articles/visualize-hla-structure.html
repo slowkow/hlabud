@@ -75,7 +75,7 @@
       <img src="" class="logo" alt=""><h1>Visualize HLA protein structures</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/slowkow/hlabud/blob/HEAD/vignettes/articles/visualize-hla-structure.Rmd" class="external-link"><code>vignettes/articles/visualize-hla-structure.Rmd</code></a></small>
       <div class="d-none name"><code>visualize-hla-structure.Rmd</code></div>
     </div>
 
@@ -85,7 +85,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2023-07-01</p>
+<p>2023-07-03</p>
 <p>In this vignette, we explore a few different methods for visualizing
 the molecular structure of HLA proteins. First, we’ll look at an example
 of how to use the <a href="https://github.com/nvelden/NGLVieweR" class="external-link">NGLVieweR</a> R package to
@@ -162,8 +162,8 @@ Velden</a>:</p>
 <span>    z_offSet <span class="op">=</span> <span class="op">-</span><span class="fl">20</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/NGLVieweR/man/setSpin.html" class="external-link">setSpin</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="NGLVieweR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ec26c19172205e76d31c" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-ec26c19172205e76d31c">{"x":{"data":"rcsb://2bvp.pdb","type":"code","stageParameters":{"backgroundColor":"white","zoomSpeed":1,"cameraFov":80},"addRepresentation":{"type":["cartoon","ball+stick","label"],"values":[[],{"sele":"9:A"},{"sele":"9:A","labelType":"format","labelFormat":"[%(resname)s]%(resno)s","labelGrouping":"residue","color":"black","fontFamiliy":"sans-serif","xOffset":1,"yOffset":0,"zOffset":0,"fixedSize":true,"radiusType":1,"radiusSize":5.5,"showBackground":true}]},"setQuality":"medium","setRock":false,"toggleRock":false,"setSpin":true,"setFocus":0,"toggleSpin":false,"zoomMove":{"center":"9:A","zoom":"9:A","duration":0,"z_offSet":-20}},"evals":[],"jsHooks":[]}</script><p>In the view above, we see the blue peptide and the red HLA-B protein.
+<div class="NGLVieweR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ce2d8127f8595b60a711" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-ce2d8127f8595b60a711">{"x":{"data":"rcsb://2bvp.pdb","type":"code","stageParameters":{"backgroundColor":"white","zoomSpeed":1,"cameraFov":80},"addRepresentation":{"type":["cartoon","ball+stick","label"],"values":[[],{"sele":"9:A"},{"sele":"9:A","labelType":"format","labelFormat":"[%(resname)s]%(resno)s","labelGrouping":"residue","color":"black","fontFamiliy":"sans-serif","xOffset":1,"yOffset":0,"zOffset":0,"fixedSize":true,"radiusType":1,"radiusSize":5.5,"showBackground":true}]},"setQuality":"medium","setRock":false,"toggleRock":false,"setSpin":true,"setFocus":0,"toggleSpin":false,"zoomMove":{"center":"9:A","zoom":"9:A","duration":0,"z_offSet":-20}},"evals":[],"jsHooks":[]}</script><p>In the view above, we see the blue peptide and the red HLA-B protein.
 The tyrosine at position 9 is highlighted with a <code>ball+stick</code>
 representation, and it is also labeled with a text label. The structure
 is rotating so we can getter a better view.</p>
@@ -171,7 +171,7 @@ is rotating so we can getter a better view.</p>
 at position 9).</p>
 <p>For example, which HLA-B alleles have this amino acid position?</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hlabud</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slowkow/hlabud" class="external-link">hlabud</a></span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hla_alignments.html">hla_alignments</a></span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">[</span>,<span class="st">"pos9_Y"</span><span class="op">]</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "B*07:02:01:01" "B*07:02:01:02" "B*07:02:01:03" "B*07:02:01:04"</span></span>
