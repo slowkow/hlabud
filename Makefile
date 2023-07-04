@@ -13,6 +13,9 @@ install:
 check:
 	R -e 'devtools::document(); rcmdcheck::rcmdcheck(args="--no-tests")'
 
+cran:
+	R -e 'devtools::document(); rcmdcheck::rcmdcheck(args="--as-cran")'
+
 test:
 	R -e 'devtools::test()'
 

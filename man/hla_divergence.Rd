@@ -13,7 +13,7 @@ hla_divergence(
 \arguments{
 \item{alleles}{A character vector of comma-delimited alleles for each individual. We usually expect two alleles per individual, but it is possible to have more (or fewer) copies due to copy number alterations. This function still works when each individual has a different number of alleles.}
 
-\item{method}{A pairwise amino acid matrix, or a method name: \code{"grantham"} or \code{"uniform"} to indicate which pairwise amino acid distance matrix to use. If you choose to pass a matrix, then it should be a 20x20 symmetric matrix with zeros on the diagonal, and the rownames and colnames should be the one-letter amino acid codes (i.e. A, R, N, D, C, Q, E, G, H, I, L, K, M, F, P, S, T, W, Y, V).}
+\item{method}{A pairwise amino acid matrix, or a method name: \code{"grantham"} or \code{"uniform"} to indicate which pairwise amino acid distance matrix to use. If you choose to pass a matrix, then it should be a 20x20 symmetric matrix with zeros on the diagonal, and the rownames and colnames should be the one-letter amino acid codes \verb{A R N D C Q E G H I L K M F P S T W Y V}.}
 
 \item{release}{Default is "latest". Should be a release name like "3.51.0".}
 }

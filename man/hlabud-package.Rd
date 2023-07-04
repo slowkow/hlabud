@@ -12,7 +12,7 @@ Fetch sequence alignment data from the IMGTHLA database by Robinson et al (2020)
 Useful links:
 \itemize{
   \item \url{https://github.com/slowkow/hlabud}
-  \item \url{https://slowkow.github.io/hlabud}
+  \item \url{https://slowkow.github.io/hlabud/}
   \item Report bugs at \url{https://github.com/slowkow/hlabud/issues}
 }
 

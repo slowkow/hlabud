@@ -18,11 +18,8 @@ between these two genotypes?
     ## DRB1*04:174      1      0
     ## DRB1*15:152      0      1
 
-From this output, we can see that the two genotypes are nearly
-identical, but they differ at position 9:
-
--   DRB1\*04:174 has P9\_E (Glu)
--   DRB1\*15:152 has P9\_W (Trp)
+From this output, we can conclude that the two genotypes are nearly
+identical, but they have different amino acids E and W at position 9.
 
 # Installation
 
