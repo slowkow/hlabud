@@ -66,9 +66,13 @@ V	64	96	133	152	192	96	121	109	84	29	32	97	21	50	68	124	69	88	55	0")
 #'
 #' @param alleles A character vector of comma-delimited alleles for each individual. We usually expect two alleles per individual, but it is possible to have more (or fewer) copies due to copy number alterations. This function still works when each individual has a different number of alleles.
 #' @param method A pairwise amino acid matrix, or a method name: `"grantham"` or `"uniform"` to indicate which pairwise amino acid distance matrix to use. If you choose to pass a matrix, then it should be a 20x20 symmetric matrix with zeros on the diagonal, and the rownames and colnames should be the one-letter amino acid codes (i.e. A, R, N, D, C, Q, E, G, H, I, L, K, M, F, P, S, T, W, Y, V).
+#' @param release Default is "latest". Should be a release name like "3.51.0".
+#' @seealso [hla_releases()] to get a complete list of all release names.
+#' @seealso [amino_distance_matrix()] to get a amino acid distance matrix that you can use with `hla_divergence()`.
 #' @return A dataframe with divergence for each individual.
 #' @examples
-#' my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27", "A*24:381,A*33:85", "A*01:01:,A*01:01,A*02:01")
+#' my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27",
+#'               "A*24:381,A*33:85", "A*01:01:,A*01:01,A*02:01")
 #' hla_divergence(my_genos, method = "grantham")
 #'
 #' # This is equivalent

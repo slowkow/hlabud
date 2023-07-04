@@ -1,5 +1,6 @@
 _cache/
 ^index.md$
+^index.Rmd$
 ^data-raw$
 ^doc$
 _files/
