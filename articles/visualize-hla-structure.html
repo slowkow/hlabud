@@ -85,12 +85,11 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2023-07-04</p>
+<p>2023-07-05</p>
 <p>In this vignette, we explore a few different methods for visualizing
 the molecular structure of HLA proteins. First, we’ll look at an example
 of how to use the <a href="https://github.com/nvelden/NGLVieweR" class="external-link">NGLVieweR</a> R package to
-show HLA protein structures. Next, we’ll use <a href="#pymol">PyMOL</a>
-to do the same thing.</p>
+show HLA protein structures. Next, we’ll use <a href="https://pymol.org" class="external-link">PyMOL</a> to do the same thing.</p>
 </div>
 <div class="section level2">
 <h2 id="what-are-the-pdb-identifiers-for-each-hla-gene">What are the PDB identifiers for each HLA gene?<a class="anchor" aria-label="anchor" href="#what-are-the-pdb-identifiers-for-each-hla-gene"></a>
@@ -107,7 +106,7 @@ HLA-DR 3pdo</code></pre>
 and see if there is a more appropriate structure for your analysis.</p>
 </div>
 <div class="section level2">
-<h2 id="nglviewer">NGLVieweR<a class="anchor" aria-label="anchor" href="#nglviewer"></a>
+<h2 id="using-nglviewer">Using NGLVieweR<a class="anchor" aria-label="anchor" href="#using-nglviewer"></a>
 </h2>
 <p>Let’s try to visualize position 9 in the HLA-B protein structure.</p>
 <p>We will visualize the structure of <a href="https://www.rcsb.org/structure/2BVP" class="external-link">2bvp</a> from the Protein
@@ -162,8 +161,8 @@ Velden</a>:</p>
 <span>    z_offSet <span class="op">=</span> <span class="op">-</span><span class="fl">20</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/NGLVieweR/man/setSpin.html" class="external-link">setSpin</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="NGLVieweR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0f58aa51fe4f8636aa04" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-0f58aa51fe4f8636aa04">{"x":{"data":"rcsb://2bvp.pdb","type":"code","stageParameters":{"backgroundColor":"white","zoomSpeed":1,"cameraFov":80},"addRepresentation":{"type":["cartoon","ball+stick","label"],"values":[[],{"sele":"9:A"},{"sele":"9:A","labelType":"format","labelFormat":"[%(resname)s]%(resno)s","labelGrouping":"residue","color":"black","fontFamiliy":"sans-serif","xOffset":1,"yOffset":0,"zOffset":0,"fixedSize":true,"radiusType":1,"radiusSize":5.5,"showBackground":true}]},"setQuality":"medium","setRock":false,"toggleRock":false,"setSpin":true,"setFocus":0,"toggleSpin":false,"zoomMove":{"center":"9:A","zoom":"9:A","duration":0,"z_offSet":-20}},"evals":[],"jsHooks":[]}</script><p>In the view above, we see the blue peptide and the red HLA-B protein.
+<div class="NGLVieweR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0fe0b7a64ebe2a80d800" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-0fe0b7a64ebe2a80d800">{"x":{"data":"rcsb://2bvp.pdb","type":"code","stageParameters":{"backgroundColor":"white","zoomSpeed":1,"cameraFov":80},"addRepresentation":{"type":["cartoon","ball+stick","label"],"values":[[],{"sele":"9:A"},{"sele":"9:A","labelType":"format","labelFormat":"[%(resname)s]%(resno)s","labelGrouping":"residue","color":"black","fontFamiliy":"sans-serif","xOffset":1,"yOffset":0,"zOffset":0,"fixedSize":true,"radiusType":1,"radiusSize":5.5,"showBackground":true}]},"setQuality":"medium","setRock":false,"toggleRock":false,"setSpin":true,"setFocus":0,"toggleSpin":false,"zoomMove":{"center":"9:A","zoom":"9:A","duration":0,"z_offSet":-20}},"evals":[],"jsHooks":[]}</script><p>In the view above, we see the blue peptide and the red HLA-B protein.
 The tyrosine at position 9 is highlighted with a <code>ball+stick</code>
 representation, and it is also labeled with a text label. The structure
 is rotating so we can getter a better view.</p>
@@ -182,10 +181,10 @@ at position 9).</p>
 <span><span class="co">#&gt; [1] 0.7095695</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="pymol">PyMOL<a class="anchor" aria-label="anchor" href="#pymol"></a>
+<h2 id="using-pymol">Using PyMOL<a class="anchor" aria-label="anchor" href="#using-pymol"></a>
 </h2>
-<p><a href="#pymol">PyMOL</a> is one of my favorite methods for
-visualizing protein structures, because it allows us to <a href="https://pymolwiki.org/index.php/Mutagenesis" class="external-link">change a residue</a>
+<p><a href="https://pymol.org" class="external-link">PyMOL</a> is one of my favorite methods
+for visualizing protein structures, because it allows us to <a href="https://pymolwiki.org/index.php/Mutagenesis" class="external-link">change a residue</a>
 in an existing protein and visualize the new mutated protein.</p>
 <p>It only takes few lines of PyMOL to create a nice figure.</p>
 <p>For example, if we want to quickly highlight positions 13 and 45 in
