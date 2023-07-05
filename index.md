@@ -1,10 +1,13 @@
 # hlabud: HLA analysis in R <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/b39a3f04-c9a8-4867-a3e0-9434f0f9ef20"></img>
 
-hlabud provides methods for retrieving sequence alignment data from the
-[IMGTHLA](https://github.com/ANHIG/IMGTHLA) database and converting the
-data into R matrices ready for downstream analysis. The
-[vignette](articles/examples.html) shows examples of how to use the data
-with logistic regression and dimensionality reduction.
+hlabud provides methods to retrieve sequence alignment data from
+[IMGTHLA](https://github.com/ANHIG/IMGTHLA) and convert the data into
+convenient R matrices ready for downstream analysis. See the [usage
+examples](https://slowkow.github.io/hlabud/articles/examples.html) to
+learn how to use the data with logistic regression and dimensionality
+reduction. We also share tips on how to [visualize the 3D molecular
+structure](https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html)
+of HLA proteins and highlight specific amino acid residues.
 
 For example, let’s consider a simple question about two HLA genotypes
 DRB1\*04:174 and DRB1\*15:152. What amino acid positions are different
@@ -54,11 +57,17 @@ how to use hlabud in your analyses.
 -   [Download and unpack all data from the latest IMGTHLA
     release](articles/examples.html#download-and-unpack-all-data-from-the-latest-imgthla-release)
 
-<a href="articles/examples.html#logistic-regression-association-for-amino-acid-positions">
+<a href="https://slowkow.github.io/hlabud/articles/examples.html#logistic-regression-association-for-amino-acid-positions">
 <img width="49%" src="articles/examples_files/figure-html/glm-volcano-1.png">
 </a>
-<a href="articles/examples.html#umap-embedding-of-3516-hla-drb1-alleles">
+<a href="https://slowkow.github.io/hlabud/articles/examples.html#umap-embedding-of-3516-hla-drb1-alleles">
 <img width="49%" src="articles/examples_files/figure-html/umap-2digit-1.png">
+</a>
+<a href="https://slowkow.github.io/hlabud/articles/examples.html#get-hla-allele-frequencies-from-allele-frequency-net-database-afnd">
+<img width="49%" src="articles/examples_files/figure-html/afnd_dqb1_02_01-1.png">
+</a>
+<a href="https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html">
+<img width="49%" src="https://github.com/slowkow/ggrepel/assets/209714/4843a850-a4fd-4832-9600-0b8e9c1bb904">
 </a>
 
 # Citation

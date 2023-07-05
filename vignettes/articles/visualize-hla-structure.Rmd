@@ -38,7 +38,7 @@ HLA-DR 3pdo
 
 Also try searching the PDB website for, e.g., `"HLA-DR"` and see if there is a more appropriate structure for your analysis.
 
-# NGLVieweR
+# Using NGLVieweR
 
 Let's try to visualize position 9 in the HLA-B protein structure.
 
@@ -120,7 +120,7 @@ What fraction of reported HLA-B alleles have Tyr9?
 sum(a$onehot[,"pos9_Y"] == 1) / nrow(a$onehot)
 ```
 
-# PyMOL
+# Using PyMOL
 
 [PyMOL] is one of my favorite methods for visualizing protein structures, because it allows us to [change a residue][mutagenesis] in an existing protein and visualize the new mutated protein.
 
@@ -189,5 +189,6 @@ R:
 
 * https://www.raymolecule.com
 
+[PyMOL]: https://pymol.org
 [mutagenesis]: https://pymolwiki.org/index.php/Mutagenesis
 
