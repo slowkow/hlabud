@@ -1,6 +1,7 @@
 # hlabud <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/b39a3f04-c9a8-4867-a3e0-9434f0f9ef20"></img>
 
-[![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
+<a href="https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg" alt="DOI"></a>
+<a href="https://zenodo.org/badge/latestdoi/624125072"><img src="https://zenodo.org/badge/624125072.svg" alt="DOI"></a>
 
 hlabud provides methods to retrieve sequence alignment data from
 [IMGTHLA](https://github.com/ANHIG/IMGTHLA) and convert the data into
