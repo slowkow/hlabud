@@ -469,9 +469,9 @@ get_onehot <- function(al, n_pre) {
   p <- onehot(alleles, max_levels = 20)
   retval <- predict(p, alleles)
   rownames(retval) <- al$allele
-  # Discard positions where we don't know the allele
-  retval <- retval[,!str_detect(colnames(retval), "\\*")]
   colnames(retval) <- str_replace(colnames(retval), "=", "_")
+  # Rename "*" to "unk" so we can use these names in formulas
+  colnames(retval) <- str_replace(colnames(retval), "\\*", "unk")
   # Rename "." to "gap" so we can use these names in formulas
   colnames(retval) <- str_replace(colnames(retval), "\\.", "gap")
   return(list(alleles = as.matrix(alleles), onehot = retval))
