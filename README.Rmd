@@ -109,6 +109,12 @@ Learn about the conventions for HLA nomenclature:
 
 - Marsh SGE, Albert ED, Bodmer WF, Bontrop RE, Dupont B, Erlich HA, et al.  [Nomenclature for factors of the HLA system, 2010.](https://pubmed.ncbi.nlm.nih.gov/20356336/) Tissue Antigens.  2010;75: 291–455.
 
+[HATK] is set of Python scripts for processing and analyzing IMGT-HLA data.
+Here is the related article:
+
+- Choi W, Luo Y, Raychaudhuri S, Han B. [HATK: HLA analysis toolkit](https://pubmed.ncbi.nlm.nih.gov/32735319). Bioinformatics. 2021;37: 416–418. doi:10.1093/bioinformatics/btaa684
+
+[HATK]: https://github.com/WansonChoi/HATK
 
 For case-control analysis of HLA genotype data, consider the
 [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package available on

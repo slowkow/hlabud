@@ -1,0 +1,25 @@
+citHeader("Since hlabud accesses the data from IMGTHLA,\n",
+          "we ask users to cite the IMGTHLA paper and the hlabud package:\n")
+
+bibentry(
+  bibtype = "Article",
+  author = "Robinson J, Barker DJ, Georgiou X, Cooper MA, Flicek P, Marsh SGE.",
+  title = "IPD-IMGT/HLA Database",
+  doi = "10.1093/nar/gkz950",
+  year = 2019,
+  month = "oct",
+  publisher = "Oxford University Press",
+  volume = 48,
+  number = "D1",
+  pages = "D948–D955",
+  journal = "Nucleic Acids Research")
+
+bibentry(
+  bibtype = "Manual",
+  title = "{hlabud}: IMGTHLA Data from R",
+  author = c(person("Kamil", "Slowikowski")),
+  year = "2023",
+  note = sprintf("R package version %s", meta$Version),
+  doi = "10.5281/zenodo.8183949",
+  url = "https://github.com/slowkow/hlabud")
+

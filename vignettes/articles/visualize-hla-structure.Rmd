@@ -140,6 +140,9 @@ Here is a Bash script that will:
 cat << EOF > script.pml
 fetch 7kei
 show cartoon
+remove solvent
+remove chain D
+remove chain H
 color teal, chain A
 color orange, chain B
 color purple, chain C

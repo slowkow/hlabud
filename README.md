@@ -1,7 +1,6 @@
 # hlabud <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/b39a3f04-c9a8-4867-a3e0-9434f0f9ef20"></img>
 
-<a href="https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg" alt="DOI"></a>
-<a href="https://zenodo.org/badge/latestdoi/624125072"><img src="https://zenodo.org/badge/624125072.svg" alt="DOI"></a>
+[![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
 
 hlabud provides methods to retrieve sequence alignment data from
 [IMGTHLA](https://github.com/ANHIG/IMGTHLA) and convert the data into
@@ -139,6 +138,13 @@ Learn about the conventions for HLA nomenclature:
     al. [Nomenclature for factors of the HLA system,
     2010.](https://pubmed.ncbi.nlm.nih.gov/20356336/) Tissue Antigens.
     2010;75: 291–455.
+
+[HATK](https://github.com/WansonChoi/HATK) is set of Python scripts for
+processing and analyzing IMGT-HLA data. Here is the related article:
+
+-   Choi W, Luo Y, Raychaudhuri S, Han B. [HATK: HLA analysis
+    toolkit](https://pubmed.ncbi.nlm.nih.gov/32735319). Bioinformatics.
+    2021;37: 416–418. <doi:10.1093/bioinformatics/btaa684>
 
 For case-control analysis of HLA genotype data, consider the
 [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package

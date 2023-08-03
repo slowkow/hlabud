@@ -1,6 +1,6 @@
 Package: hlabud
 Title: Methods for Access and Analysis of the Human Leukocyte Antigen (HLA) Gene Sequence Alignments from IMGTHLA
-Version: 1.0.0
+Version: 1.0.0.9999
 Authors@R: c(
     person("Kamil", "Slowikowski", email = "kslowikowski@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2843-6370"))
     )
