@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">hlabud</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9999</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,9 @@
     <a class="dropdown-item" href="../articles/examples.html">hlabud usage examples</a>
     <a class="dropdown-item" href="../articles/visualize-hla-structure.html">Visualize HLA protein structures</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -111,12 +114,12 @@ The matrix <code>onehot</code> has a one-hot encoding of the variants that disti
 <span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:04 "M"    "V"    "C"    "L"    "K"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:05 "M"    "V"    "C"    "L"    "K"   </span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  posn29_M posn28_V posn27_C posn26_L posn25_K</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:01        1        1        1        1        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:02        1        1        1        1        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:03        1        1        1        1        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:04        1        1        1        1        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:05        1        1        1        1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  posn29_unk posn29_M posn28_unk posn28_V posn27_unk</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:01          0        1          0        1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:02          0        1          0        1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:03          0        1          0        1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:04          0        1          0        1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DRB1*01:01:01:05          0        1          0        1          0</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

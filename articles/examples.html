@@ -29,7 +29,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">hlabud</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9999</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,9 @@
     <a class="dropdown-item" href="../articles/examples.html">hlabud usage examples</a>
     <a class="dropdown-item" href="../articles/visualize-hla-structure.html">Visualize HLA protein structures</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -86,7 +89,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2023-07-25</p>
+<p>2023-08-03</p>
 <p><a href="https://github.com/slowkow/hlabud" class="external-link">hlabud</a> is an R
 package that provides functions to facilitate download and analysis of
 human leukocyte antigen (HLA) genotype sequence alignments from <a href="https://github.com/ANHIG/IMGTHLA" class="external-link">IMGTHLA</a> in R.</p>
@@ -150,10 +153,10 @@ release:</p>
 <span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
 <span><span class="co">#&gt;   .. ..$ : chr [1:3547] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
 <span><span class="co">#&gt;   .. ..$ : chr [1:288] "posn29" "posn28" "posn27" "posn26" ...</span></span>
-<span><span class="co">#&gt;  $ onehot   : num [1:3547, 1:1493] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ onehot   : num [1:3547, 1:1781] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
 <span><span class="co">#&gt;   .. ..$ : chr [1:3547] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
-<span><span class="co">#&gt;   .. ..$ : chr [1:1493] "posn29_M" "posn28_L" "posn28_V" "posn27_C" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;   .. ..$ : chr [1:1781] "posn29_unk" "posn29_M" "posn28_unk" "posn28_L" ...</span></span></code></pre></div>
 <p><code>a$sequences</code> has amino acid sequence alignments in a data
 frame:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -211,12 +214,18 @@ for each position:</p>
 for each amino acid at each position:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                  posn29_M posn28_L posn28_V posn27_C posn26_L posn25_K posn25_R</span></span>
-<span><span class="co">#&gt; DRB1*01:01:01:01        1        0        1        1        1        1        0</span></span>
-<span><span class="co">#&gt; DRB1*01:01:01:02        1        0        1        1        1        1        0</span></span>
-<span><span class="co">#&gt; DRB1*01:01:01:03        1        0        1        1        1        1        0</span></span>
-<span><span class="co">#&gt; DRB1*01:01:01:04        1        0        1        1        1        1        0</span></span>
-<span><span class="co">#&gt; DRB1*01:01:01:05        1        0        1        1        1        1        0</span></span></code></pre></div>
+<span><span class="co">#&gt;                  posn29_unk posn29_M posn28_unk posn28_L posn28_V posn27_unk</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:01          0        1          0        0        1          0</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:02          0        1          0        0        1          0</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:03          0        1          0        0        1          0</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:04          0        1          0        0        1          0</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:05          0        1          0        0        1          0</span></span>
+<span><span class="co">#&gt;                  posn27_C</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:01        1</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:02        1</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:03        1</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:04        1</span></span>
+<span><span class="co">#&gt; DRB1*01:01:01:05        1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="convert-genotypes-to-a-dosage-matrix">Convert genotypes to a dosage matrix<a class="anchor" aria-label="anchor" href="#convert-genotypes-to-a-dosage-matrix"></a>
@@ -238,14 +247,20 @@ genotypes to amino acid dosages:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dosage</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dosage.html">dosage</a></span><span class="op">(</span><span class="va">genotypes</span>, <span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">)</span></span>
 <span><span class="va">dosage</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                                                 posn29_M pos6_R pos9_E pos9_W</span></span>
-<span><span class="co">#&gt; DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02        2      3      3      0</span></span>
-<span><span class="co">#&gt; DRB1*04:174,DRB1*15:152                                0      2      1      1</span></span>
-<span><span class="co">#&gt; DRB1*04:56:02,DRB1*15:01:48                            0      2      1      1</span></span>
-<span><span class="co">#&gt; DRB1*14:172,DRB1*04:160                                0      2      2      0</span></span>
-<span><span class="co">#&gt; DRB1*04:359,DRB1*04:284:02                             0      2      2      0</span></span>
+<span><span class="co">#&gt;                                                 posn29_unk posn29_M pos6_R</span></span>
+<span><span class="co">#&gt; DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02          1        2      3</span></span>
+<span><span class="co">#&gt; DRB1*04:174,DRB1*15:152                                  2        0      2</span></span>
+<span><span class="co">#&gt; DRB1*04:56:02,DRB1*15:01:48                              2        0      2</span></span>
+<span><span class="co">#&gt; DRB1*14:172,DRB1*04:160                                  2        0      2</span></span>
+<span><span class="co">#&gt; DRB1*04:359,DRB1*04:284:02                               2        0      2</span></span>
+<span><span class="co">#&gt;                                                 pos9_E</span></span>
+<span><span class="co">#&gt; DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02      3</span></span>
+<span><span class="co">#&gt; DRB1*04:174,DRB1*15:152                              1</span></span>
+<span><span class="co">#&gt; DRB1*04:56:02,DRB1*15:01:48                          1</span></span>
+<span><span class="co">#&gt; DRB1*14:172,DRB1*04:160                              2</span></span>
+<span><span class="co">#&gt; DRB1*04:359,DRB1*04:284:02                           2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">dosage</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]  5 35</span></span></code></pre></div>
+<span><span class="co">#&gt; [1]  5 38</span></span></code></pre></div>
 <p><strong>Note:</strong></p>
 <ul>
 <li><p>The <code>dosage</code> matrix has one row for each individual
@@ -279,18 +294,18 @@ cases.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="../reference/dosage.html">dosage</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">geno</span>, <span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                                                      geno age case posn29_M</span></span>
-<span><span class="co">#&gt; DRB1*04:262,DRB1*01:02:12       DRB1*04:262,DRB1*01:02:12  73    1        0</span></span>
-<span><span class="co">#&gt; DRB1*04:11:07,DRB1*15:01:37   DRB1*04:11:07,DRB1*15:01:37  72    0        1</span></span>
-<span><span class="co">#&gt; DRB1*14:32:01,DRB1*04:284:01 DRB1*14:32:01,DRB1*04:284:01  22    1        0</span></span>
-<span><span class="co">#&gt; DRB1*03:93,DRB1*03:103             DRB1*03:93,DRB1*03:103  34    0        0</span></span>
-<span><span class="co">#&gt; DRB1*03:70,DRB1*13:38               DRB1*03:70,DRB1*13:38  76    0        1</span></span>
-<span><span class="co">#&gt;                              posn25_K posn25_R</span></span>
+<span><span class="co">#&gt;                                                      geno age case posn29_unk</span></span>
+<span><span class="co">#&gt; DRB1*04:262,DRB1*01:02:12       DRB1*04:262,DRB1*01:02:12  73    1          2</span></span>
+<span><span class="co">#&gt; DRB1*04:11:07,DRB1*15:01:37   DRB1*04:11:07,DRB1*15:01:37  72    0          1</span></span>
+<span><span class="co">#&gt; DRB1*14:32:01,DRB1*04:284:01 DRB1*14:32:01,DRB1*04:284:01  22    1          2</span></span>
+<span><span class="co">#&gt; DRB1*03:93,DRB1*03:103             DRB1*03:93,DRB1*03:103  34    0          2</span></span>
+<span><span class="co">#&gt; DRB1*03:70,DRB1*13:38               DRB1*03:70,DRB1*13:38  76    0          1</span></span>
+<span><span class="co">#&gt;                              posn29_M posn25_K</span></span>
 <span><span class="co">#&gt; DRB1*04:262,DRB1*01:02:12           0        0</span></span>
-<span><span class="co">#&gt; DRB1*04:11:07,DRB1*15:01:37         1        0</span></span>
+<span><span class="co">#&gt; DRB1*04:11:07,DRB1*15:01:37         1        1</span></span>
 <span><span class="co">#&gt; DRB1*14:32:01,DRB1*04:284:01        0        0</span></span>
 <span><span class="co">#&gt; DRB1*03:93,DRB1*03:103              0        0</span></span>
-<span><span class="co">#&gt; DRB1*03:70,DRB1*13:38               0        1</span></span></code></pre></div>
+<span><span class="co">#&gt; DRB1*03:70,DRB1*13:38               1        0</span></span></code></pre></div>
 <p>Our simulated dataset has 100 individuals, 52 cases and 48 controls.
 We also have one column for each amino acid position that we might want
 to test for association with the <code>case</code> variable.</p>
@@ -342,7 +357,7 @@ pos13_H (P = 0.011, OR = 2.9, 95% CI 1.3 to 7.2).</p>
 <p>There are many possibilities for analysis of a one-hot encoding of
 HLA-DRB1 alleles.</p>
 <p>For example, here is a UMAP embedding of 3,547 HLA-DRB1 alleles
-encoded as a one-hot amino acid matrix with 1493 columns, one for each
+encoded as a one-hot amino acid matrix with 1781 columns, one for each
 amino acid at each position.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uamp</span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span>, n_epochs <span class="op">=</span> <span class="fl">200</span>, min_dist <span class="op">=</span> <span class="fl">1</span>, spread <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
