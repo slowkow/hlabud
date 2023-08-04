@@ -424,7 +424,7 @@ get_onehot <- function(al, n_pre) {
   for (i in 2:length(seq_chars)) {
     # The "-" character indicates identity to the reference
     ix <- which(seq_chars[[i]] == "-")
-    ix <- ix[ix < length(ref_chars)]
+    ix <- ix[ix <= length(ref_chars)]
     seq_chars[[i]][ix] <- ref_chars[ix]
     seq_len <- length(seq_chars[[i]])
     # If necessary, add "*" characters to pad the length of this sequence
