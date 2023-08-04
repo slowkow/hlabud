@@ -89,7 +89,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2023-08-03</p>
+<p>2023-08-04</p>
 <p><a href="https://github.com/slowkow/hlabud" class="external-link">hlabud</a> is an R
 package that provides functions to facilitate download and analysis of
 human leukocyte antigen (HLA) genotype sequence alignments from <a href="https://github.com/ANHIG/IMGTHLA" class="external-link">IMGTHLA</a> in R.</p>
@@ -153,10 +153,10 @@ release:</p>
 <span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
 <span><span class="co">#&gt;   .. ..$ : chr [1:3547] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
 <span><span class="co">#&gt;   .. ..$ : chr [1:288] "posn29" "posn28" "posn27" "posn26" ...</span></span>
-<span><span class="co">#&gt;  $ onehot   : num [1:3547, 1:1781] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;  $ onehot   : num [1:3547, 1:1780] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
 <span><span class="co">#&gt;   .. ..$ : chr [1:3547] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
-<span><span class="co">#&gt;   .. ..$ : chr [1:1781] "posn29_unk" "posn29_M" "posn28_unk" "posn28_L" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;   .. ..$ : chr [1:1780] "posn29_unk" "posn29_M" "posn28_unk" "posn28_L" ...</span></span></code></pre></div>
 <p><code>a$sequences</code> has amino acid sequence alignments in a data
 frame:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -357,7 +357,7 @@ pos13_H (P = 0.011, OR = 2.9, 95% CI 1.3 to 7.2).</p>
 <p>There are many possibilities for analysis of a one-hot encoding of
 HLA-DRB1 alleles.</p>
 <p>For example, here is a UMAP embedding of 3,547 HLA-DRB1 alleles
-encoded as a one-hot amino acid matrix with 1781 columns, one for each
+encoded as a one-hot amino acid matrix with 1780 columns, one for each
 amino acid at each position.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uamp</span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span>, n_epochs <span class="op">=</span> <span class="fl">200</span>, min_dist <span class="op">=</span> <span class="fl">1</span>, spread <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>

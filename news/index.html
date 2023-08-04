@@ -54,7 +54,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0.9999" id="hlabud-1009999">hlabud 1.0.0.9999<a class="anchor" aria-label="anchor" href="#hlabud-1009999"></a></h2>
-<ul><li>Instead of discarding positions with <code>*</code>, we include them and label them as <code>unk</code>, for example <code>pos241_unk</code> indicates an unknown amino acid at position 241.</li>
+<ul><li><p>Instead of discarding positions with <code>*</code>, we include them and label them as <code>unk</code>, for example <code>pos241_unk</code> indicates an unknown amino acid at position 241. Thanks to Sreekar Mantena for reporting this issue!</p></li>
+<li><p>Fix an off-by-one error. For example, HLA-A had <code>pos361_-</code> in the <code>colnames(a$onehot)</code> but it should have had the reference allele instead of <code>-</code>. This is now fixed. Thanks again to Sreekar Mantena for reporting this issue!</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="hlabud-100">hlabud 1.0.0<a class="anchor" aria-label="anchor" href="#hlabud-100"></a></h2>
