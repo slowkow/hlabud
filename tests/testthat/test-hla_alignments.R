@@ -15,6 +15,12 @@ test_that("hla_alignment() works for all genes", {
     my_type <- my_genes$type[i]
     message(sprintf("gene %s  type %s", my_gene, my_type))
 
+    if (my_gene == "N" && my_type == "nuc") {
+      expect_warning({
+        a <- hla_alignments(my_gene, type = my_type, release = my_release, verbose = TRUE)
+      }, regexp = "all positions have exactly 1 allele")
+    }
+
     expect_no_error({
       a <- hla_alignments(my_gene, type = my_type, release = my_release, verbose = TRUE)
     }, message = "^(Downloading|Writing|Reading)")

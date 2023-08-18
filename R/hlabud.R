@@ -461,7 +461,12 @@ get_onehot <- function(al, n_pre) {
   }
   # colnames(alleles) <- sprintf("P%s", seq(ncol(alleles)))
   # keep positions with more than 1 allele
-  alleles <- alleles[,apply(alleles, 2, function(x) length(unique(x))) > 1, drop = FALSE]
+  keep_pos <- apply(alleles, 2, function(x) length(unique(x))) > 1
+  if (!any(keep_pos)) {
+    warning(glue("all positions have exactly 1 allele (there are no polymorphisms)"))
+    return(list(alleles = as.matrix(alleles)))
+  }
+  alleles <- alleles[,keep_pos, drop = FALSE]
   alleles <- as.data.frame(alleles)
   for (i in seq(ncol(alleles))) {
     alleles[,i] <- as.factor(alleles[,i])
