@@ -42,8 +42,7 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - uses: slowkow/actions/check-r-package@v2-branch
+      - uses: r-lib/actions/check-r-package@v2
         with:
           args: 'c("--no-manual", "--no-tests")'
-          timeout_minutes: 5
           upload-snapshots: false
