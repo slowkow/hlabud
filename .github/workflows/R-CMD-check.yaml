@@ -42,7 +42,7 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - uses: slowkow/actions/check-r-package@v2
+      - uses: slowkow/actions/check-r-package
         with:
           args: 'c("--no-manual", "--no-tests")'
           timeout_minutes: 5
