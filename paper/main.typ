@@ -118,7 +118,7 @@ _hlabud_ provides direct access to the allele frequencies of HLA genes in the Al
 
 Each HLA allele binds a specific set of peptides.
 So, an individual with two highly dissimilar alleles can bind a greater number of different peptides than a homozygous individual @Wakeland1990.
-_hlabud_ implements the Grantham divergence calculations based on the original Perl code @Pierini2018:
+_hlabud_ implements the Grantham divergence calculations @Pierini2018 (based on the original Perl code) to estimate which individuals can bind a greater number of peptides (higher Grantham divergence):
 
 ```R
 my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27", "A*24:381,A*33:85")
