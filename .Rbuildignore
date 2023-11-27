@@ -18,8 +18,7 @@ _files/
 ^docs$
 ^pkgdown$
 ^\.github$
-^paper.md$
-^paper.bib$
+paper/
 ^doc$
 ^vignettes/articles$
 ^optimize-figures.sh$
