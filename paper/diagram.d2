@@ -1,0 +1,77 @@
+
+direction: right
+
+reads -> caller
+caller -> genotypes
+provider -> genotypes
+genotypes -> hlabud
+imgt -> hlabud
+hlabud -> onehot
+hlabud -> matrix
+#onehot -> regression
+#onehot -> dimred
+
+matrix: |md
+**Amino acid position matrix**
+```
+Ind pos75 ...
+  1     F
+  2     Y
+```
+|
+
+onehot: |md
+**One-hot encoding**
+```
+Ind pos75_Y ...
+  1       0
+  2       1
+```
+|
+
+imgt: {
+  label: "IMGT/HLA Database"
+  #label.near: outside-top-center
+  shape: image
+  icon: imgt4.png
+  width: 300
+  #icon.near: bottom-center
+}
+
+reads: |md
+**Sequencing Reads**
+- DNA-seq
+- RNA-seq
+- scRNA-seq
+|
+
+provider: |md
+**Commercial HLA Typing**
+- Next Genration Sequencing
+- Molecular Assay
+|
+  
+caller: |md
+**Genotype Software**
+- arcasHLA
+- OptiType
+- seq2HLA
+|
+
+genotypes: |md
+  **Genotypes**
+  ```
+  HLA-A
+  01:01,02:01
+  01:01,02:01
+  01:01,02:01
+  ```
+|
+
+hlabud: {
+  label : ""
+  label.near: top-center
+  shape: image
+  icon: logo.png
+}
+

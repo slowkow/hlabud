@@ -5,8 +5,8 @@
 // Take a look at the file `template.typ` in the file panel
 // to customize this template and discover how it works.
 #show: template.with(
-  title: "hlabud: HLA genotype analysis in R",
-  short-title: "hlabud",
+  title: [hlabud: HLA genotype analysis in R],
+  short-title: [_hlabud_],
   venue: [bio#text(fill: red.darken(20%))[R]$chi$iv],
   // You can make all dates optional, however, `date` is by default `datetime.today()`
   //date: (
@@ -41,7 +41,10 @@
   kind: "Pre-Print",
   // Insert your abstract after the colon, wrapped in brackets.
   abstract: (
-    (title: "Summary", content: [The human leukocyte antigen (HLA) genes have thousands of different alleles in the human population, and have more associations with human diseases than any other genes. Data for all known HLA genotypes are curated in the international ImMunoGeneTics (IMGT) database in versioned releases on #link("https://github.com/ANHIG/IMGTHLA")[GitHub]. Here, we introduce _hlabud_, an R package that provides access to data from the IMGT/HLA database and the Allele Frequency Net Database (AFND), functions to encode the data in different formats, and tutorials for association analysis, embedding, and HLA divergence.]),
+    (
+      title: "Summary",
+      content: [The human leukocyte antigen (HLA) genes have thousands of different alleles in the human population, and have more associations with human diseases than any other genes. Data for all known HLA genotypes are curated in the international ImMunoGeneTics (IMGT) database, and the Allele Frequency Net Database (AFND) provides allele frequencies for each HLA allele across human populations. Our open-source R package _hlabud_ facilitates access to HLA data from IMGT/HLA and AFND, and provides functions for HLA divergence calculations, fine-mapping analysis of amino acid (or nucleotide) positions, and low-dimensional embedding.]
+    ),
     (title: "Availability", content: [Source code and documentation are available at *#link("https://github.com/slowkow/hlabud")[github.com/slowkow/hlabud]*]),
     (title: "Contact", content: [#link("mailto:kslowikowski@mgh.harvard.edu")[kslowikowski\@mgh.harvard.edu]])
   ),
@@ -51,48 +54,67 @@
 
 = Introduction
 
-Human leukocyte antigen (HLA) genes encode the proteins that display antigens so the immune system can recognize pathogens such as bacteria and viruses.
-Geneticists have identified thousands of variants (e.g. single nucleotide polymorphisms) in the human genome that are associated with hundreds of different disease and phenotypes @Kennedy2017.
+Human leukocyte antigen (HLA) genes encode the proteins that enable cells to display antigens to other cells, so the immune system can recognize pathogens such as bacteria and viruses.
+Geneticists have identified thousands of variants (e.g. single nucleotide polymorphisms) in the human genome that are associated with hundreds of different diseases and phenotypes @Kennedy2017.
 
-The HLA genes encode a protein complex that presents antigens to other cells.
+HLA nomenclature consists of allele names like _HLA*01:01_ to indicate the genotype of each individual in a study.
+Each allele name corresponds to multiple mutations at different positions throughout the gene's sequence, so it is difficult to estimate the similarity of two alleles solely from the allele names.
+This ambiguity about specific amino acid positions means that allele names are not ideal for statistical analysis.
 
-To facilitate HLA genotype analysis, we developed _hlabud_, a free and open-source software package that downloads information from the IMGT/HLA database of HLA genotypes and sequence alignments @Robinson2020 directly in the R programming environment.
-The _hlabud_ package provides functions that return convenient lists of items, where each item is either a matrix or a data frame.
-The simple design makes _hlabud_ easy to integrate with any downstream R packages for data analysis or visualization.
+Researchers have developed software tools for calling HLA genotypes (@diagram) with high accuracy from DNA-seq or RNA-seq next-generation sequencing reads @Claeys2023, so there may be opportunities to use this type of data for HLA association studies.
+Most software tools report allele names, not genotypes at specific nucleotide positions.
+Commercial providers of HLA typing services also report genotypes with the traditional HLA allele names (i.e. _HLA*01:01_) instead of reporting alleles at specific nucleotide positions (@diagram).
 
-_hlabud_ downloads HLA genotype data from the IMGT-HLA GitHub repository @imgthla and automatically caches it in a user-configurable folder.
-Functionality includes parsing the custom IMGT/HLA file format for multiple sequence alignments, converting sequence alignments to a one-hot matrix, and calculating the Grantham divergence between HLA alleles @Pierini2018.
+#figure(
+  image("diagram.png", width: 130%),
+  caption: [_hlabud_ converts HLA genotypes to amino acid position matrices.]
+) <diagram>
 
-The documentation includes tutorials for analysis of the one-hot encoding of amino acid positions, including association analysis with logistic regression and low-dimensional embedding with UMAP @McInnes2018.
-_hlabud_ also provides direct access to the allele frequencies for all HLA genes from the Allele Frequency Net Database (AFND) @Gonzalez-Galarza2020.
+In contrast, fine-mapping analysis involves associating a phenotype with each amino acid position.
+Many amino acid residues at specific loci have been associated with human diseases and blood protein levels @Krishna2023.
+Published associations at specific amino acid positions have created opportunities for experimental validation that might advance our understanding of disease-associated mechanisms related to HLA proteins.
 
-= Description
+Fine-mapping can be more sensitive than allele-level analysis, and the results can be interpreted in the context of the protein structures that are affected by the associated amino acid positions.
+For example, we might have different ideas about the function of a mutation in the peptide binding groove than a mutation in the interior region of the protein.
 
-Comprehensive HLA genotype data is curated in the IMGT/HLA database, and the data is archived in a GitHub repository (#link("https://github.com/ANHIG/IMGTHLA")[github.com/ANHIG/IMGTHLA]).
-We can use _hlabud_ to download the sequence alignment data, read it into R, and automatically encode the data as a one-hot matrix like this:
+To facilitate HLA fine-mapping analysis, we developed _hlabud_, a free and open-source R package that downloads data from the IMGT/HLA database @Robinson2020 and automatically creates amino acid (or nucleotide) position matrices that are ready for analysis (@diagram).
+_hlabud_ functions return simple lists, where each item in the list is a matrix or a data frame.
+This simple design makes _hlabud_ easy to integrate with any downstream R packages for data analysis or visualization.
+
+
+
+= Examples
+
+Curated HLA genotype data is provided by the IMGT/HLA database at GitHub (#link("https://github.com/ANHIG/IMGTHLA")[github.com/ANHIG/IMGTHLA]).
+In the example below, we use _hlabud_ to download the sequence alignment data for _HLA-DRB1_, read it into R, and encode it as a one-hot matrix:
 
 ```R
 a <- hla_alignments("DRB1")
 ```
 
-When the user runs this line of code, _hlabud_ will:
+With one line of code, _hlabud_ will:
 
 - Download data from the IMGT/HLA Github repository.
 
-- Cache data files in a local folder that supports multiple releases of the data.
+- Cache files in a local folder that supports multiple data releases.
 
-- Read the data into data frames and matrices for downstream analysis.
+- Read the data into matrices and dataframes for downstream analysis.
 
 - Create a one-hot encoding of the multiple sequence alignment data.
 
-Many amino acid residues at specific loci have been associated with human diseases and blood protein levels @Krishna2023.
-Researchers have developed software tools for calling HLA genotypes with high accuracy from DNA-seq or RNA-seq next-generation sequencing reads @Claeys2023, so there are opportunities to use that data for association studies.
+Once we have obtained a list of genotypes for each individual (e.g. `"DRB1*04:01,DRB1*05:01"`), we can use _hlabud_ to prepare data for fine-mapping regression analysis that will reveal which amino acid positions are associated with a phenotype in a sample of individuals. To calculate the number of copies of each amino acid at each position for each individual, we can run:
 
-Once we have a list of genotypes for each individual (e.g. `"DRB1*04:01,DRB1*05:01"`), we can use _hlabud_ to prepare data for regression analysis to find which amino acid positions are associated with a phenotype in a sample of individuals. We call `dosage(genotypes, a$onehot)` where `genotypes` is a vector of genotypes and `a$onehot` is a one-hot matrix representation of HLA alleles (from the example above). The `dosage()` function returns the number of copies of each amino acid at each position for each individual, which can then be used for omnibus regression @Sakaue2023 or single-position testing (@fig1\A).
+```R
+dosage(genotypes, a$onehot)
+```
 
-UMAP accepts the one-hot matrix of HLA alleles as input, and it can be used to visualize the dataset in a latent space with reduced dimensionality (@fig1\B).
+where `genotypes` is a vector of _HLA-DRB1_ genotypes and `a$onehot` is a one-hot matrix representation of _HLA-DRB1_ alleles.
+The dosage matrix can then be used for omnibus regression @Sakaue2023 or fine-mapping (i.e. regression with each single position) (@figexamples\A).
 
-_hlabud_ provides direct access to the allele frequencies HLA genes reported in the Allele Frequency Net Database (AFND) (#link("http://allelefrequences.net")) (@fig1\C).
+Visualizing data in a two-dimensional embedding with algorithms like UMAP @McInnes2018 can help to build intuition about the relationship between all objects in a dataset.
+UMAP accepts the one-hot matrix of HLA alleles as input, and the resulting embedding can be used to visualize the dataset for exploratory data analysis (@figexamples\B).
+
+_hlabud_ provides direct access to the allele frequencies of HLA genes in the Allele Frequency Net Database (AFND) @Gonzalez-Galarza2020 (#link("http://allelefrequences.net")) (@figexamples\C).
 
 Each HLA allele binds a specific set of peptides.
 So, an individual with two highly dissimilar alleles can bind a greater number of different peptides than a homozygous individual @Wakeland1990.
@@ -110,22 +132,26 @@ hla_divergence(my_genos, method = "grantham")
   caption: [(*A*) Association between amino acid positions and simulated case-control status. The x-axis represents the odds ratio and the y-axis represents $-log_10 P$ from a logistic regression analysis in R.
   (*B*) 3,516 HLA-DRB1 alleles represented as dots in a two-dimensional embedding computed by UMAP from a one-hot encoding of amino acids.
   (*C*) Allele frequencies for HLA-DQB1*02:01 in the AFND.],
-) <fig1>
+) <figexamples>
 
 
 = Installation and documentation
 
-_hlabud_ can be installed in an R session with:
+The easiest way to install _hlabud_ is to run this command in an R session:
 
 ```R
 remotes::install_github("slowkow/hlabud")
 ```
 
-Each function is documented extensively, and the complete manual can be viewed on the _hlabud_ website at #link("https://slowkow.github.io/hlabud"). _hlabud_ has been tested on Linux/Unix, Mac OS (Darwin) and Windows.
+The complete manual is available at #link("https://slowkow.github.io/hlabud"). _hlabud_ has been tested on Linux/Unix, Mac OS (Darwin) and Windows.
 
 = Discussion
 
-Our open-source R package _hlabud_ enables easy access to HLA data from two public databases, and provides functions to enable HLA divergence calculations, regression analysis, and low-dimensional embedding. We hope that _hlabud_ will raise awareness of the IMGT/HLA and AFND databases and influence other developers to share more open-source tools for HLA analysis. We envision that _hlabud_ will be used by biomedical researchers, and also by teachers and students who study genetics and bioinformatics.
+Our open-source R package _hlabud_ enables easy access to HLA data from two public databases and provides functions for HLA divergence calculations, amino acid or nucleotide fine-mapping analysis, and low-dimensional embedding. 
+_hlabud_ downloads HLA genotype data from the IMGT-HLA GitHub repository @imgthla, caches it in a user-configurable folder, and prepares the data for downstream analysis in R.
+
+We provide tutorials for HLA divergence calculation, fine-mapping association analysis with logistic regression, and embedding with UMAP.
+_hlabud_ also provides direct access to the allele frequencies for all HLA genes from the Allele Frequency Net Database (AFND) @Gonzalez-Galarza2020.
 
 = Acknowledgments
 

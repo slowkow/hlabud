@@ -1,0 +1,14 @@
+pdf: diagram
+  typst compile main.typ
+
+fontr := "/Users/ks38/Library/Fonts/NotoSans-Regular.ttf"
+fontb := "/Users/ks38/Library/Fonts/NotoSans-Bold.ttf"
+fonti := "/Users/ks38/Library/Fonts/NotoSans-Italic.ttf"
+
+layout := "elk"
+
+diagram:
+  d2 -t 1 --layout={{layout}} --font-regular={{fontr}} --font-bold={{fontb}} --font-italic={{fonti}} diagram.d2 diagram.svg
+  d2 -t 1 --layout={{layout}} diagram.d2 diagram.png
+  convert diagram.png -trim diagram.png
+

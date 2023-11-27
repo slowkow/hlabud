@@ -17,4 +17,6 @@
 # Continously rebuild each time we make an edit
 typst watch main.typ
 
-
+# For diagrams, install d2:
+#
+#     go install oss.terrastruct.com/d2@latest
