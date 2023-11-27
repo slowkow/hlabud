@@ -63,23 +63,23 @@ This ambiguity about specific amino acid positions means that allele names are n
 
 Researchers have developed software tools for calling HLA genotypes (@diagram) with high accuracy from DNA-seq or RNA-seq next-generation sequencing reads @Claeys2023, so there may be opportunities to use this type of data for HLA association studies.
 Most software tools report allele names, not genotypes at specific nucleotide positions.
-Commercial providers of HLA typing services also report genotypes with the traditional HLA allele names (i.e. _HLA*01:01_) instead of reporting alleles at specific nucleotide positions (@diagram).
+Providers of HLA typing services often report genotypes with the traditional HLA allele names (i.e. _HLA*01:01_) instead of reporting alleles at specific nucleotide positions (@diagram).
 
 #figure(
   image("diagram.png", width: 130%),
   caption: [_hlabud_ converts HLA genotypes to amino acid position matrices.]
 ) <diagram>
 
-In contrast, fine-mapping analysis involves associating a phenotype with each amino acid position.
+In contrast to allele-level analysis, fine-mapping analysis associates a phenotype with each amino acid at each position.
 Many amino acid residues at specific loci have been associated with human diseases and blood protein levels @Krishna2023.
-Published associations at specific amino acid positions have created opportunities for experimental validation that might advance our understanding of disease-associated mechanisms related to HLA proteins.
+Published amino acid associations represent opportunities for experimental validation that could advance understanding of the disease-associated mechanisms related to HLA proteins.
 
-Fine-mapping can be more sensitive than allele-level analysis, and the results can be interpreted in the context of the protein structures that are affected by the associated amino acid positions.
-For example, we might have different ideas about the function of a mutation in the peptide binding groove than a mutation in the interior region of the protein.
+Fine-mapping results can be interpreted in the context of the protein structures that are affected by the associated amino acid positions.
+We might have different hypotheses about the function of a mutation in the peptide binding groove than a mutation in the interior region of the protein.
 
-To facilitate HLA fine-mapping analysis, we developed _hlabud_, a free and open-source R package that downloads data from the IMGT/HLA database @Robinson2020 and automatically creates amino acid (or nucleotide) position matrices that are ready for analysis (@diagram).
+To facilitate HLA fine-mapping, we developed _hlabud_, a free and open-source R package that downloads data from the IMGT/HLA database @Robinson2020 and automatically creates amino acid (or nucleotide) position matrices that are ready for analysis (@diagram).
 _hlabud_ functions return simple lists, where each item in the list is a matrix or a data frame.
-This simple design makes _hlabud_ easy to integrate with any downstream R packages for data analysis or visualization.
+This design makes it easy to integrate _hlabud_ with any downstream R packages for data analysis or visualization.
 
 
 
@@ -147,7 +147,7 @@ The complete manual is available at #link("https://slowkow.github.io/hlabud"). _
 
 = Discussion
 
-Our open-source R package _hlabud_ enables easy access to HLA data from two public databases and provides functions for HLA divergence calculations, amino acid or nucleotide fine-mapping analysis, and low-dimensional embedding. 
+Our open-source R package _hlabud_ enables easy access to HLA data from two public databases and provides functions for amino acid or nucleotide fine-mapping analysis, HLA divergence calculations, and low-dimensional embedding. 
 _hlabud_ downloads HLA genotype data from the IMGT-HLA GitHub repository @imgthla, caches it in a user-configurable folder, and prepares the data for downstream analysis in R.
 
 We provide tutorials for HLA divergence calculation, fine-mapping association analysis with logistic regression, and embedding with UMAP.
@@ -155,7 +155,7 @@ _hlabud_ also provides direct access to the allele frequencies for all HLA genes
 
 = Acknowledgments
 
-This work was supported by a NIAID grant T32AR007258 (to K.S.) and the National Institute of Health Director’s New Innovator Award (DP2CA247831; to A.C.V.) Thanks to Sreekar Mantena for reporting issues with the code. 
+This work was supported by a NIAID grant T32AR007258 (to K.S.) and the National Institute of Health Director’s New Innovator Award (DP2CA247831; to A.C.V.) Thanks to Sreekar Mantena for reporting issues with the code. Thanks to Jean Fan for the logo and helpful discussions. 
 
 = Competing Interests
 
