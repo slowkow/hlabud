@@ -8,8 +8,8 @@
 <meta name="description" content="hlabud">
 <title>hlabud usage examples • hlabud</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="hlabud usage examples">
 <meta property="og:description" content="hlabud">
@@ -89,7 +89,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2023-08-21</p>
+<p>2023-11-27</p>
 <p><a href="https://github.com/slowkow/hlabud" class="external-link">hlabud</a> is an R
 package that provides functions to facilitate download and analysis of
 human leukocyte antigen (HLA) genotype sequence alignments from <a href="https://github.com/ANHIG/IMGTHLA" class="external-link">IMGTHLA</a> in R.</p>
@@ -141,27 +141,27 @@ release:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slowkow/hlabud" class="external-link">hlabud</a></span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hla_alignments.html">hla_alignments</a></span><span class="op">(</span>gene <span class="op">=</span> <span class="st">"DRB1"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Reading /home/runner/.local/share/hlabud/3.53.0/alignments/DRB1_prot.txt</span></span></code></pre></div>
+<span><span class="co">#&gt; Reading /home/runner/.local/share/hlabud/.354.0/alignments/DRB1_prot.txt</span></span></code></pre></div>
 <p>The <code>a</code> object is a list with three items:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 3</span></span>
-<span><span class="co">#&gt;  $ sequences: tibble [3,547 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   ..$ allele: chr [1:3547] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
-<span><span class="co">#&gt;   ..$ seq   : chr [1:3547] "MVCLKLPGGSCMTALTVTLMVLSSPLALAGDTRPRFLWQLKFECHFFNGTERVR.LLERCIYNQEE.SVRFDSDVGEYRAVTELGRPDAEYWNSQKDLLEQRRAAVDTYCR"| __truncated__ "------------------------------------------------------.-----------.--------------------------------------------"| __truncated__ "------------------------------------------------------.-----------.--------------------------------------------"| __truncated__ "------------------------------------------------------.-----------.--------------------------------------------"| __truncated__ ...</span></span>
-<span><span class="co">#&gt;  $ alleles  : chr [1:3547, 1:288] "M" "M" "M" "M" ...</span></span>
+<span><span class="co">#&gt;  $ sequences: tibble [3,588 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ allele: chr [1:3588] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
+<span><span class="co">#&gt;   ..$ seq   : chr [1:3588] "MVCLKLPGGSCMTALTVTLMVLSSPLALAGDTRPRFLWQLKFECHFFNGTERVR.LLERCIYNQEE.SVRFDSDVGEYRAVTELGRPDAEYWNSQKDLLEQRRAAVDTYCR"| __truncated__ "------------------------------------------------------.-----------.--------------------------------------------"| __truncated__ "------------------------------------------------------.-----------.--------------------------------------------"| __truncated__ "------------------------------------------------------.-----------.--------------------------------------------"| __truncated__ ...</span></span>
+<span><span class="co">#&gt;  $ alleles  : chr [1:3588, 1:288] "M" "M" "M" "M" ...</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#&gt;   .. ..$ : chr [1:3547] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:3588] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
 <span><span class="co">#&gt;   .. ..$ : chr [1:288] "posn29" "posn28" "posn27" "posn26" ...</span></span>
-<span><span class="co">#&gt;  $ onehot   : num [1:3547, 1:1780] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;  $ onehot   : num [1:3588, 1:1786] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#&gt;   .. ..$ : chr [1:3547] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
-<span><span class="co">#&gt;   .. ..$ : chr [1:1780] "posn29_unk" "posn29_M" "posn28_unk" "posn28_L" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;   .. ..$ : chr [1:3588] "DRB1*01:01:01:01" "DRB1*01:01:01:02" "DRB1*01:01:01:03" "DRB1*01:01:01:04" ...</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:1786] "posn29_unk" "posn29_M" "posn28_unk" "posn28_L" ...</span></span></code></pre></div>
 <p><code>a$sequences</code> has amino acid sequence alignments in a data
 frame:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span><span class="op">$</span><span class="va">sequences</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,547 × 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,588 × 2</span></span></span>
 <span><span class="co">#&gt;    allele           seq                                                         </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                       </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> DRB1*01:01:01:01 MVCLKLPGGSCMTALTVTLMVLSSPLALAGDTRPRFLWQLKFECHFFNGTERVR.LLER…</span></span>
@@ -174,7 +174,7 @@ frame:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> DRB1*01:01:01:08 ------------------------------------------------------.----…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> DRB1*01:01:01:09 ------------------------------------------------------.----…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> DRB1*01:01:01:10 ------------------------------------------------------.----…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,537 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,578 more rows</span></span></span></code></pre></div>
 <p>Here are the conventions used for alignments (copied from EBI):</p>
 <blockquote>
 <ul>
@@ -294,18 +294,18 @@ cases.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="../reference/dosage.html">dosage</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">geno</span>, <span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                                                      geno age case posn29_unk</span></span>
-<span><span class="co">#&gt; DRB1*04:262,DRB1*01:02:12       DRB1*04:262,DRB1*01:02:12  73    1          2</span></span>
-<span><span class="co">#&gt; DRB1*04:11:07,DRB1*15:01:37   DRB1*04:11:07,DRB1*15:01:37  72    0          1</span></span>
-<span><span class="co">#&gt; DRB1*14:32:01,DRB1*04:284:01 DRB1*14:32:01,DRB1*04:284:01  22    1          2</span></span>
-<span><span class="co">#&gt; DRB1*03:93,DRB1*03:103             DRB1*03:93,DRB1*03:103  34    0          2</span></span>
-<span><span class="co">#&gt; DRB1*03:70,DRB1*13:38               DRB1*03:70,DRB1*13:38  76    0          1</span></span>
-<span><span class="co">#&gt;                              posn29_M posn25_K</span></span>
-<span><span class="co">#&gt; DRB1*04:262,DRB1*01:02:12           0        0</span></span>
-<span><span class="co">#&gt; DRB1*04:11:07,DRB1*15:01:37         1        1</span></span>
-<span><span class="co">#&gt; DRB1*14:32:01,DRB1*04:284:01        0        0</span></span>
-<span><span class="co">#&gt; DRB1*03:93,DRB1*03:103              0        0</span></span>
-<span><span class="co">#&gt; DRB1*03:70,DRB1*13:38               1        0</span></span></code></pre></div>
+<span><span class="co">#&gt;                                                          geno age case</span></span>
+<span><span class="co">#&gt; DRB1*04:256,DRB1*04:125               DRB1*04:256,DRB1*04:125  55    0</span></span>
+<span><span class="co">#&gt; DRB1*04:11:01:02,DRB1*01:02:12 DRB1*04:11:01:02,DRB1*01:02:12  73    1</span></span>
+<span><span class="co">#&gt; DRB1*14:08,DRB1*15:01:02             DRB1*14:08,DRB1*15:01:02  72    0</span></span>
+<span><span class="co">#&gt; DRB1*03:90,DRB1*04:278                 DRB1*03:90,DRB1*04:278  22    1</span></span>
+<span><span class="co">#&gt; DRB1*03:67N,DRB1*03:100:02         DRB1*03:67N,DRB1*03:100:02  34    0</span></span>
+<span><span class="co">#&gt;                                posn29_unk posn29_M posn25_K</span></span>
+<span><span class="co">#&gt; DRB1*04:256,DRB1*04:125                 2        0        0</span></span>
+<span><span class="co">#&gt; DRB1*04:11:01:02,DRB1*01:02:12          1        1        1</span></span>
+<span><span class="co">#&gt; DRB1*14:08,DRB1*15:01:02                0        2        1</span></span>
+<span><span class="co">#&gt; DRB1*03:90,DRB1*04:278                  2        0        0</span></span>
+<span><span class="co">#&gt; DRB1*03:67N,DRB1*03:100:02              2        0        0</span></span></code></pre></div>
 <p>Our simulated dataset has 100 individuals, 52 cases and 48 controls.
 We also have one column for each amino acid position that we might want
 to test for association with the <code>case</code> variable.</p>
@@ -331,42 +331,42 @@ dataset.</p>
 <span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">Parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"(Intercept)"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">head</span></span>
-<span><span class="co">#&gt;    Parameter Coefficient        SE   CI     CI_low   CI_high         z df_error</span></span>
-<span><span class="co">#&gt; 1:   pos13_H   2.9405219 1.2478030 0.95 1.33964454 7.1748913  2.541755      Inf</span></span>
-<span><span class="co">#&gt; 2:   pos34_N   0.3639615 0.1536026 0.95 0.14979687 0.7959994 -2.394871      Inf</span></span>
-<span><span class="co">#&gt; 3:   pos34_H   2.7475434 1.1595454 0.95 1.25628233 6.6757068  2.394871      Inf</span></span>
-<span><span class="co">#&gt; 4:   pos11_P   0.2869565 0.1532937 0.95 0.09387484 0.7856750 -2.336976      Inf</span></span>
-<span><span class="co">#&gt; 5:   pos11_V   2.0504708 0.7363970 0.95 1.03963578 4.3008530  1.999438      Inf</span></span>
-<span><span class="co">#&gt; 6:   pos73_A   0.3213632 0.1941515 0.95 0.08549563 0.9661784 -1.878976      Inf</span></span>
-<span><span class="co">#&gt;             p</span></span>
-<span><span class="co">#&gt; 1: 0.01102976</span></span>
-<span><span class="co">#&gt; 2: 0.01662621</span></span>
-<span><span class="co">#&gt; 3: 0.01662621</span></span>
-<span><span class="co">#&gt; 4: 0.01944045</span></span>
-<span><span class="co">#&gt; 5: 0.04556094</span></span>
-<span><span class="co">#&gt; 6: 0.06024773</span></span></code></pre></div>
+<span><span class="co">#&gt;    Parameter Coefficient        SE   CI      CI_low   CI_high         z</span></span>
+<span><span class="co">#&gt; 1:  pos123_S   0.5161604 0.1528830 0.95 0.282671869 0.9100318 -2.232794</span></span>
+<span><span class="co">#&gt; 2:  pos183_V   0.5570074 0.1572414 0.95 0.314570198 0.9582010 -2.072913</span></span>
+<span><span class="co">#&gt; 3:   pos34_H   2.1982280 0.8658531 0.95 1.053839944 5.0273874  1.999690</span></span>
+<span><span class="co">#&gt; 4:   pos51_A   0.1170213 0.1265210 0.95 0.006179376 0.6749415 -1.984314</span></span>
+<span><span class="co">#&gt; 5:  pos107_S   0.5815232 0.1638237 0.95 0.329174623 1.0003310 -1.924302</span></span>
+<span><span class="co">#&gt; 6:   pos69_L   1.6740699 0.4630002 0.95 0.982434872 2.9247856  1.863017</span></span>
+<span><span class="co">#&gt;    df_error          p</span></span>
+<span><span class="co">#&gt; 1:      Inf 0.02556252</span></span>
+<span><span class="co">#&gt; 2:      Inf 0.03818041</span></span>
+<span><span class="co">#&gt; 3:      Inf 0.04553374</span></span>
+<span><span class="co">#&gt; 4:      Inf 0.04722090</span></span>
+<span><span class="co">#&gt; 5:      Inf 0.05431680</span></span>
+<span><span class="co">#&gt; 6:      Inf 0.06245981</span></span></code></pre></div>
 <p>The volcano below shows the Odds Ratio and P-value for each amino
 acid position. The top hits with P &lt; 0.05 are labeled.</p>
-<p><img src="examples_files/figure-html/glm-volcano-1.png" width="576"></p>
+<p><img src="examples_files/figure-html/glm-volcano-1.png" width="1800"></p>
 <p>In this simulation, the <code>case</code> variable is associated with
-pos13_H (P = 0.011, OR = 2.9, 95% CI 1.3 to 7.2).</p>
+pos123_S (P = 0.026, OR = 0.52, 95% CI 0.28 to 0.91).</p>
 </div>
 <div class="section level2">
-<h2 id="umap-embedding-of-3547-hla-drb1-alleles">UMAP embedding of 3,547 HLA-DRB1 alleles<a class="anchor" aria-label="anchor" href="#umap-embedding-of-3547-hla-drb1-alleles"></a>
+<h2 id="umap-embedding-of-3588-hla-drb1-alleles">UMAP embedding of 3,588 HLA-DRB1 alleles<a class="anchor" aria-label="anchor" href="#umap-embedding-of-3588-hla-drb1-alleles"></a>
 </h2>
 <p>There are many possibilities for analysis of a one-hot encoding of
 HLA-DRB1 alleles.</p>
-<p>For example, here is a UMAP embedding of 3,547 HLA-DRB1 alleles
-encoded as a one-hot amino acid matrix with 1780 columns, one for each
+<p>For example, here is a UMAP embedding of 3,588 HLA-DRB1 alleles
+encoded as a one-hot amino acid matrix with 1786 columns, one for each
 amino acid at each position.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uamp</span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span>, n_epochs <span class="op">=</span> <span class="fl">200</span>, min_dist <span class="op">=</span> <span class="fl">1</span>, spread <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/umap-2digit-1.png" width="864"></p>
+<p><img src="examples_files/figure-html/umap-2digit-1.png" width="2700"></p>
 <p>We can highlight which alleles have amino acid H at position 13:</p>
-<p><img src="examples_files/figure-html/umap-pos13_H-1.png" width="864"></p>
+<p><img src="examples_files/figure-html/umap-pos13_H-1.png" width="2700"></p>
 <p>Or we can represent each amino acid at position 13 with a different
 color:</p>
-<p><img src="examples_files/figure-html/umap-pos13-1.png" width="864"></p>
+<p><img src="examples_files/figure-html/umap-pos13-1.png" width="2700"></p>
 </div>
 <div class="section level2">
 <h2 id="get-hla-allele-frequencies-from-allele-frequency-net-database-afnd">Get HLA allele frequencies from Allele Frequency Net Database
@@ -419,7 +419,7 @@ with more than 1000 sampled individuals:</p>
 <span>    title <span class="op">=</span>  <span class="fu">glue</span><span class="op">(</span><span class="st">"Frequency of {my_allele} across {length(unique(my_af$population))} populations"</span><span class="op">)</span>,</span>
 <span>    caption <span class="op">=</span> <span class="st">"Data from AFND http://allelefrequencies.net"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="examples_files/figure-html/afnd_dqb1_02_01-1.png" width="960"></p>
+<p><img src="examples_files/figure-html/afnd_dqb1_02_01-1.png" width="3000"></p>
 <p>See <a href="https://github.com/slowkow/allelefrequencies" class="external-link">github.com/slowkow/allelefrequencies</a>
 for more examples of how we might use this data.</p>
 </div>
@@ -538,11 +538,11 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">releases</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hla_releases.html">hla_releases</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">releases</span></span>
-<span><span class="co">#&gt;  [1] "3.53.0"   "3.52.0"   "3.51.0"   "3.50.0"   "3.49.0"   "3.48.0"  </span></span>
-<span><span class="co">#&gt;  [7] "3.47.0"   "3.46.0"   "3.45.1"   "3.45.01"  "3.45.0.1" "3.45.0"  </span></span>
-<span><span class="co">#&gt; [13] "3.44.1"   "3.44.0"   "3.43.0"   "3.42.0"   "3.41.2"   "3.41.0"  </span></span>
-<span><span class="co">#&gt; [19] "3.40.0"   "3.39.0"   "3.38.0"   "3.37.0"   "3.36.0"   "3.35.0"  </span></span>
-<span><span class="co">#&gt; [25] "3.34.0"   "3.33.0"   "3.32.0"   "3.31.0"   "3.30.0"   "3.29.0"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] ".354.0"   "3.53.0"   "3.52.0"   "3.51.0"   "3.50.0"   "3.49.0"  </span></span>
+<span><span class="co">#&gt;  [7] "3.48.0"   "3.47.0"   "3.46.0"   "3.45.1"   "3.45.01"  "3.45.0.1"</span></span>
+<span><span class="co">#&gt; [13] "3.45.0"   "3.44.1"   "3.44.0"   "3.43.0"   "3.42.0"   "3.41.2"  </span></span>
+<span><span class="co">#&gt; [19] "3.41.0"   "3.40.0"   "3.39.0"   "3.38.0"   "3.37.0"   "3.36.0"  </span></span>
+<span><span class="co">#&gt; [25] "3.35.0"   "3.34.0"   "3.33.0"   "3.32.0"   "3.31.0"   "3.30.0"</span></span></code></pre></div>
 <p>Then we can get the allele names for each release:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_alleles</span> <span class="op">&lt;-</span> <span class="fu">rbindlist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">releases</span>, <span class="kw">function</span><span class="op">(</span><span class="va">release</span><span class="op">)</span> <span class="op">{</span></span>
@@ -566,7 +566,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">my_alleles</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">count</span><span class="op">(</span><span class="va">release</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">d</span></span>
 <span><span class="co">#&gt;     release     n</span></span>
-<span><span class="co">#&gt;  1:  3.29.0 17344</span></span>
+<span><span class="co">#&gt;  1:  .354.0 38416</span></span>
 <span><span class="co">#&gt;  2:  3.30.0 17509</span></span>
 <span><span class="co">#&gt;  3:  3.31.0 17874</span></span>
 <span><span class="co">#&gt;  4:  3.32.0 18363</span></span>
