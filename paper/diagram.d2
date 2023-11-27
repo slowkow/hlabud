@@ -7,27 +7,36 @@ provider -> genotypes
 genotypes -> hlabud
 imgt -> hlabud
 hlabud -> onehot
-hlabud -> matrix
+hlabud -> dosage
 #onehot -> regression
 #onehot -> dimred
 
-matrix: |md
-**Amino acid position matrix**
+dosage: |md
+**Amino acid dosage matrix**
 ```
-Ind pos75 ...
-  1     F
-  2     Y
+ind pos75_Y ...
+  1       0
+  2       2
 ```
 |
 
 onehot: |md
 **One-hot encoding**
 ```
-Ind pos75_Y ...
-  1       0
-  2       1
+allele pos75_Y ...
+ 01:01       0
+ 02:01       1
 ```
 |
+
+#matrix: |md
+#**Amino acid position matrix**
+#```
+#Ind pos75 ...
+#  1     F
+#  2     Y
+#```
+#|
 
 imgt: {
   label: "IMGT/HLA Database"
@@ -61,10 +70,10 @@ caller: |md
 genotypes: |md
   **Genotypes**
   ```
-  HLA-A
+  HLA-DRB1
   01:01,02:01
-  01:01,02:01
-  01:01,02:01
+  02:01,02:01
+  ...
   ```
 |
 

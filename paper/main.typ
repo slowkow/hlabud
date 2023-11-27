@@ -14,6 +14,7 @@
   //  (title: "Accepted", date: datetime(year: 2022, month: 12, day: 10)),
   //  (title: "Submitted", date: datetime(year: 2022, month: 12, day: 10)),
   //),
+  heading-numbering: "1.1.i",
   logo: "logo.png",
   theme: blue.darken(20%),
   font-face: "Noto Sans",
@@ -66,7 +67,7 @@ Most software tools report allele names, not genotypes at specific nucleotide po
 Providers of HLA typing services often report genotypes with the traditional HLA allele names (i.e. _HLA*01:01_) instead of reporting alleles at specific nucleotide positions (@diagram).
 
 #figure(
-  image("diagram.png", width: 130%),
+  move(dx:-5%, dy:0pt, image("diagram.png", width: 130%)),
   caption: [_hlabud_ converts HLA genotypes to amino acid position matrices.]
 ) <diagram>
 
@@ -85,6 +86,8 @@ This design makes it easy to integrate _hlabud_ with any downstream R packages f
 
 = Examples
 
+== Downloading data for a gene
+
 Curated HLA genotype data is provided by the IMGT/HLA database at GitHub (#link("https://github.com/ANHIG/IMGTHLA")[github.com/ANHIG/IMGTHLA]).
 In the example below, we use _hlabud_ to download the sequence alignment data for _HLA-DRB1_, read it into R, and encode it as a one-hot matrix:
 
@@ -102,6 +105,8 @@ With one line of code, _hlabud_ will:
 
 - Create a one-hot encoding of the multiple sequence alignment data.
 
+== Computing a dosage matrix
+
 Once we have obtained a list of genotypes for each individual (e.g. `"DRB1*04:01,DRB1*05:01"`), we can use _hlabud_ to prepare data for fine-mapping regression analysis that will reveal which amino acid positions are associated with a phenotype in a sample of individuals. To calculate the number of copies of each amino acid at each position for each individual, we can run:
 
 ```R
@@ -111,10 +116,16 @@ dosage(genotypes, a$onehot)
 where `genotypes` is a vector of _HLA-DRB1_ genotypes and `a$onehot` is a one-hot matrix representation of _HLA-DRB1_ alleles.
 The dosage matrix can then be used for omnibus regression @Sakaue2023 or fine-mapping (i.e. regression with each single position) (@figexamples\A).
 
+== Visualizing alleles in two dimensions
+
 Visualizing data in a two-dimensional embedding with algorithms like UMAP @McInnes2018 can help to build intuition about the relationship between all objects in a dataset.
 UMAP accepts the one-hot matrix of HLA alleles as input, and the resulting embedding can be used to visualize the dataset for exploratory data analysis (@figexamples\B).
 
+== Allele frequencies in human populations
+
 _hlabud_ provides direct access to the allele frequencies of HLA genes in the Allele Frequency Net Database (AFND) @Gonzalez-Galarza2020 (#link("http://allelefrequences.net")) (@figexamples\C).
+
+== HLA divergence
 
 Each HLA allele binds a specific set of peptides.
 So, an individual with two highly dissimilar alleles can bind a greater number of different peptides than a homozygous individual @Wakeland1990.
@@ -147,11 +158,11 @@ The complete manual is available at #link("https://slowkow.github.io/hlabud"). _
 
 = Discussion
 
-Our open-source R package _hlabud_ enables easy access to HLA data from two public databases and provides functions for amino acid or nucleotide fine-mapping analysis, HLA divergence calculations, and low-dimensional embedding. 
+Our open-source R package _hlabud_ gives users access to HLA data from two public databases, and implements HLA divergence calculation @Pierini2018.
 _hlabud_ downloads HLA genotype data from the IMGT-HLA GitHub repository @imgthla, caches it in a user-configurable folder, and prepares the data for downstream analysis in R.
 
-We provide tutorials for HLA divergence calculation, fine-mapping association analysis with logistic regression, and embedding with UMAP.
-_hlabud_ also provides direct access to the allele frequencies for all HLA genes from the Allele Frequency Net Database (AFND) @Gonzalez-Galarza2020.
+We provide #link("https://slowkow.github.io/hlabud", "tutorials") for HLA divergence, fine-mapping association analysis with logistic regression, and embedding with UMAP.
+_hlabud_ provides allele frequencies for all HLA genes, obtained from the Allele Frequency Net Database (AFND) @Gonzalez-Galarza2020.
 
 = Acknowledgments
 
