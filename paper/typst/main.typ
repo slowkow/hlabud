@@ -44,7 +44,11 @@
   abstract: (
     (
       title: "Summary",
-      content: [The human leukocyte antigen (HLA) genes have thousands of different alleles in the human population, and have more associations with human diseases than any other genes. Data for all known HLA genotypes are curated in the international ImMunoGeneTics (IMGT) database, and the Allele Frequency Net Database (AFND) provides allele frequencies for each HLA allele across human populations. Our open-source R package _hlabud_ facilitates access to HLA data from IMGT/HLA and AFND, and provides functions for HLA divergence calculations, fine-mapping analysis of amino acid (or nucleotide) positions, and low-dimensional embedding.]
+      content: [
+The human leukocyte antigen (HLA) genes have more associations with human diseases than any other genes, and there are thousands of different HLA alleles in the human population.
+Data for all known HLA genotypes are curated in the international ImMunoGeneTics (IMGT) database, and allele frequencies for each HLA allele across human populations are available in the Allele Frequency Net Database (AFND).
+Our open-source R package _hlabud_ accesses HLA data from IMGT and AFND, and supports further analysis such as HLA divergence calculation, fine-mapping analysis of amino acid (or nucleotide) positions, and low-dimensional embedding.
+      ]
     ),
     (title: "Availability", content: [Source code and documentation are available at *#link("https://github.com/slowkow/hlabud")[github.com/slowkow/hlabud]*]),
     (title: "Contact", content: [#link("mailto:kslowikowski@mgh.harvard.edu")[kslowikowski\@mgh.harvard.edu]])
@@ -55,27 +59,27 @@
 
 = Introduction
 
-Human leukocyte antigen (HLA) genes encode the proteins that enable cells to display antigens to other cells, so the immune system can recognize pathogens such as bacteria and viruses.
-Geneticists have identified thousands of variants (e.g. single nucleotide polymorphisms) in the human genome that are associated with hundreds of different diseases and phenotypes @Kennedy2017.
+Human leukocyte antigen (HLA) genes encode the proteins that enable cells to display antigens to other cells, which is one mechanism for immune recognition of pathogens such as bacteria and viruses.
+Geneticists have identified thousands of variants (e.g. single nucleotide polymorphisms) in the human genome that are associated with hundreds of different diseases and phenotypes @Kennedy2017. HLA genes have a greater number of disease associations than any other genes.
 
-HLA nomenclature consists of allele names like _HLA*01:01_ to indicate the genotype of each individual in a study.
-Each allele name corresponds to multiple mutations at different positions throughout the gene's sequence, so it is difficult to estimate the similarity of two alleles solely from the allele names.
-This ambiguity about specific amino acid positions means that allele names are not ideal for statistical analysis.
+HLA nomenclature consists of allele names like _HLA*01:01_ and _HLA*02:01_ to indicate the genotype of an individual in a study @Marsh2010.
+Each allele name corresponds to a haplotype that contains multiple mutations at different positions throughout the entire length of the gene sequence.
+It is difficult to estimate the similarity of two alleles solely from the allele names: any two alleles might differ by one or more nucleotide or amino acid residues.
+Any encoding of genotype data that is ambiguous regarding nucleotide or amino acid positions is not ideal for statistical analysis, because some positions might contain more information than others.
 
-Researchers have developed software tools for calling HLA genotypes (@diagram) with high accuracy from DNA-seq or RNA-seq next-generation sequencing reads @Claeys2023, so there may be opportunities to use this type of data for HLA association studies.
-Most software tools report allele names, not genotypes at specific nucleotide positions.
-Providers of HLA typing services often report genotypes with the traditional HLA allele names (i.e. _HLA*01:01_) instead of reporting alleles at specific nucleotide positions (@diagram).
+Researchers have developed many software tools for calling HLA genotypes (@diagram) with high accuracy from DNA-seq or RNA-seq next-generation sequencing reads @Claeys2023, so there are opportunities to use this type of data for HLA association studies.
+Providers of HLA typing services often report genotypes with the traditional HLA allele names (i.e. _HLA*01:01_) instead of reporting alleles at specific nucleotide positions (@diagram), and most software tools produce outputs that follow this convention of reporting allele names.
 
 #figure(
   move(dx:-5%, dy:0pt, image("diagram.png", width: 130%)),
   caption: [_hlabud_ converts HLA genotypes to amino acid position matrices.]
 ) <diagram>
 
-In contrast to allele-level analysis, fine-mapping analysis associates a phenotype with each amino acid at each position.
+In contrast to allele-level analysis, fine-mapping analysis associates a phenotype with each amino acid (or nucleotide) at each position.
 Many amino acid residues at specific loci have been associated with human diseases and blood protein levels @Krishna2023.
 Published amino acid associations represent opportunities for experimental validation that could advance understanding of the disease-associated mechanisms related to HLA proteins.
 
-Fine-mapping results can be interpreted in the context of the protein structures that are affected by the associated amino acid positions.
+Results from fine-mapping analysis can be interpreted in the context of the protein structures that are affected by the associated amino acid positions.
 We might have different hypotheses about the function of a mutation in the peptide binding groove than a mutation in the interior region of the protein.
 
 To facilitate HLA fine-mapping, we developed _hlabud_, a free and open-source R package that downloads data from the IMGT/HLA database @Robinson2020 and automatically creates amino acid (or nucleotide) position matrices that are ready for analysis (@diagram).
@@ -159,14 +163,17 @@ The complete manual is available at #link("https://slowkow.github.io/hlabud"). _
 = Discussion
 
 Our open-source R package _hlabud_ gives users access to HLA data from two public databases, and implements HLA divergence calculation @Pierini2018.
-_hlabud_ downloads HLA genotype data from the IMGT-HLA GitHub repository @imgthla, caches it in a user-configurable folder, and prepares the data for downstream analysis in R.
+_hlabud_ downloads and caches HLA genotype data from the IMGT-HLA GitHub repository @imgthla and prepares the data for downstream analysis in R.
 
-We provide #link("https://slowkow.github.io/hlabud", "tutorials") for HLA divergence, fine-mapping association analysis with logistic regression, and embedding with UMAP.
-_hlabud_ provides allele frequencies for all HLA genes, obtained from the Allele Frequency Net Database (AFND) @Gonzalez-Galarza2020.
+We provide #link("https://slowkow.github.io/hlabud", "tutorials") for HLA divergence, fine-mapping association analysis with logistic regression, embedding with UMAP, and visualizing allele frequencies from the Allele Frequency Net Database (AFND) @Gonzalez-Galarza2020.
+
+= Related Work
+
+BIGDAWG is an R package that provides functions for chi-squared Hardy-Weinberg and case-control association tests of highly polymorphic genetic data like HLA genotypes @Pappas2016. HATK is set of Python scripts for processing and analyzing IMGT-HLA data @Choi2020.
 
 = Acknowledgments
 
-This work was supported by a NIAID grant T32AR007258 (to K.S.) and the National Institute of Health Director’s New Innovator Award (DP2CA247831; to A.C.V.) Thanks to Sreekar Mantena for reporting issues with the code. Thanks to Jean Fan for the logo and helpful discussions. 
+This work was supported by a NIAID grant T32AR007258 (to K.S.) and the National Institute of Health Director’s New Innovator Award (DP2CA247831; to A.C.V.) Thanks to Sreekar Mantena for reporting issues with the code. Thanks to Jean Fan for creating the logo and discussing the paper. 
 
 = Competing Interests
 
@@ -175,10 +182,5 @@ No competing interest is declared.
 = Author contributions statement
 
 K.S. wrote the software and the manuscript. A.C.V. reviewed the manuscript.
-
-= Related Work
-
-BIGDAWG is an R package that provides functions for chi-squared Hardy-Weinberg and case-control association tests of highly polymorphic genetic data like HLA genotypes @Pappas2016. HATK is set of Python scripts for processing and analyzing IMGT-HLA data @Choi2020.
-
 
 #bibliography("references.bib")
