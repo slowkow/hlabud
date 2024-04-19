@@ -303,7 +303,7 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
   # Look for an exact match to the file we want
   i <- which(file_names == glue("{gene}_{type}.txt"))
   if (length(i) != 1) {
-    message(glue("IMGT/HLA does not provide {type} for {gene}"))
+    message(glue("IMGT/HLA {release} does not provide {gene}_{type}.txt"))
     return()
   }
   genes <- genes[[i]]
@@ -494,8 +494,8 @@ get_onehot <- function(al, n_pre) {
 #'
 #' @param names Input character vector with one genotype for each individual. All entries must be present in `rownames(mat)`.
 #' @param mat A one-hot encoded matrix with one row per allele and one column for each residue (amino acid or nucleotide) at each position.
-#' @param drop_constants Filter out constant amino acid positions by default.
-#' @param drop_duplicates Filter out duplicate amino acid positions by default.
+#' @param drop_constants Filter out constant amino acid positions. TRUE by default.
+#' @param drop_duplicates Filter out duplicate amino acid positions. FALSE by default.
 #' @return A matrix with one row for each input genotype, and one column for each residue at each position.
 #' @examples
 #' DRB1_file <- file.path(
@@ -514,7 +514,7 @@ get_onehot <- function(al, n_pre) {
 #' dosage <- dosage(genotypes, a$onehot)
 #' dosage[,1:5]
 #' @export
-dosage <- function(names, mat, drop_constants = TRUE, drop_duplicates = TRUE) {
+dosage <- function(names, mat, drop_constants = TRUE, drop_duplicates = FALSE) {
   dosages <- matrix(0, ncol = ncol(mat), nrow = length(names))
   for (i in seq_along(names)) {
     # Split a string of genotypes like "HLA-A*01:01,HLA-A*01:01"
