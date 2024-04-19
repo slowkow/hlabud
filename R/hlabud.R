@@ -324,7 +324,10 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
     writeLines(lines, my_file)
   }
   if (verbose) { message(glue("Reading {my_file}")) }
-  return(read_alignments(my_file))
+  retval <- read_alignments(my_file)
+  retval$file <- my_file
+  retval$release <- release
+  return(retval)
 }
 
 #' Read an alignment file `*_(nuc|gen|prot).txt` from IMGTHLA
