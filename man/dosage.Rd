@@ -4,16 +4,16 @@
 \alias{dosage}
 \title{Convert a set of genotype names into a dosage matrix of each residue at each position}
 \usage{
-dosage(names, mat, drop_constants = TRUE, drop_duplicates = TRUE)
+dosage(mat, names, drop_constants = TRUE, drop_duplicates = FALSE)
 }
 \arguments{
-\item{names}{Input character vector with one genotype for each individual. All entries must be present in \code{rownames(mat)}.}
-
 \item{mat}{A one-hot encoded matrix with one row per allele and one column for each residue (amino acid or nucleotide) at each position.}
 
-\item{drop_constants}{Filter out constant amino acid positions by default.}
+\item{names}{Input character vector with one genotype for each individual. All entries must be present in \code{rownames(mat)}.}
 
-\item{drop_duplicates}{Filter out duplicate amino acid positions by default.}
+\item{drop_constants}{Filter out constant amino acid positions. TRUE by default.}
+
+\item{drop_duplicates}{Filter out duplicate amino acid positions. FALSE by default.}
 }
 \value{
 A matrix with one row for each input genotype, and one column for each residue at each position.
@@ -27,7 +27,6 @@ Each genotype should be represented like this \code{"HLA-A*01:01,HLA-A*01:01"}
 By default, the returned matrix is filtered to exclude:
 \itemize{
 \item positions where all input genotypes have the same allele
-\item positions that are identical to previous positions
 }
 }
 \examples{
@@ -44,6 +43,6 @@ genotypes <- c(
   "DRB1*14:172,DRB1*04:160",
   "DRB1*04:359,DRB1*04:284:02"
 )
-dosage <- dosage(genotypes, a$onehot)
+dosage <- dosage(a$onehot, genotypes)
 dosage[,1:5]
 }

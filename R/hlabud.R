@@ -524,10 +524,9 @@ get_onehot <- function(al, n_pre) {
 #'
 #' By default, the returned matrix is filtered to exclude:
 #' * positions where all input genotypes have the same allele
-#' * positions that are identical to previous positions
 #'
-#' @param names Input character vector with one genotype for each individual. All entries must be present in `rownames(mat)`.
 #' @param mat A one-hot encoded matrix with one row per allele and one column for each residue (amino acid or nucleotide) at each position.
+#' @param names Input character vector with one genotype for each individual. All entries must be present in `rownames(mat)`.
 #' @param drop_constants Filter out constant amino acid positions. TRUE by default.
 #' @param drop_duplicates Filter out duplicate amino acid positions. FALSE by default.
 #' @return A matrix with one row for each input genotype, and one column for each residue at each position.
@@ -545,10 +544,10 @@ get_onehot <- function(al, n_pre) {
 #'   "DRB1*14:172,DRB1*04:160",
 #'   "DRB1*04:359,DRB1*04:284:02"
 #' )
-#' dosage <- dosage(genotypes, a$onehot)
+#' dosage <- dosage(a$onehot, genotypes)
 #' dosage[,1:5]
 #' @export
-dosage <- function(names, mat, drop_constants = TRUE, drop_duplicates = FALSE) {
+dosage <- function(mat, names, drop_constants = TRUE, drop_duplicates = FALSE) {
   dosages <- matrix(0, ncol = ncol(mat), nrow = length(names))
   for (i in seq_along(names)) {
     # Split a string of genotypes like "HLA-A*01:01,HLA-A*01:01"
