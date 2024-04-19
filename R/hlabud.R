@@ -403,11 +403,13 @@ read_alignments <- function(file) {
   al <- al %>% pivot_wider(names_from = "id", values_from = "seq", values_fill = "")
   al <- al %>% unite("seq", starts_with("V"), sep = "")
   al$seq <- str_replace_all(al$seq, " ", "")
-  #
+  # Convert to a matrix
+  sequences <- as.matrix(al$seq)
+  rownames(sequences) <- al$allele
+  # Create a one-hot encoding
   oh <- get_onehot(al, n_pre)
-
   return(list(
-    sequences = as_tibble(al),
+    sequences = sequences,
     alleles = oh$alleles,
     onehot = oh$onehot
   ))
