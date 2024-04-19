@@ -232,6 +232,8 @@ hla_alleles <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 #'
 #' Get tags from [github.com/ANHIG/IMGTHLA](https://github.com/ANHIG/IMGTHLA), save them to a file called `tags.json` in `getOption("hlabud_dir")`,  and return the release names from that file.
 #'
+#' The `tags.json` file will be automatically overwritten if it is older than 24 hours.
+#'
 #' @param overwrite Overwrite the existing tags.json file in `getOption("hlabud_dir")`
 #' @return A character vector of release names like "3.51.0"
 #' @examples
@@ -242,7 +244,9 @@ hla_alleles <- function(release = "latest", overwrite = FALSE, verbose = FALSE) 
 hla_releases <- function(overwrite = FALSE) {
   hlabud_dir <- get_hlabud_dir()
   tags_file <- file.path(hlabud_dir, "tags.json")
-  if (overwrite || !file.exists(tags_file)) {
+  # Overwrite the tags.json file if it is older than a day.
+  tags_old <- difftime(Sys.time(), file.info(tags_file)$mtime, units = "hours") > 24
+  if (tags_old || overwrite || !file.exists(tags_file)) {
     j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/tags")
     writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), tags_file)
   }
