@@ -459,16 +459,40 @@ get_onehot <- function(al, n_pre) {
   #######################################################################
   alleles <- do.call(rbind, seq_chars)
   rownames(alleles) <- al$allele
-  if (n_pre > 0) {
-    colnames(alleles) <- str_replace_all(
-      sprintf("pos%s", c(-n_pre:-1, 1:(ncol(alleles) - n_pre))), "-", "n"
-    )
-  } else if (n_pre == 0) {
-    colnames(alleles) <- str_replace_all(
-      sprintf("pos%s", c(1:ncol(alleles))), "-", "n"
-    )
+  #
+  # gaps "." do not increment the position
+  gap <- alleles[1,] == "."
+  #
+  # deal with gaps of various lengths
+  gap_i <- which(gap)
+  nums <- cumsum(!gap) - n_pre
+  lt1 <- nums < 1
+  nums[lt1] <- nums[lt1] - 1
+  nums[lt1] <- str_replace(nums[lt1], "-", "n")
+  for (i in gap_i) {
+    j <- i
+    while (j < length(nums)) {
+      j <- j + 1
+      if (nums[i] != nums[j]) {
+        nums[i] <- sprintf("%s_%s", nums[i], nums[j])
+        break
+      }
+    }
   }
-  # colnames(alleles) <- sprintf("P%s", seq(ncol(alleles)))
+  nums <- sprintf("p%s", nums)
+  # rbind(nums, alleles[1,])[,1:200]
+  colnames(alleles) <- nums
+  #
+  # collapse the gap columns
+  col_n <- table(colnames(alleles))
+  col_n <- names(col_n[col_n > 1])
+  for (my_col in col_n) {
+    new_col <- apply(alleles[,colnames(alleles) == my_col], 1, paste, collapse = "")
+    new_i <- which(colnames(alleles) == my_col)
+    alleles[,new_i[1]] <- new_col
+    alleles <- alleles[,-tail(new_i, length(new_i) - 1)]
+  }
+  #
   # keep positions with more than 1 allele
   keep_pos <- apply(alleles, 2, function(x) length(unique(x))) > 1
   if (!any(keep_pos)) {
@@ -488,6 +512,7 @@ get_onehot <- function(al, n_pre) {
   colnames(retval) <- str_replace(colnames(retval), "\\*", "unk")
   # Rename "." to "gap" so we can use these names in formulas
   colnames(retval) <- str_replace(colnames(retval), "\\.", "gap")
+  #
   return(list(alleles = as.matrix(alleles), onehot = retval))
 }
 
