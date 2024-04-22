@@ -549,6 +549,7 @@ get_onehot <- function(al, n_pre) {
 #' @export
 dosage <- function(mat, names, drop_constants = TRUE, drop_duplicates = FALSE) {
   dosages <- matrix(0, ncol = ncol(mat), nrow = length(names))
+  real_names <- vector(mode = "character", length = length(names))
   for (i in seq_along(names)) {
     # Split a string of genotypes like "HLA-A*01:01,HLA-A*01:01"
     a <- str_split(names[i], ",")[[1]]
@@ -556,13 +557,14 @@ dosage <- function(mat, names, drop_constants = TRUE, drop_duplicates = FALSE) {
       # Find the first row in mat where the prefix matches our genotype
       ix <- which(str_starts(rownames(mat), fixed(my_a)))
       if (length(ix) > 0) {
+        real_names[i] <- rownames(mat)[ix[1]]
         dosages[i,] <- dosages[i,] + as.numeric(mat[ix[1],])
       } else {
         warning(glue("'{my_a}' not found in rownames"))
       }
     }
   }
-  rownames(dosages) <- names
+  rownames(dosages) <- real_names
   colnames(dosages) <- colnames(mat)
   if (drop_constants) {
     # Select positions where we observe > 1 possible dosage [0, 1, 2]
