@@ -196,9 +196,11 @@ hla_genes <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
 #' @export
 hla_alleles <- function(release = "latest", overwrite = FALSE, verbose = FALSE) {
   hlabud_dir <- get_hlabud_dir()
-  alleles_file <- file.path(hlabud_dir, "alleles.json")
   release <- get_release(release)
-  if (overwrite || !file.exists(alleles_file)) {
+  # Download a fresh copy of the alleles.json file
+  alleles_file <- file.path(hlabud_dir, "alleles.json")
+  alleles_old <- difftime(Sys.time(), file.info(alleles_file)$mtime, units = "hours") > 24
+  if (alleles_old || overwrite || !file.exists(alleles_file)) {
     j <- read_json("https://api.github.com/repos/ANHIG/IMGTHLA/contents/allelelist")
     if (verbose) { message(glue("Writing {alleles_file}")) }
     writeLines(toJSON(j, pretty = TRUE, auto_unbox = TRUE), alleles_file)
@@ -547,7 +549,7 @@ get_onehot <- function(al, n_pre) {
 #' dosage <- dosage(a$onehot, genotypes)
 #' dosage[,1:5]
 #' @export
-dosage <- function(mat, names, drop_constants = TRUE, drop_duplicates = FALSE) {
+dosage <- function(mat, names, drop_constants = TRUE, drop_duplicates = FALSE, verbose = FALSE) {
   dosages <- matrix(0, ncol = ncol(mat), nrow = length(names))
   real_names <- vector(mode = "character", length = length(names))
   for (i in seq_along(names)) {
@@ -558,13 +560,20 @@ dosage <- function(mat, names, drop_constants = TRUE, drop_duplicates = FALSE) {
       ix <- which(str_starts(rownames(mat), fixed(my_a)))
       if (length(ix) > 0) {
         real_names[i] <- rownames(mat)[ix[1]]
+        if (verbose && real_names[i] != my_a) {
+          message(glue("Matching input '{my_a}' to '{real_names[i]}'"))
+        }
         dosages[i,] <- dosages[i,] + as.numeric(mat[ix[1],])
       } else {
         warning(glue("'{my_a}' not found in rownames"))
       }
     }
   }
-  rownames(dosages) <- real_names
+  if (any(str_detect(names, ","))) {
+    rownames(dosages) <- names
+  } else {
+    rownames(dosages) <- real_names
+  }
   colnames(dosages) <- colnames(mat)
   if (drop_constants) {
     # Select positions where we observe > 1 possible dosage [0, 1, 2]

@@ -15,6 +15,9 @@ A character vector of release names like "3.51.0"
 \description{
 Get tags from \href{https://github.com/ANHIG/IMGTHLA}{github.com/ANHIG/IMGTHLA}, save them to a file called \code{tags.json} in \code{getOption("hlabud_dir")},  and return the release names from that file.
 }
+\details{
+The \code{tags.json} file will be automatically overwritten if it is older than 24 hours.
+}
 \examples{
 \donttest{
 hla_releases() 

@@ -1,0 +1,55 @@
+\section{Examples} \label{examples}
+
+\subsection{Downloading data for a gene}
+
+Curated HLA genotype data is provided by the IMGT/HLA database at \href{https://github.com/ANHIG/IMGTHLA}{GitHub}.
+In the example below, we use \textit{hlabud} to download the sequence alignment data for \textit{HLA-DRB1}, read it into R, and encode it as a one-hot matrix:
+
+\begin{verbatim}
+a <- hla_alignments("DRB1")    
+\end{verbatim}
+
+
+With one line of code, \textit{hlabud} will:
+
+\begin{itemize}
+    \item Download data from the IMGT/HLA Github repository.
+    \item Cache files in a local folder that supports multiple data releases.
+    \item Read the data into matrices and dataframes for downstream analysis.
+    \item Create a one-hot encoding of the multiple sequence alignment data.
+\end{itemize}
+
+\subsection{Computing a dosage matrix}
+
+Once we have obtained a list of genotypes for each individual (e.g. `"DRB1*04:01,DRB1*05:01"`), we can use \textit{hlabud} to prepare data for fine-mapping regression analysis that will reveal which amino acid positions are associated with a phenotype in a sample of individuals. To calculate the number of copies of each amino acid at each position for each individual, we can run:
+
+\begin{verbatim}
+dosage(genotypes, a$onehot)
+\end{verbatim}
+
+where \textit{genotypes} is a vector of \textit{HLA-DRB1} genotypes and \textit{a\$onehot} is a one-hot matrix representation of \textit{HLA-DRB1} alleles.
+The dosage matrix can then be used for omnibus regression \cite{Sakaue2023} or fine-mapping (i.e. regression with each single position) (figexamples\A).
+
+\subsection{Visualizing alleles in two dimensions}
+
+Visualizing data in a two-dimensional embedding with algorithms like UMAP McInnes2018 can help to build intuition about the relationship between all objects in a dataset.
+UMAP accepts the one-hot matrix of HLA alleles as input, and the resulting embedding can be used to visualize the dataset for exploratory data analysis (figexamples\B).
+
+\subsection{Allele frequencies in human populations}
+
+\textit{hlabud} provides direct access to the allele frequencies of HLA genes in the Allele Frequency Net Database (AFND) Gonzalez-Galarza2020 (#link("http://allelefrequences.net")) (figexamples\C).
+
+\subsection{HLA divergence}
+
+Each HLA allele binds a specific set of peptides.
+So, an individual with two highly dissimilar alleles can bind a greater number of different peptides than a homozygous individual Wakeland1990.
+\textit{hlabud} implements the Grantham divergence calculations Pierini2018 (based on the original Perl code) to estimate which individuals can bind a greater number of peptides (higher Grantham divergence):
+
+\begin{verbatim}
+my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27", "A*24:381,A*33:85")
+hla_divergence(my_genos, method = "grantham")
+#> A*23:01:12,A*24:550    A*25:12N,A*11:27    A*24:381,A*33:85 
+#>           0.4924242           3.3333333           4.9015152 
+\end{verbatim}
+
+

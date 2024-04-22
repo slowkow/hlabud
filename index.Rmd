@@ -4,15 +4,17 @@ hlabud provides methods to retrieve sequence alignment data from [IMGTHLA] and c
 
 [IMGTHLA]: https://github.com/ANHIG/IMGTHLA
 
-For example, let’s consider a simple question about two HLA genotypes DRB1\*04:174 and DRB1\*15:152. What amino acid positions are different between these two genotypes?
+For example, let’s consider a simple question about two HLA genotypes.
+
+What amino acid positions are different between these two genotypes?
 
 ```{r example}
 library(hlabud)
 a <- hla_alignments("DRB1")
-dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
+dosage(a$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
 ```
 
-From this output, we can conclude that the two genotypes are nearly identical, but they have different amino acids E and W at position 9.
+From this output, we can conclude that four amino acid positions distinguish these alleles.
 
 
 Installation

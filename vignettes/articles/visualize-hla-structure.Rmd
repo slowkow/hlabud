@@ -40,7 +40,7 @@ Also try searching the PDB website for, e.g., `"HLA-DR"` and see if there is a m
 
 # Using NGLVieweR
 
-Let's try to visualize position 9 in the HLA-B protein structure.
+Let's try to visualize the amino acid at PDB position 9 in the HLA-B protein structure.
 
 We will visualize the structure of [2bvp] from the Protein Data Bank (PDB).
 
@@ -101,24 +101,51 @@ NGLVieweR("2bvp") %>%
 
 
 In the view above, we see the blue peptide and the red HLA-B protein.
-The tyrosine at position 9 is highlighted with a `ball+stick` representation, and it is also labeled with a text label.
+The tyrosine at PDB position 9 is highlighted with a `ball+stick` representation, and it is also labeled with a text label.
 The structure is rotating so we can getter a better view.
 
-We can use hlabud to answer some questions about HLA-B Tyr9 (tyrosine at position 9).
+We can use hlabud to answer some questions about this HLA-B amino acid sequence.
 
-For example, which HLA-B alleles have this amino acid position?
+The first question we need to ask is:
 
-```{r, B-Tyr9}
+- Which IMGT position corresponds to the tyrosine at PDB position 9?
+
+```{r, B-Tyr21}
 library(hlabud)
 a <- hla_alignments("B")
-head(names(which(a$onehot[,"pos9_Y"] == 1)))
 ```
 
-What fraction of reported HLA-B alleles have Tyr9?
+We need to open the PDB Sequence Annotations tool in order to figure out which IMGT number corresponds to the PDB number 9.
+Here is a screenshot from that tool:
 
-```{r, B-Tyr9-sum}
-sum(a$onehot[,"pos9_Y"] == 1) / nrow(a$onehot)
+![PDB Sequence Annotations for 2bvp](https://github.com/slowkow/hlabud/assets/209714/65ace7bd-0851-45b1-9a53-97be68e263fd)
+
+Next, we can view the amino acid sequence numbering from IMGT:
+
+```{r}
+library(stringr)
+a$alleles[which(str_detect(rownames(a$alleles), "B*57:03")),][1,1:50]
 ```
+
+By eye, we can see that the sequence `YFYT` starting at PDB position 9 corresponds to the `YFYT` sequence at IMGT position 3.
+So, we have manually confirmed that PDB position 9 matches with IMGT position 3.
+
+Next, we might ask which HLA-B alleles have Y3?
+
+```{r}
+my_alleles <- names(which(a$onehot[,"p3_Y"] == 1))
+length(my_alleles)
+head(my_alleles, 20)
+```
+
+
+What fraction of reported HLA-B alleles have tyrosine at IMGT position 3 (Y3)?
+
+```{r, B-Tyr21-sum}
+sum(a$onehot[,"p3_Y"] == 1) / nrow(a$onehot)
+```
+
+As it turns out, almost all of the HLA-B alleles have Y3.
 
 # Using PyMOL
 
@@ -175,7 +202,11 @@ Here is what the PyMOL script will do:
 
 In the image above, I manually rotated the structure with my mouse and added more text labels like `"PDB: 7kei"` after saving the file.
 
-# Other PDB viewers
+# Other software for viewing PDB data
+
+ChimeraX:
+
+* https://www.cgl.ucsf.edu/chimerax/
 
 Python:
 

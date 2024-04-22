@@ -11,40 +11,45 @@ reduction. We also share tips on how to [visualize the 3D molecular
 structure](https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html)
 of HLA proteins and highlight specific amino acid residues.
 
-For example, let’s consider a simple question about two HLA genotypes
-DRB1\*04:174 and DRB1\*15:152. What amino acid positions are different
-between these two genotypes?
+For example, let’s consider a simple question about two HLA genotypes.
+
+What amino acid positions are different between two genotypes?
 
 ``` r
 library(hlabud)
 a <- hla_alignments("DRB1")
-dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
+a$release
 ```
 
-    ##             pos9_E pos9_W
-    ## DRB1*04:174      1      0
-    ## DRB1*15:152      0      1
+    ## [1] "3.56.0"
 
-From this output, we can see that the two genotypes are nearly
-identical, but they differ at position 9:
+``` r
+dosage(a$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
+```
 
--   position 9 E (Glu) in DRB1\*04:174
--   position 9 W (Trp) in DRB1\*15:152
+    ##               p26_F p26_Y p28_D p28_E p47_F p47_Y p86_G p86_V
+    ## DRB1*03:01:05     0     1     1     0     1     0     0     1
+    ## DRB1*03:02:03     1     0     0     1     0     1     1     0
 
-It is just as easy to find the exonic nucleotides that distinguish the
-two alleles:
+What nucleotides are different?
 
 ``` r
 n <- hla_alignments("DRB1", type = "nuc")
-dosage(c("DRB1*04:174", "DRB1*15:152"), n$onehot)
+n$release
 ```
 
-    ##             pos109_C pos109_T
-    ## DRB1*04:174        0        1
-    ## DRB1*15:152        1        0
+    ## [1] "3.56.0"
 
--   position 109 T in DRB1\*04:174
--   position 109 C in DRB1\*15:152
+``` r
+dosage(n$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
+```
+
+    ##               p164_A p164_T p171_C p171_G p227_A p227_T p240_A p240_G p344_G p344_T p345_G p345_T
+    ## DRB1*03:01:05      1      0      1      0      0      1      1      0      0      1      1      0
+    ## DRB1*03:02:03      0      1      0      1      1      0      0      1      1      0      0      1
+    ##               p357_A p357_G
+    ## DRB1*03:01:05      1      0
+    ## DRB1*03:02:03      0      1
 
 # Installation
 
@@ -154,3 +159,5 @@ available on CRAN. Here is the related article:
     Data Analysis Workflow Gaps (BIGDAWG): An integrated case-control
     analysis pipeline.](https://pubmed.ncbi.nlm.nih.gov/26708359) Hum
     Immunol. 2016;77: 283–287.
+
+<https://github.com/rbentham/HLAdivR/>

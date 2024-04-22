@@ -9,20 +9,20 @@ reduction. We also share tips on how to [visualize the 3D molecular
 structure](https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html)
 of HLA proteins and highlight specific amino acid residues.
 
-For example, let’s consider a simple question about two HLA genotypes
-DRB1\*04:174 and DRB1\*15:152. What amino acid positions are different
-between these two genotypes?
+For example, let’s consider a simple question about two HLA genotypes.
+
+What amino acid positions are different between these two genotypes?
 
     library(hlabud)
     a <- hla_alignments("DRB1")
-    dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
+    dosage(a$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
 
-    ##             pos9_E pos9_W
-    ## DRB1*04:174      1      0
-    ## DRB1*15:152      0      1
+    ##               p26_F p26_Y p28_D p28_E p47_F p47_Y p86_G p86_V
+    ## DRB1*03:01:05     0     1     1     0     1     0     0     1
+    ## DRB1*03:02:03     1     0     0     1     0     1     1     0
 
-From this output, we can conclude that the two genotypes are nearly
-identical, but they have different amino acids E and W at position 9.
+From this output, we can conclude that four amino acid positions
+distinguish these alleles.
 
 # Installation
 

@@ -85,7 +85,8 @@ knitr::opts_chunk$set(
 
 library(hlabud)
 my_gene <- "DRB1"
-a <- hla_alignments(gene = my_gene, type = "prot")
+my_release <- "3.56.0"
+a <- hla_alignments(gene = my_gene, type = "prot", release = my_release)
 n_alleles <- nrow(a$seq)
 
 ```
@@ -102,26 +103,22 @@ Kamil Slowikowski
 [IMGTHLA]: https://github.com/ANHIG/IMGTHLA
 
 Let's consider a question that we might want to answer about HLA genotypes.
-What amino acid positions are different between the DRB1\*04:174 and DRB1\*15:152 genotypes?
 
-With hlabud, we can find the answer with a few lines of code:
+What amino acid positions are different between two genotypes?
 
-```{r drb1_dosage_amino}
+```{r}
 library(hlabud)
 a <- hla_alignments("DRB1")
-dosage(c("DRB1*04:174", "DRB1*15:152"), a$onehot)
+a$release
+dosage(a$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
 ```
 
-The two genotypes are nearly identical, but the amino acid at position 9 is different:
+What nucleotides are different?
 
-- position 9 E (Glu) in DRB1\*04:174
-- position 9 W (Trp) in DRB1\*15:152
-
-It is just as easy to find the nucleotides that distinguish the two alleles:
-
-```{r drb1_dosage_nucleotide}
+```{r}
 n <- hla_alignments("DRB1", type = "nuc")
-dosage(c("DRB1*04:174", "DRB1*15:152"), n$onehot)
+n$release
+dosage(n$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
 ```
 
 # Installation
@@ -156,10 +153,10 @@ The `a` object is a list with three items:
 str(a)
 ```
 
-`a$sequences` has amino acid sequence alignments in a data frame:
+`a$sequences` has amino acid sequence alignments in a matrix with one column:
 
 ```{r}
-a$sequences
+head(a$sequences, 20)
 ```
 
 Here are the conventions used for alignments (copied from EBI):
@@ -215,7 +212,7 @@ We can use `dosage()` to convert each individual's genotypes to amino
 acid dosages:
 
 ```{r}
-dosage <- dosage(genotypes, a$onehot)
+dosage <- dosage(a$onehot, genotypes)
 dosage[,1:4]
 dim(dosage)
 ```
@@ -226,8 +223,13 @@ dim(dosage)
   amino acid at each position. By default, `dosage()` will discard the
   columns where all individuals are identical.
 
-* The first individual has `dosage=3` for `pos6_R` (position 6 Arg). That's
+* The first individual has `dosage=3` for `p6_R` (position 6 Arg). That's
   because we assigned this individual 3 alleles in our input.
+
+* If input allele names are truncated to 4-digits or 2-digits (e.g.
+  `DRB1*03:01` or `DRB1*03`), then hlabud will pick the first allele that
+  matches the input allele (e.g. `DRB1*03:01:01:01`). If you want a specific
+  allele, then you need to provide the full allele name in the input.
 
 Please be careful to check that your data looks the way you expect!
 
@@ -248,7 +250,7 @@ d <- data.frame(
   age = sample(21:100, n, replace = TRUE),
   case = sample(0:1, n, replace = TRUE)
 )
-d <- cbind(d, dosage(d$geno, a$onehot))
+d <- cbind(d, dosage(a$onehot, d$geno))
 d[1:5,1:6]
 ```
 
@@ -293,14 +295,14 @@ p <- ggplot(my_glm_case) +
   geom_vline(xintercept = 1, linewidth = 0.3, alpha = 0.3) +
   geom_point() +
   geom_text_repel(
-    data = \(d) d %>% filter(p < 0.05),
+    data = \(d) d %>% filter(p < 0.05) %>% arrange(p) %>% head(3),
     mapping = aes(label = Parameter)
   ) +
   labs(
     x = "Odds Ratio",
     y = "-log10 P",
     title = "Association between amino acid positions and case status",
-    subtitle = glue("{nrow(my_glm_case)} amino acid positions")
+    subtitle = glue("{nrow(my_glm_case)} amino acid positions were tested")
   )
 p
 # ggsave("test.png", p)
@@ -312,7 +314,7 @@ In this simulation, the `case` variable is associated with `r my_glm_case$Parame
 
 # UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
 
-There are many possibilities for analysis of a one-hot encoding of HLA-`r my_gene` alleles.
+There are many possibilities for analysis of a one-hot encoding of HLA-`r my_gene` alleles from IMGTHLA release `r my_release`.
 
 For example, here is a UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles encoded as a one-hot amino acid matrix with `r ncol(a$onehot)` columns, one for each amino acid at each position.
 
@@ -337,8 +339,6 @@ set.seed(2)
 ix <- sample(1:nrow(a$umap), 40)
 a$umap$label[ix] <- a$umap$d4[ix]
 
-my_release <- hla_releases()[1]
-
 p <- ggplot(a$umap) +
   aes(x, y, color = d2) +
   geom_point() +
@@ -347,7 +347,7 @@ p <- ggplot(a$umap) +
   guides(color = guide_legend(title = "2-digit", override.aes = list(label = "", size = 5))) +
   labs(
     title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {my_release}")
+    caption = glue("IMGTHLA {a$release}")
   ) +
   theme(
     axis.text = element_blank(),
@@ -359,11 +359,11 @@ p
 
 ```
 
-We can highlight which alleles have amino acid H at position 13:
+We can highlight which alleles have amino acid Asp (D) at position 57:
 
-```{r umap-pos13_H, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r umap-p57_D, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
-my_position <- "pos13_H"
+my_position <- "p57_D"
 a$umap$color <- as.factor(as.integer(a$onehot[,my_position]))
 p <- ggplot(a$umap) +
   aes(x, y, color = color) +
@@ -372,7 +372,7 @@ p <- ggplot(a$umap) +
   guides(color = guide_legend(title = my_position, override.aes = list(label = "", size = 5))) +
   labs(
     title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {my_release}")
+    caption = glue("IMGTHLA {a$release}")
   ) +
   theme(
     axis.text = element_blank(),
@@ -386,9 +386,9 @@ p
 
 Or we can represent each amino acid at position 13 with a different color:
 
-```{r umap-pos13, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r umap-p57, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
-my_position <- "pos13"
+my_position <- "p57"
 a$umap$color <- as.character(a$alleles[,my_position])
 
 one_to_three <- c(
@@ -410,7 +410,7 @@ p <- ggplot(a$umap) +
   scale_color_manual(values = mpn65, labels = aa_to_count) +
   labs(
     title = glue("{comma(nrow(a$umap))} HLA-{my_gene} alleles"),
-    caption = glue("IMGTHLA {my_release}")
+    caption = glue("IMGTHLA {a$release}")
   ) +
   theme(
     axis.text = element_blank(),
@@ -522,16 +522,6 @@ getOption("hlabud_dir")
 
 # Manually override the directory for hlabud to use
 options(hlabud_dir = "/path/to/my/dir")
-```
-
-List all releases:
-
-```{r hla_releases, eval=FALSE}
-hla_releases()
-#>  [1] "3.51.0"   "3.50.0"   "3.49.0"   "3.48.0"   "3.47.0"   "3.46.0"   "3.45.1"   "3.45.01"
-#>  [9] "3.45.0.1" "3.45.0"   "3.44.1"   "3.44.0"   "3.43.0"   "3.42.0"   "3.41.2"   "3.41.0"
-#> [17] "3.40.0"   "3.39.0"   "3.38.0"   "3.37.0"   "3.36.0"   "3.35.0"   "3.34.0"   "3.33.0"
-#> [25] "3.32.0"   "3.31.0"   "3.30.0"   "3.29.0"   "3.28.0"   "3.27.0"
 ```
 
 After installing a few releases, the hlabud folder might look like this:

@@ -4,7 +4,13 @@
 \alias{dosage}
 \title{Convert a set of genotype names into a dosage matrix of each residue at each position}
 \usage{
-dosage(mat, names, drop_constants = TRUE, drop_duplicates = FALSE)
+dosage(
+  mat,
+  names,
+  drop_constants = TRUE,
+  drop_duplicates = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{mat}{A one-hot encoded matrix with one row per allele and one column for each residue (amino acid or nucleotide) at each position.}

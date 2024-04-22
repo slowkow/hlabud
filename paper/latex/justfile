@@ -1,0 +1,10 @@
+
+# prefix command with - to ignore exit code
+main:
+  -pdflatex -output-directory=pdflatex -interaction=nonstopmode main.tex &> pdflatex/stderr1.txt
+  -pdflatex -output-directory=pdflatex -interaction=nonstopmode main.tex &> pdflatex/stderr2.txt
+  mv -f pdflatex/main.pdf ./
+
+clean:
+  rm -f main.pdf
+  rm -rf pdflatex/*

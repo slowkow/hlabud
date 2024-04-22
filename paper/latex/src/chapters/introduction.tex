@@ -1,0 +1,23 @@
+\section{Introduction} \label{intro}
+
+Human leukocyte antigen (HLA) genes encode the proteins that enable cells to display antigens to other cells, which is one mechanism for immune recognition of pathogens such as bacteria and viruses.
+Geneticists have identified thousands of variants (e.g. single nucleotide polymorphisms) in the human genome that are associated with hundreds of different diseases and phenotypes Kennedy2017. HLA genes have a greater number of disease associations than any other genes.
+
+HLA nomenclature consists of allele names like \textit{HLA*01:01} and \textit{HLA*02:01} to indicate the genotype of an individual in a study Marsh2010.
+Each allele name corresponds to a haplotype that contains multiple mutations at different positions throughout the entire length of the gene sequence.
+It is difficult to estimate the similarity of two alleles solely from the allele names: any two alleles might differ by one or more nucleotide or amino acid residues.
+Any encoding of genotype data that is ambiguous regarding nucleotide or amino acid positions is not ideal for statistical analysis, because some positions might contain more information than others.
+
+Researchers have developed many software tools for calling HLA genotypes (diagram) with high accuracy from DNA-seq or RNA-seq next-generation sequencing reads Claeys2023, so there are opportunities to use this type of data for HLA association studies.
+Providers of HLA typing services often report genotypes with the traditional HLA allele names (i.e. \textit{HLA*01:01}) instead of reporting alleles at specific nucleotide positions (diagram), and most software tools produce outputs that follow this convention of reporting allele names.
+
+In contrast to allele-level analysis, fine-mapping analysis associates a phenotype with each amino acid (or nucleotide) at each position.
+Many amino acid residues at specific loci have been associated with human diseases and blood protein levels Krishna2023.
+Published amino acid associations represent opportunities for experimental validation that could advance understanding of the disease-associated mechanisms related to HLA proteins.
+
+Results from fine-mapping analysis can be interpreted in the context of the protein structures that are affected by the associated amino acid positions.
+We might have different hypotheses about the function of a mutation in the peptide binding groove than a mutation in the interior region of the protein.
+
+To facilitate HLA fine-mapping, we developed \textit{hlabud}, a free and open-source R package that downloads data from the IMGT/HLA database Robinson2020 and automatically creates amino acid (or nucleotide) position matrices that are ready for analysis (diagram).
+\textit{hlabud} functions return simple lists, where each item in the list is a matrix or a data frame.
+This design makes it easy to integrate \textit{hlabud} with any downstream R packages for data analysis or visualization.
