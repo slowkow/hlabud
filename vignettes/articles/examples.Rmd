@@ -263,6 +263,10 @@ simulated dataset.
 
 ```{r glm, cache=TRUE, warning=FALSE, message=FALSE}
 
+# prepare column names for use in formulas
+colnames(d) <- str_replace_all(colnames(d), "\\*", "u")
+colnames(d) <- str_replace_all(colnames(d), "\\.", "i")
+
 # select the amino acid positions that have at least 3 people with dosage > 0
 my_as <- names(which(colSums(d[,4:ncol(d)] > 0) >= 3))
 

@@ -32,6 +32,9 @@ vignettes/articles/examples.html: vignettes/articles/examples.Rmd vignettes/arti
 vignettes/articles/visualize-hla-structure.html: vignettes/articles/visualize-hla-structure.Rmd
 	R -e 'devtools::build_rmd("vignettes/articles/visualize-hla-structure.Rmd")'
 
+vignettes/articles/numbering.html: vignettes/articles/numbering.Rmd
+	R -e 'devtools::build_rmd("vignettes/articles/numbering.Rmd")'
+
 docs/index.html: vignettes/articles/examples.html index.md man/*.Rd
 	rm -rf docs/
 	R -e 'pkgdown::init_site(); pkgdown::build_articles(); pkgdown::build_site()'

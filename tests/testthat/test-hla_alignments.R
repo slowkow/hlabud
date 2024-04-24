@@ -6,7 +6,11 @@ library(glue)
 
 my_release <- "3.52.0"
 # my_gene <- "A"
+# my_type <- "prot"
 my_genes <- hla_genes(release = my_release)
+
+# my_gene <- "DRB1"
+# my_type <- "gen"
 
 for (i in seq(nrow(my_genes))) {
   my_gene <- my_genes$gene[i]

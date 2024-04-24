@@ -479,8 +479,8 @@ get_onehot <- function(al, n_pre, verbose = FALSE) {
   i1 <- 0
   num2 <- ""
   i2 <- 0
-  in_gap <- FALSE
-  for (i in seq(length(gap) - 1)) {
+  in_gap <- gap[1] == "."
+  for (i in seq(2, length(gap) - 1)) {
     if (gap[i]) {
       if (!in_gap) { # starting the gap
         in_gap <- TRUE
@@ -539,9 +539,9 @@ get_onehot <- function(al, n_pre, verbose = FALSE) {
   rownames(retval) <- al$allele
   colnames(retval) <- str_replace(colnames(retval), "=", "_")
   # Rename "*" to "unk" so we can use these names in formulas
-  colnames(retval) <- str_replace(colnames(retval), "\\*", "unknown")
+  # colnames(retval) <- str_replace(colnames(retval), "\\*", "unknown")
   # Rename "." to "gap" so we can use these names in formulas
-  colnames(retval) <- str_replace(colnames(retval), "\\.", "indel")
+  # colnames(retval) <- str_replace(colnames(retval), "\\.", "indel")
   #
   return(list(alleles = as.matrix(alleles), onehot = retval))
 }

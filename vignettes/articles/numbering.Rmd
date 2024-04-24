@@ -1,0 +1,292 @@
+---
+title: "Numbering amino acid positions"
+vignette: >
+  %\VignetteIndexEntry{hlabud usage examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+options(width=80)
+
+library(data.table)
+library(dplyr)
+library(parameters)
+library(pbapply)
+library(glue)
+library(scales)
+library(readr)
+library(stringr)
+library(magrittr)
+library(ggplot2)
+library(ggrepel)
+library(ggstance)
+file_size <- function(x) glue("{fs::file_size(x)}B")
+
+#' @importFrom ggplot2 theme_classic theme element_rect element_line
+#'   element_blank element_text
+#' @importFrom grid unit
+theme_kamil <- theme_classic(
+  base_family = "Arial",
+  base_size = 16,
+  base_line_size = 0.3,
+  base_rect_size = 0.3
+) +
+theme(
+  panel.spacing    = unit(2, "lines"),
+  panel.border     = element_rect(linewidth = 0.5, fill = NA),
+  axis.ticks       = element_line(linewidth = 0.4),
+  axis.line        = element_blank(),
+  strip.background = element_blank(),
+  plot.title       = element_text(size = 16),
+  plot.title.position = "plot",
+  plot.subtitle    = element_text(size = 16),
+  plot.caption     = element_text(size = 16),
+  strip.text       = element_text(size = 16),
+  legend.text      = element_text(size = 16),
+  legend.title     = element_text(size = 16),
+  axis.text        = element_text(size = 16),
+  axis.title       = element_text(size = 16)
+)
+theme_set(theme_kamil)
+options(
+  ggplot2.discrete.colour = c(
+    "#666666", "#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7"
+  ),
+  ggplot2.discrete.fill = c(
+    "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#666666"
+  )
+)
+
+mpn65 <- c(
+  '#ff0029', '#377eb8', '#66a61e', '#984ea3', '#00d2d5', '#ff7f00', '#af8d00',
+  '#7f80cd', '#b3e900', '#c42e60', '#a65628', '#f781bf', '#8dd3c7', '#bebada',
+  '#fb8072', '#80b1d3', '#fdb462', '#fccde5', '#bc80bd', '#ffed6f', '#c4eaff',
+  '#cf8c00', '#1b9e77', '#d95f02', '#e7298a', '#e6ab02', '#a6761d', '#0097ff',
+  '#00d067', '#000000', '#252525', '#525252', '#737373', '#969696', '#bdbdbd',
+  '#f43600', '#4ba93b', '#5779bb', '#927acc', '#97ee3f', '#bf3947', '#9f5b00',
+  '#f48758', '#8caed6', '#f2b94f', '#eff26e', '#e43872', '#d9b100', '#9d7a00',
+  '#698cff', '#d9d9d9', '#00d27e', '#d06800', '#009f82', '#c49200', '#cbe8ff',
+  '#fecddf', '#c27eb6', '#8cd2ce', '#c4b8d9', '#f883b0', '#a49100', '#f48800',
+  '#27d0df', '#a04a9b'
+)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+```
+
+## Introduction
+
+Kamil Slowikowski
+
+`r Sys.Date()`
+
+The [IMGTHLA] provides a Github repo with alignments of amino acid sequences and nucleotide sequences for thousands of alleles of the HLA genes.
+The IMGTHLA alignments define the official numbering scheme, and they provide some explanations for the conventions on their [help page].
+
+The [hlabud] R package provides easy access to the alignment data, and hlabud follows the official numbering scheme.
+The examples below should help beginners to visualize and understand how the conventions work.
+
+[hlabud]: https://github.com/slowkow/hlabud
+[IMGTHLA]: https://github.com/ANHIG/IMGTHLA
+[help page]: https://www.ebi.ac.uk/ipd/mhc/alignment/help/
+
+# Alignment files on the IMGTHLA Github page
+
+The IMGTHLA release 3.56.0 provides [a folder](https://github.com/ANHIG/IMGTHLA/tree/v3.56.0-alpha/alignments) with alignment files.
+On the Github page, we can go back and find old files for a specific release if necessary.
+
+![IMGTHLA release 3.56.0 alignment files](https://github.com/ANHIG/IMGTHLA/assets/209714/b0eb1c09-6a49-46f3-b8d9-21db46a82059)
+
+For the examples in this vignette, we will use the *HLA-DRB1* gene.
+
+For DRB1, we can find three separate files:
+
+- https://raw.githubusercontent.com/ANHIG/IMGTHLA/v3.56.0-alpha/alignments/DRB1_gen.txt
+- https://raw.githubusercontent.com/ANHIG/IMGTHLA/v3.56.0-alpha/alignments/DRB1_nuc.txt
+- https://raw.githubusercontent.com/ANHIG/IMGTHLA/v3.56.0-alpha/alignments/DRB1_prot.txt
+
+The files contain different information:
+
+- `gen` contains genomic DNA sequences.
+- `nuc` contains nucleotide coding sequences (CDS).
+- `prot` contains protein sequences (amino acids).
+
+Let's consider the `DRB1_prot.txt` file. What does the file look like?
+
+![DRB1_prot.txt](https://github.com/ANHIG/IMGTHLA/assets/209714/5ee93946-a31d-4072-883d-daa92bf448a7)
+
+It is a plain text file with a header and sequence alignments.
+Each sequence is shown on one line, and the numbering is displayed on the line before the first sequence.
+The sequences are truncated, such that the first N bases of each sequence are shown in a block, and then the next N bases are shown in the next block, and so on.
+
+## Numbering conventions
+
+Here are the conventions used for alignments (copied from EBI):
+
+> - The entry for each allele is displayed in respect to the reference sequences.
+> - Where identity to the reference sequence is present the base will be displayed as a hyphen (-).
+> - Non-identity to the reference sequence is shown by displaying the appropriate base at that position.
+> - Where an insertion or deletion has occurred this will be represented by a period (.).
+> - If the sequence is unknown at any point in the alignment, this will be represented by an asterisk (\*).
+> - In protein alignments for null alleles, the 'Stop' codons will be represented by a hash (X).
+> - In protein alignments, sequence following the termination codon, will not be marked and will appear blank.
+> - These conventions are used for both nucleotide and protein alignments.
+
+That's a lot of information! Let's try to work through some examples to illustrate how this works.
+
+The first sequence in the alignment is the **reference sequence**.
+The official numbering is with respect to the reference sequence.
+
+Notice below that the numbering starts with negative numbers. The [help page] clarifies:
+
+> Protein Sequence Numbering
+> 
+> - For amino acid-based systems, the start codon of the mature protein is labeled codon 1.
+> - The codon 5' to this is numbered -1.
+> - All numbering is based on the reference sequence.
+
+There is no amino acid with the number 0.
+
+
+## Numbering indels that are present in the reference sequence
+
+The alignment below shows that the letters are displayed in chunks of 10:
+
+![](https://github.com/ANHIG/IMGTHLA/assets/209714/0e9d425b-a6fe-4a3a-9aa2-285698087f26)
+
+The numbering convention says that indels in the reference sequence are not numbered.
+
+To clarify this point, I manually added additional numbers (11, 21, 30, 39, 49, 59) to the alignment below:
+
+![](https://github.com/ANHIG/IMGTHLA/assets/209714/64666703-0ab2-4280-a776-a8c39195d209)
+
+Notice that when we move from the first chunk `GDTRPRFLWQ` to the next chunk `LKFECHFFNG` we simply add 10 to 1 to get 11 for the number of the `L` amino acid.
+Then, as we move on to `TERVR.LLER`, we add 10 to 11 to get 21 for the `T` amino acid.
+
+However, as we move on to `CIYNQEE.SV` the rule of "add 10" seems to break down. Instead of numbering `C` as 31, we are instead numbering it as 30. Why?
+
+The reason why `C` is 31, and not 30, is because there is an indel (or gap) in the reference sequence at position 25_26 (`R.L`).
+And the convention is that indels in the reference sequence are not numbered.
+
+Let's take a closer look at this data with hlabud.
+
+Here are the first few amino acid positions for the first 4 sequences:
+
+```{r}
+library(hlabud)
+a <- hla_alignments("DRB1", release = "3.56.0")
+seqs <- substr(a$sequences[1:4,], 30, 99)
+str_replace_all(seqs, "(\\S{10})", "\\1 ")
+```
+
+This is how hlabud numbers the positions that we are focusing on in this example:
+
+```{r}
+colnames(a$alleles)[50:70]
+```
+
+If hlabud is using the correct numbering, then we should see a `T` at position 21 and we should see a `C` at position 30:
+
+```{r}
+a$alleles[1,"p21"]
+a$alleles[1,"p30"]
+```
+
+What do we see at positions 25, 26, and 25\_26?
+
+Here is the alignment file:
+
+![](https://github.com/ANHIG/IMGTHLA/assets/209714/7a779b7f-2d2c-4817-95b7-986c2c70171c)
+
+And here is the result from hlabud:
+
+```{r}
+a$alleles[1,"p25"]
+a$alleles[1,"p26"]
+a$alleles[1,"p25_26"]
+```
+
+So, we can see that the indel that resides between positions 25 and 26 is not numbered!
+Instead, it gets a special label (25\_26) that consists of the positions flanking the indel (25 and 26).
+
+What are all of the different observed alleles for the indel at position 25_26?
+
+```{r}
+table(a$alleles[,"p25_26"])
+```
+
+There are only three possibilities at position 25\_26:
+
+- `.` indicates a deletion of 1 amino acid (or the absence of an amino at this position)
+- `*` indicates that the sequence is unknown at this position
+- `W` indicates tryptophan at this position
+
+This example should help to explain the numbering of indels. 
+However, the numbering convention is different for indels in the reference sequence versus indels in non-reference sequences.
+
+Some indels are only present in non-reference sequences, but absent from the reference sequence.
+It turns out that position 34\_37 is a nice example of this situation, so let's explore it below.
+
+
+## Numbering indels that are absent in the reference sequence
+
+The numbering convention for indels absent from the reference sequence is different than the convention for indels that are present in the reference sequence.
+
+First, notice that there is only one character `.` at position 36\_37 in the reference sequence shown below:
+
+![](https://github.com/ANHIG/IMGTHLA/assets/209714/67f3ee93-10e0-46ab-a30b-2a76e18bccbc)
+
+Notice that hlabud does not include positions 35 or 36:
+
+```{r}
+colnames(a$alleles)[50:70]
+```
+
+So, why did hlabud number this indel as 34\_37 instead of 36\_37?
+To understand why, we need to look at *all of the non-reference sequences* in this alignment.
+
+Here are the alleles that hlabud counts for the indel at position 34_37:
+
+```{r}
+table(a$alleles[,"p34_37"])
+```
+
+hlabud shows `r length(table(a$alleles[,"p34_37"]))` different possible amino acid alleles at this position, so this is a more complicated locus than the indel at position 25\_26.
+
+We can find which sequence has a particular allele like this:
+
+```{r}
+which(a$alleles[,"p34_37"] == ".E.")
+which(a$alleles[,"p34_37"] == "E..")
+```
+
+If we focus on those sequences, it should become clear why hlabud uses the name 34\_37 instead of 36\_37:
+
+```{r}
+my_alleles <- c("DRB1*01:01:01:01", "DRB1*13:278Q", "DRB1*15:164Q")
+seqs <- substr(a$sequences[my_alleles,], 60, 79)
+cbind(my_alleles, str_replace_all(seqs, "(\\S{10})", "\\1 "))
+```
+
+We can see that the reference sequence (`DRB1*01:01:01:01`) has different indels than the non-reference sequences (`DRB1*13:278Q` and `DRB1*15:164Q`):
+
+| allele            | sequence at positions 35, 36, 36\_37 |
+|-------------------|----------|
+| DRB1\*01:01:01:01 | `EE.`    |
+| DRB1\*13:278Q     | `E..`    |
+| DRB1\*15:164Q     | `.E.`    |
+
+We need to have a single numbering convention that adequately describes all of the sequences in the alignment.
+
+So, that is the reason why hlabud names adjacent `.` characters (in positions 35 and 36 and 36\_37) as a single indel instead of naming them as multiple different indels.
+
+hlabud uses the name 34\_37 to account for the three amino acid residues at this position in the alignment, because different sequences have different combinations of indels at this position.
+
+If this is still confusing, please feel free to email me with questions.
+
+Good luck!
+

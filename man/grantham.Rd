@@ -7,7 +7,7 @@
 \format{
 A data frame with 20 rows and 5 columns:
 \describe{
-\item{amino}{Anonymized Mechanical Turk Worker ID}
+\item{amino}{Amino acid}
 \item{c}{Composition c, the atomic weight ratio of noncarbon elements in end groups or rings to carbons in the side chain}
 \item{p}{Polarity p from published data}
 \item{v}{Volume v from published data}
