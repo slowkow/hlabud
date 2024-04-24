@@ -422,8 +422,9 @@ read_alignments <- function(file) {
 #'
 #' @param al A dataframe with columns allele, seq
 #' @param n_pre The number of amino acid sequences before position 1.
+#' @param verbose Print messages along the way.
 #' @keywords internal
-get_onehot <- function(al, n_pre) {
+get_onehot <- function(al, n_pre, verbose = FALSE) {
   # Split the sequences into character vectors
   seq_chars <- str_split(al$seq, "")
   # The first sequence is the reference
@@ -462,30 +463,52 @@ get_onehot <- function(al, n_pre) {
   alleles <- do.call(rbind, seq_chars)
   rownames(alleles) <- al$allele
   #
-  # gaps "." do not increment the position
-  gap <- alleles[1,] == "."
+  # indels "." in the reference sequence do not increment the position
+  ref_gap <- ref_chars == "."
   #
-  # deal with gaps of various lengths
-  gap_i <- which(gap)
-  nums <- cumsum(!gap) - n_pre
+  # establish the numbering based on the reference sequence
+  nums <- cumsum(!ref_gap) - n_pre
   lt1 <- nums < 1
   nums[lt1] <- nums[lt1] - 1
   nums[lt1] <- str_replace(nums[lt1], "-", "n")
-  for (i in gap_i) {
-    j <- i
-    while (j < length(nums)) {
-      j <- j + 1
-      if (nums[i] != nums[j]) {
-        nums[i] <- sprintf("%s_%s", nums[i], nums[j])
-        break
+  #
+  # deal with indels of various lengths
+  gap <- apply(alleles == ".", 2, any)
+  gap_i <- which(gap)
+  num1 <- ""
+  i1 <- 0
+  num2 <- ""
+  i2 <- 0
+  in_gap <- FALSE
+  for (i in seq(length(gap) - 1)) {
+    if (gap[i]) {
+      if (!in_gap) { # starting the gap
+        in_gap <- TRUE
+        i1 <- i - 1
+        i2 <- i + 1
+        num1 <- nums[i1]
+        num2 <- nums[i2]
+      } else { # extending the gap
+        i2 <- i + 1
+        num2 <- nums[i2]
+      }
+    } else if (in_gap) {
+      in_gap <- FALSE
+      for (j in seq(i1 + 1, i2 - 1)) {
+        nums[j] <- sprintf("%s_%s", nums[i1], nums[i2])
       }
     }
+  }
+  indels <- unique(nums[str_detect(nums, "_")])
+  n_indels <- length(indels)
+  if (verbose) {
+    message(glue("{n_indels} indels"))
   }
   nums <- sprintf("p%s", nums)
   # rbind(nums, alleles[1,])[,1:200]
   colnames(alleles) <- nums
   #
-  # collapse the gap columns
+  # collapse the indel columns
   col_n <- table(colnames(alleles))
   col_n <- names(col_n[col_n > 1])
   for (my_col in col_n) {
@@ -497,6 +520,9 @@ get_onehot <- function(al, n_pre) {
   #
   # keep positions with more than 1 allele
   keep_pos <- apply(alleles, 2, function(x) length(unique(x))) > 1
+  if (verbose) {
+    message(glue("{sum(keep_pos)} polymorphic positions"))
+  }
   if (!any(keep_pos)) {
     warning(glue("all positions have exactly 1 allele (there are no polymorphisms)"))
     return(list(alleles = as.matrix(alleles)))
@@ -506,14 +532,16 @@ get_onehot <- function(al, n_pre) {
   for (i in seq(ncol(alleles))) {
     alleles[,i] <- as.factor(alleles[,i])
   }
-  p <- onehot(alleles, max_levels = 20)
+  #
+  n_levels <- apply(alleles, 2, function(x) length(unique(x)))
+  p <- onehot(alleles, max_levels = max(n_levels))
   retval <- predict(p, alleles)
   rownames(retval) <- al$allele
   colnames(retval) <- str_replace(colnames(retval), "=", "_")
   # Rename "*" to "unk" so we can use these names in formulas
-  colnames(retval) <- str_replace(colnames(retval), "\\*", "unk")
+  colnames(retval) <- str_replace(colnames(retval), "\\*", "unknown")
   # Rename "." to "gap" so we can use these names in formulas
-  colnames(retval) <- str_replace(colnames(retval), "\\.", "gap")
+  colnames(retval) <- str_replace(colnames(retval), "\\.", "indel")
   #
   return(list(alleles = as.matrix(alleles), onehot = retval))
 }
