@@ -17,9 +17,9 @@ What amino acid positions are different between these two genotypes?
     a <- hla_alignments("DRB1")
     dosage(a$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
 
-    ##               p26_F p26_Y p28_D p28_E p47_F p47_Y p86_G p86_V
-    ## DRB1*03:01:05     0     1     1     0     1     0     0     1
-    ## DRB1*03:02:03     1     0     0     1     0     1     1     0
+    ##               F26 Y26 D28 E28 F47 Y47 G86 V86
+    ## DRB1*03:01:05   0   1   1   0   1   0   0   1
+    ## DRB1*03:02:03   1   0   0   1   0   1   1   0
 
 From this output, we can conclude that four amino acid positions
 distinguish these alleles.

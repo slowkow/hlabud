@@ -5,7 +5,7 @@
 all: README.md vignettes/articles/examples.html docs/index.html vignettes/articles/visualize-hla-structure.html
 
 clean:
-	rm -rf docs/ README_{files,cache} README.{md,html} vignettes/articles/examples_{files,cache} vignettes/articles/*.html
+	rm -rf docs/ README_{files,cache} README.{md,html} index.{md,html} vignettes/articles/examples_{files,cache} vignettes/articles/*.html
 
 install:
 	R -e 'devtools::document(); devtools::install()'
