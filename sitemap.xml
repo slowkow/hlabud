@@ -13,6 +13,9 @@
     <loc>https://slowkow.github.io/hlabud/articles/index.html</loc>
   </url>
   <url>
+    <loc>https://slowkow.github.io/hlabud/articles/numbering.html</loc>
+  </url>
+  <url>
     <loc>https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>https://slowkow.github.io/hlabud/reference/get_onehot.html</loc>
+  </url>
+  <url>
+    <loc>https://slowkow.github.io/hlabud/reference/grantham.html</loc>
   </url>
   <url>
     <loc>https://slowkow.github.io/hlabud/reference/hla_alignments.html</loc>
