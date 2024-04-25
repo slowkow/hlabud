@@ -24,7 +24,7 @@ for (i in seq(nrow(my_genes))) {
         expect_no_error({
           a <- hla_alignments(my_gene, type = my_type, release = my_release, verbose = FALSE)
         }, message = "^(Downloading|Writing|Reading)")
-        expect_named(a, c("sequences", "alleles", "onehot", "file", "release"))
+        expect_named(a, c("sequences", "alleles", "onehot", "gene", "type", "release", "file"))
         expect_equal(length(a$sequences), nrow(a$alleles))
         expect_equal(length(a$sequences), nrow(a$onehot))
       }
