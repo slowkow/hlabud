@@ -274,12 +274,8 @@ hla_releases <- function(overwrite = FALSE) {
 #' @param type The type of sequence, one of "prot", "nuc", "gen"
 #' @param release Default is "latest". Should be a release name like "3.51.0".
 #' @param verbose If TRUE, print messages along the way.
-#' @return A list with a dataframe called `sequences` and two matrices `alleles` and `onehot`.
-#'
-#' The dataframe has two columns:
-#' * `allele`: the name of the allele, e.g., `DQB*01:01`
-#' * `seq`: the amino acid sequence
-#'
+#' @return A list with a character vector called `sequences` and two matrices called `alleles` and `onehot`.
+#' The character vector `sequences` has one sequence for each allele, and the names are the allele names.
 #' The matrix `alleles` has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
 #' The matrix `onehot` has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
 #' @seealso [hla_releases()] to get a complete list of all release names.
@@ -327,8 +323,10 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
   }
   if (verbose) { message(glue("Reading {my_file}")) }
   retval <- read_alignments(my_file)
-  retval$file <- my_file
+  retval$gene <- gene
+  retval$type <- type
   retval$release <- release
+  retval$file <- my_file
   return(retval)
 }
 
@@ -565,6 +563,7 @@ get_onehot <- function(sequences, n_pre, verbose = FALSE) {
 #' @param names Input character vector with one genotype for each individual. All entries must be present in `rownames(mat)`.
 #' @param drop_constants Filter out constant amino acid positions. TRUE by default.
 #' @param drop_duplicates Filter out duplicate amino acid positions. FALSE by default.
+#' @param verbose If TRUE, print messages along the way.
 #' @return A matrix with one row for each input genotype, and one column for each residue at each position.
 #' @examples
 #' DRB1_file <- file.path(

@@ -1,6 +1,7 @@
 # hlabud: HLA analysis in R <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/b39a3f04-c9a8-4867-a3e0-9434f0f9ef20"></img>
 
-hlabud provides methods to retrieve sequence alignment data from [IMGTHLA] and convert the data into convenient R matrices ready for downstream analysis. See the [usage examples](https://slowkow.github.io/hlabud/articles/examples.html) to learn how to use the data with logistic regression and dimensionality reduction. We also share tips on how to [visualize the 3D molecular structure](https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html) of HLA proteins and highlight specific amino acid residues.
+hlabud provides methods to retrieve sequence alignment data from [IMGTHLA] and convert the data into convenient R matrices ready for downstream analysis.
+See the [usage examples](https://slowkow.github.io/hlabud/articles/examples.html) to learn how to use the data with logistic regression and dimensionality reduction.
 
 [IMGTHLA]: https://github.com/ANHIG/IMGTHLA
 
@@ -14,7 +15,8 @@ a <- hla_alignments("DRB1")
 dosage(a$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
 ```
 
-From this output, we can conclude that four amino acid positions distinguish these alleles.
+From this output, we can conclude that four positions (26, 28, 47, 86) distinguish these two HLA-DRB1 alleles.
+We see that DRB1\*03:01:05 has a F at position 26 and DRB1\*03:02:03 has a Y.
 
 
 Installation
@@ -46,6 +48,8 @@ See the [usage examples](articles/examples.html) to get some ideas for how to us
 - [Compute HLA divergence with the Grantham distance matrix](articles/examples.html#compute-hla-divergence-with-the-grantham-distance-matrix)
 
 - [Download and unpack all data from the latest IMGTHLA release](articles/examples.html#download-and-unpack-all-data-from-the-latest-imgthla-release)
+
+- [Visualize the 3D molecular structure of HLA proteins and highlight specific amino acid residues](articles/visualize-hla-structure.html)
 
 <a href="https://slowkow.github.io/hlabud/articles/examples.html#logistic-regression-association-for-amino-acid-positions">
 <img width="49%" src="articles/examples_files/figure-html/glm-volcano-1.png">

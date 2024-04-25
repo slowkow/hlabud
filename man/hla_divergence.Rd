@@ -7,7 +7,8 @@
 hla_divergence(
   alleles = c("A*01:01,A*02:01"),
   method = "grantham",
-  release = "latest"
+  release = "latest",
+  verbose = FALSE
 )
 }
 \arguments{

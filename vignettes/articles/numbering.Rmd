@@ -96,10 +96,9 @@ The examples below should help beginners to visualize and understand how the con
 
 # Alignment files on the IMGTHLA Github page
 
-The IMGTHLA release 3.56.0 provides [a folder](https://github.com/ANHIG/IMGTHLA/tree/v3.56.0-alpha/alignments) with alignment files.
-On the Github page, we can go back and find old files for a specific release if necessary.
+The IMGTHLA Github page provides [a folder](https://github.com/ANHIG/IMGTHLA/tree/v3.56.0-alpha/alignments) with alignment files.
 
-![IMGTHLA release 3.56.0 alignment files](https://github.com/ANHIG/IMGTHLA/assets/209714/b0eb1c09-6a49-46f3-b8d9-21db46a82059)
+![](https://github.com/ANHIG/IMGTHLA/assets/209714/b0eb1c09-6a49-46f3-b8d9-21db46a82059)
 
 For the examples in this vignette, we will use the *HLA-DRB1* gene.
 
@@ -117,29 +116,32 @@ The files contain different information:
 
 Let's consider the `DRB1_prot.txt` file. What does the file look like?
 
-![DRB1_prot.txt](https://github.com/ANHIG/IMGTHLA/assets/209714/5ee93946-a31d-4072-883d-daa92bf448a7)
+![](https://github.com/ANHIG/IMGTHLA/assets/209714/5ee93946-a31d-4072-883d-daa92bf448a7)
 
 It is a plain text file with a header and sequence alignments.
-Each sequence is shown on one line, and the numbering is displayed on the line before the first sequence.
-The sequences are truncated, such that the first N bases of each sequence are shown in a block, and then the next N bases are shown in the next block, and so on.
+In the alignment, each line represents one sequence (or allele), and each line has 100 residues.
+The first 100 residues for all alleles are shown in the first block.
+Then, the next block has the next 100 residues for all of the alleles, and so on.
+
 
 ## Numbering conventions
 
 Here are the conventions used for alignments (copied from EBI):
 
 > - The entry for each allele is displayed in respect to the reference sequences.
-> - Where identity to the reference sequence is present the base will be displayed as a hyphen (-).
+> - Where identity to the reference sequence is present the base will be displayed as a hyphen (`-`).
 > - Non-identity to the reference sequence is shown by displaying the appropriate base at that position.
-> - Where an insertion or deletion has occurred this will be represented by a period (.).
-> - If the sequence is unknown at any point in the alignment, this will be represented by an asterisk (\*).
-> - In protein alignments for null alleles, the 'Stop' codons will be represented by a hash (X).
+> - Where an insertion or deletion has occurred this will be represented by a period (`.`).
+> - If the sequence is unknown at any point in the alignment, this will be represented by an asterisk (`*`).
+> - In protein alignments for null alleles, the 'Stop' codons will be represented by a hash (`X`).
 > - In protein alignments, sequence following the termination codon, will not be marked and will appear blank.
 > - These conventions are used for both nucleotide and protein alignments.
 
-That's a lot of information! Let's try to work through some examples to illustrate how this works.
+That's a lot of information! Let's try to work through an example to illustrate how this works.
 
 The first sequence in the alignment is the **reference sequence**.
-The official numbering is with respect to the reference sequence.
+The position numbering is relative to the reference sequence.
+That means deletions (`.`) in the reference sequence are not numbered.
 
 Notice below that the numbering starts with negative numbers. The [help page] clarifies:
 
@@ -154,7 +156,7 @@ There is no amino acid with the number 0.
 
 ## Numbering indels
 
-The alignment below shows that the letters are displayed in chunks of 10:
+The alignment below shows that 100 residues are displayed in chunks of 10:
 
 ![](https://github.com/ANHIG/IMGTHLA/assets/209714/0e9d425b-a6fe-4a3a-9aa2-285698087f26)
 
@@ -167,10 +169,11 @@ To clarify this point, I manually added additional numbers (11, 21, 30, 39, 49, 
 Notice that when we move from the first chunk `GDTRPRFLWQ` to the next chunk `LKFECHFFNG` we simply add 10 to 1 to get 11 for the number of the `L` amino acid.
 Then, as we move on to `TERVR.LLER`, we add 10 to 11 to get 21 for the `T` amino acid.
 
-However, as we move on to `CIYNQEE.SV` the rule of "add 10" seems to break down. Instead of numbering `C` as 31, we are instead numbering it as 30. Why?
+However, as we move on to `CIYNQEE.SV` the rule of "add 10" does not work.
+Instead of labeling `C` as position 31, we label it position 30. Why?
 
-The reason why `C` is 31, and not 30, is because there is an indel (or gap) in the reference sequence at position 25_26 (`R.L`).
-And the convention is that indels in the reference sequence are not numbered.
+The reason why `C` is 31, and not 30, is because there is an indel (or gap) in the reference sequence at position 25_26 (notice the `.` in `R.L`).
+The convention is that deletions in the reference sequence are not numbered.
 
 Let's take a closer look at this data with hlabud.
 
@@ -179,7 +182,7 @@ Here are the first few amino acid positions for the first 4 sequences:
 ```{r}
 library(hlabud)
 a <- hla_alignments("DRB1", release = "3.56.0")
-seqs <- substr(a$sequences[1:4], 30, 99)
+seqs <- substr(a$sequences[1:4], 30, 89)
 str_replace_all(seqs, "(\\S{10})", "\\1 ")
 ```
 
@@ -189,7 +192,9 @@ This is how hlabud numbers the positions that we are focusing on in this example
 colnames(a$alleles)[50:70]
 ```
 
-If hlabud is using the correct numbering, then we should see a `T` at position 21 and we should see a `C` at position 30:
+If hlabud is using the correct numbering, then we should see:
+- `T` at position 21
+- `C` at position 30
 
 ```{r}
 a$alleles[1,"21"]
@@ -210,10 +215,10 @@ a$alleles[1,"26"]
 a$alleles[1,"25_26"]
 ```
 
-So, we can see that the indel that resides between positions 25 and 26 is not numbered!
+So, we can see that the deletion between positions 25 and 26 is not numbered like the other residues.
 Instead, it gets a special label (25\_26) that consists of the positions flanking the indel (25 and 26).
 
-What are all of the different observed alleles for the indel at position 25_26?
+What alleles do we observe at position 25_26?
 
 ```{r}
 table(a$alleles[,"25_26"])
@@ -225,5 +230,7 @@ There are three possibilities at position 25\_26:
 - `*` indicates that the sequence is unknown at this position
 - `W` indicates tryptophan at this position
 
-I hope this example helps to explain the numbering of indels. 
+I hope this example helps to explain the numbering of indels.
+
+If you notice any discrepancy between hlabud and IMGT, please [report it](https://github.com/slowkow/hlabud/issues).
 

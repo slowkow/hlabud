@@ -5,9 +5,7 @@ hlabud provides methods to retrieve sequence alignment data from
 convenient R matrices ready for downstream analysis. See the [usage
 examples](https://slowkow.github.io/hlabud/articles/examples.html) to
 learn how to use the data with logistic regression and dimensionality
-reduction. We also share tips on how to [visualize the 3D molecular
-structure](https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html)
-of HLA proteins and highlight specific amino acid residues.
+reduction.
 
 For example, let’s consider a simple question about two HLA genotypes.
 
@@ -21,8 +19,9 @@ What amino acid positions are different between these two genotypes?
     ## DRB1*03:01:05   0   1   1   0   1   0   0   1
     ## DRB1*03:02:03   1   0   0   1   0   1   1   0
 
-From this output, we can conclude that four amino acid positions
-distinguish these alleles.
+From this output, we can conclude that four positions (26, 28, 47, 86)
+distinguish these two HLA-DRB1 alleles. We see that DRB1\*03:01:05 has a
+F at position 26 and DRB1\*03:02:03 has a Y.
 
 # Installation
 
@@ -56,6 +55,9 @@ how to use hlabud in your analyses.
 
 -   [Download and unpack all data from the latest IMGTHLA
     release](articles/examples.html#download-and-unpack-all-data-from-the-latest-imgthla-release)
+
+-   [Visualize the 3D molecular structure of HLA proteins and highlight
+    specific amino acid residues](articles/visualize-hla-structure.html)
 
 <a href="https://slowkow.github.io/hlabud/articles/examples.html#logistic-regression-association-for-amino-acid-positions">
 <img width="49%" src="articles/examples_files/figure-html/glm-volcano-1.png">

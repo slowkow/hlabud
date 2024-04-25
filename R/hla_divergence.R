@@ -67,6 +67,7 @@ V	64	96	133	152	192	96	121	109	84	29	32	97	21	50	68	124	69	88	55	0")
 #' @param alleles A character vector of comma-delimited alleles for each individual. We usually expect two alleles per individual, but it is possible to have more (or fewer) copies due to copy number alterations. This function still works when each individual has a different number of alleles.
 #' @param method A pairwise amino acid matrix, or a method name: `"grantham"` or `"uniform"` to indicate which pairwise amino acid distance matrix to use. If you choose to pass a matrix, then it should be a 20x20 symmetric matrix with zeros on the diagonal, and the rownames and colnames should be the one-letter amino acid codes `A R N D C Q E G H I L K M F P S T W Y V`.
 #' @param release Default is "latest". Should be a release name like "3.51.0".
+#' @param verbose If TRUE, print messages along the way.
 #' @seealso [hla_releases()] to get a complete list of all release names.
 #' @seealso [amino_distance_matrix()] to get a amino acid distance matrix that you can use with `hla_divergence()`.
 #' @return A dataframe with divergence for each individual.
@@ -78,11 +79,9 @@ V	64	96	133	152	192	96	121	109	84	29	32	97	21	50	68	124	69	88	55	0")
 #' # This is equivalent
 #' hla_divergence(my_genos, method = amino_distance_matrix("grantham"))
 #' @export
-hla_divergence <- function(alleles = c("A*01:01,A*02:01"), method = "grantham", release = "latest") {
-
-  # FIXME:
-  # > hla_divergence("DRB1*01:01,DRB1*02:01")
-  # Error in a$alleles[my_alleles, ] : invalid subscript type 'list'
+hla_divergence <- function(
+  alleles = c("A*01:01,A*02:01"), method = "grantham", release = "latest", verbose = FALSE
+) {
 
   aminos <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M",
     "F", "P", "S", "T", "W", "Y", "V")
@@ -105,13 +104,20 @@ hla_divergence <- function(alleles = c("A*01:01,A*02:01"), method = "grantham", 
   stopifnot(length(my_gene) == 1)
   a <- hla_alignments(my_gene, release = release)
 
-  retval <- sapply(alleles, function(my_allele) {
+  retval <- sapply(alleles, function(my_ind) {
 
-    my_alleles <- str_split(my_allele, ",")[[1]]
+    my_alleles <- str_split(my_ind, ",")[[1]]
     my_alleles <- sapply(my_alleles, function(my_a) {
-      my_a <- str_replace_all(my_a, "\\*", "\\\\\\*")
-      ix <- head(which(str_starts(rownames(a$alleles), my_a)), 1)
-      rownames(a$alleles)[ix]
+      my_regex <- str_replace_all(my_a, "\\*", "\\\\\\*")
+      ix <- head(which(str_starts(rownames(a$alleles), my_regex)), 1)
+      if (length(ix) == 0) {
+        stop(glue("Input '{my_a}' not found"), call. = FALSE)
+      }
+      my_real <- rownames(a$alleles)[ix]
+      if (verbose && my_real != my_a) {
+        message(glue("Matching input '{my_a}' to '{my_real}'"))
+      }
+      my_real
     })
     my_mat <- a$alleles[my_alleles,]
     sequenceLength <- ncol(my_mat)
