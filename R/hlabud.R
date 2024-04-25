@@ -464,16 +464,16 @@ get_onehot <- function(al, n_pre, verbose = FALSE) {
   rownames(alleles) <- al$allele
   #
   # indels "." in the reference sequence do not increment the position
-  ref_gap <- ref_chars == "."
+  gap <- ref_chars == "."
   #
   # establish the numbering based on the reference sequence
-  nums <- cumsum(!ref_gap) - n_pre
+  nums <- cumsum(!gap) - n_pre
   lt1 <- nums < 1
   nums[lt1] <- nums[lt1] - 1
   nums[lt1] <- str_replace(nums[lt1], "-", "n")
   #
   # deal with indels of various lengths
-  gap <- apply(alleles == ".", 2, any)
+  # gap <- apply(alleles == ".", 2, any)
   gap_i <- which(gap)
   num1 <- ""
   i1 <- 0
