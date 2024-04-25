@@ -20,6 +20,8 @@ dosage(
 \item{drop_constants}{Filter out constant amino acid positions. TRUE by default.}
 
 \item{drop_duplicates}{Filter out duplicate amino acid positions. FALSE by default.}
+
+\item{verbose}{If TRUE, print messages along the way.}
 }
 \value{
 A matrix with one row for each input genotype, and one column for each residue at each position.

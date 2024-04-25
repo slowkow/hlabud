@@ -1,4 +1,5 @@
-# hlabud 1.0.0.9999
+hlabud 2.0.0
+============
 
 ## Bug fixes
 
@@ -10,6 +11,8 @@
 
 ## Changes
 
+* Change position names from `pos21_D` to `D21`. When negative, `posn21_D` to `Dn21`.
+
 * Change `dosage()` to take a one-hot matrix as the first argument.
 
 * Change `dosage()` to return full allele names from IMGT when matching to partial allele names like `DRB1*03` or `DRB1*03:01`. And show messages indicating which alleles were matched when `verbose=TRUE`.
@@ -18,6 +21,10 @@
 
 * Automatically overwrite `{hlabud_dir}/tags.json` if it is older than 24 hours.
 
-# hlabud 1.0.0
+
+hlabud 1.0.0
+============
+
+* Initial release.
 
 * Added a `NEWS.md` file to track changes to the package.

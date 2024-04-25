@@ -17,6 +17,8 @@ hla_divergence(
 \item{method}{A pairwise amino acid matrix, or a method name: \code{"grantham"} or \code{"uniform"} to indicate which pairwise amino acid distance matrix to use. If you choose to pass a matrix, then it should be a 20x20 symmetric matrix with zeros on the diagonal, and the rownames and colnames should be the one-letter amino acid codes \verb{A R N D C Q E G H I L K M F P S T W Y V}.}
 
 \item{release}{Default is "latest". Should be a release name like "3.51.0".}
+
+\item{verbose}{If TRUE, print messages along the way.}
 }
 \value{
 A dataframe with divergence for each individual.
