@@ -18,15 +18,15 @@ for (i in seq(nrow(my_genes))) {
   test_that(glue("hla_alignment({my_gene}, type = {my_type}, release = {my_release})"), {
       if (my_gene == "N" && my_type == "nuc") {
         expect_warning({
-          a <- hla_alignments(my_gene, type = my_type, release = my_release, verbose = TRUE)
+          a <- hla_alignments(my_gene, type = my_type, release = my_release, verbose = FALSE)
         }, regexp = "all positions have exactly 1 allele")
       } else {
         expect_no_error({
-          a <- hla_alignments(my_gene, type = my_type, release = my_release, verbose = TRUE)
+          a <- hla_alignments(my_gene, type = my_type, release = my_release, verbose = FALSE)
         }, message = "^(Downloading|Writing|Reading)")
         expect_named(a, c("sequences", "alleles", "onehot", "file", "release"))
-        expect_equal(nrow(a$sequences), nrow(a$alleles))
-        expect_equal(nrow(a$sequences), nrow(a$onehot))
+        expect_equal(length(a$sequences), nrow(a$alleles))
+        expect_equal(length(a$sequences), nrow(a$onehot))
       }
   })
 }
