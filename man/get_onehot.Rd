@@ -5,14 +5,14 @@
 \title{Make a one-hot encoded matrix from a dataframe of amino acid
 sequences.}
 \usage{
-get_onehot(al, n_pre, verbose = FALSE)
+get_onehot(sequences, n_pre, verbose = FALSE)
 }
 \arguments{
-\item{al}{A dataframe with columns allele, seq}
-
 \item{n_pre}{The number of amino acid sequences before position 1.}
 
 \item{verbose}{Print messages along the way.}
+
+\item{al}{A dataframe with columns allele, seq}
 }
 \description{
 Make a one-hot encoded matrix from a dataframe of amino acid

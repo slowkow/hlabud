@@ -153,13 +153,15 @@ The `a` object is a list with three items:
 str(a)
 ```
 
-`a$sequences` has amino acid sequence alignments in a matrix with one column:
+`a$sequences` has amino acid sequence alignments in a named character vector:
 
 ```{r}
-head(a$sequences, 20)
+substr(head(a$sequences, 6), 1, 50)
 ```
 
-Here are the conventions used for alignments (copied from EBI):
+Here are the conventions used for alignments (copied from the EBI [help page]):
+
+[help page]: https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/
 
 > * The entry for each allele is displayed in respect to the reference sequences.
 > * Where identity to the reference sequence is present the base will be displayed as a hyphen (-).
@@ -170,21 +172,18 @@ Here are the conventions used for alignments (copied from EBI):
 > * In protein alignments, sequence following the termination codon, will not be marked and will appear blank.
 > * These conventions are used for both nucleotide and protein alignments.
 
-Learn more about the alignments at: 
-
-* https://www.ebi.ac.uk/ipd/imgt/hla/alignment/help/
 
 `a$alleles` has a matrix of amino acids with one column for each position:
 
 ```{r}
-a$alleles[1:5,1:7]
+a$alleles[1:5,1:40]
 ```
 
 `a$onehot` has a one-hot encoded matrix with one column for each amino acid at
 each position:
 
 ```{r}
-a$onehot[1:5,1:7]
+a$onehot[1:5,1:25]
 ```
 
 # Convert genotypes to a dosage matrix
@@ -192,12 +191,12 @@ a$onehot[1:5,1:7]
 Suppose we have some individuals with the following genotypes:
 
 ```{r, eval=FALSE, include=FALSE}
-dput(paste(sample(rownames(a$onehot), 5), sample(rownames(a$onehot), 5), sep = "+"))
+dput(paste(sample(rownames(a$onehot), 5), sample(rownames(a$onehot), 5), sep = ","))
 ```
 
 ```{r}
 genotypes <- c(
-  "DRB1*12:02:02:03,DRB1*12:02:02:03,DRB1*14:54:02",
+  "DRB1*12:02:02:03,DRB1*12:02:02:03",
   "DRB1*04:174,DRB1*15:152",
   "DRB1*04:56:02,DRB1*15:01:48",
   "DRB1*14:172,DRB1*04:160",
@@ -213,7 +212,7 @@ acid dosages:
 
 ```{r}
 dosage <- dosage(a$onehot, genotypes)
-dosage[,1:4]
+dosage[,1:8]
 dim(dosage)
 ```
 
@@ -222,9 +221,6 @@ dim(dosage)
 * The `dosage` matrix has one row for each individual and one column for each
   amino acid at each position. By default, `dosage()` will discard the
   columns where all individuals are identical.
-
-* The first individual has `dosage=3` for `p6_R` (position 6 Arg). That's
-  because we assigned this individual 3 alleles in our input.
 
 * If input allele names are truncated to 4-digits or 2-digits (e.g.
   `DRB1*03:01` or `DRB1*03`), then hlabud will pick the first allele that
@@ -262,10 +258,9 @@ any amino acid position might be associated with the `case` variable in our
 simulated dataset.
 
 ```{r glm, cache=TRUE, warning=FALSE, message=FALSE}
-
 # prepare column names for use in formulas
-colnames(d) <- str_replace_all(colnames(d), "\\*", "u")
-colnames(d) <- str_replace_all(colnames(d), "\\.", "i")
+ix <- 4:ncol(d)
+colnames(d)[ix] <- sprintf("VAR%s", colnames(d)[ix])
 
 # select the amino acid positions that have at least 3 people with dosage > 0
 my_as <- names(which(colSums(d[,4:ncol(d)] > 0) >= 3))
@@ -292,7 +287,8 @@ position. The top hits with P &lt; 0.05 are labeled.
 my_glm_case <- my_glm %>%
   filter(!Parameter %in% c("(Intercept)")) %>%
   filter(Coefficient < 10) %>%
-  arrange(p)
+  arrange(p) %>%
+	mutate(Parameter = str_remove(Parameter, "VAR"))
 
 p <- ggplot(my_glm_case) +
   aes(Coefficient, -log10(p)) +
@@ -300,7 +296,8 @@ p <- ggplot(my_glm_case) +
   geom_point() +
   geom_text_repel(
     data = \(d) d %>% filter(p < 0.05) %>% arrange(p) %>% head(3),
-    mapping = aes(label = Parameter)
+    mapping = aes(label = Parameter),
+		nudge_y = 0.1
   ) +
   labs(
     x = "Odds Ratio",
@@ -318,9 +315,10 @@ In this simulation, the `case` variable is associated with `r my_glm_case$Parame
 
 # UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles
 
-There are many possibilities for analysis of a one-hot encoding of HLA-`r my_gene` alleles from IMGTHLA release `r my_release`.
+There are many possibilities for further analysis of the one-hot encoding matrix.
 
 For example, here is a UMAP embedding of `r comma(n_alleles)` HLA-`r my_gene` alleles encoded as a one-hot amino acid matrix with `r ncol(a$onehot)` columns, one for each amino acid at each position.
+The color indicates the 2-digit allele name.
 
 ```{r, eval=FALSE}
 uamp(a$onehot, n_epochs = 200, min_dist = 1, spread = 2)
@@ -363,11 +361,11 @@ p
 
 ```
 
-We can highlight which alleles have amino acid Asp (D) at position 57:
+We can highlight which alleles have aspartic acid (Asp or D) at position 57:
 
-```{r umap-p57_D, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r umap-D57, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
-my_position <- "p57_D"
+my_position <- "D57"
 a$umap$color <- as.factor(as.integer(a$onehot[,my_position]))
 p <- ggplot(a$umap) +
   aes(x, y, color = color) +
@@ -388,11 +386,11 @@ p
 
 ```
 
-Or we can represent each amino acid at position 13 with a different color:
+Or we can use color to represent the amino acid residue at position 57:
 
-```{r umap-p57, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
+```{r umap-57, cache=TRUE, echo = FALSE, fig.dpi = 300, fig.width = 9, fig.height = 6, message=FALSE, warning=FALSE}
 
-my_position <- "p57"
+my_position <- "57"
 a$umap$color <- as.character(a$alleles[,my_position])
 
 one_to_three <- c(
@@ -428,7 +426,7 @@ p
 
 # Get HLA allele frequencies from Allele Frequency Net Database (AFND)
 
-Download and read a table of HLA allele frequencies from the [Allele Frequency Net Database (AFND)](http://www.allelefrequencies.net/).
+The hlabud R package includes a table of HLA allele frequencies from the [Allele Frequency Net Database (AFND)](http://www.allelefrequencies.net/).
 
 If you use this data, please cite the latest manuscript about Allele Frequency Net Database:
 
@@ -439,7 +437,7 @@ af <- hla_frequencies()
 af
 ```
 
-Plot the frequency of a specific allele (DQB1*02:01) in populations with more than 1000 sampled individuals:
+We can use this data to plot the frequency of a specific allele (e.g. DQB1\*02:01) in populations with more than 1000 sampled individuals:
 
 ```{r afnd_dqb1_02_01, fig.dpi = 300, fig.width = 10, fig.height = 8}
 my_allele <- "DQB1*02:01"
@@ -464,16 +462,23 @@ See [github.com/slowkow/allelefrequencies](https://github.com/slowkow/allelefreq
 
 # Compute HLA divergence with the Grantham distance matrix
 
-Each HLA allele binds a specific set of peptides. So, an individual with two highly dissimilar alleles can bind a greater number of different peptides than a homozygous individual (https://doi.org/10.1007/BF02918202):
+Humans are diploid, so each of us has two copies of each HLA gene.
+An individual with two highly dissimilar alleles can bind a greater number of different peptides than a homozygous individual (https://doi.org/10.1007/BF02918202):
 
 > Each MHC class II allele has the capacity to bind and present a specific set of peptides from processed antigens. The inability of a specific class II allele to bind and present a fragment derived from a processed antigen results in the loss of immune responsiveness for that antigen in individuals homozygous for that class II allele.
 
-We can compute an HLA divergence metric for a set of individuals like this:
+The amino acid distance matrix by Granthan 1974 (https://doi.org/10.1126/science.185.4154.862) encodes information about the composition, polarity, and molecular volume of each amino acid.
+
+```{r grantham}
+grantham
+```
+
+We can use that matrix to compute an HLA divergence metric for a set of individuals like this:
 
 ```{r div-grantham}
 my_genos <- c("A*23:01:12,A*24:550", "A*25:12N,A*11:27", "A*24:381,A*33:85")
 
-hla_divergence(my_genos, method = "grantham")
+hla_divergence(my_genos)
 ```
 
 The divergence for a homozygote is equal to zero, by definition:
@@ -482,20 +487,13 @@ The divergence for a homozygote is equal to zero, by definition:
 hla_divergence("A*01:01,A*01:01")
 ```
 
-By default, we use the amino acid distance matrix from Granthan 1974 (https://doi.org/10.1126/science.185.4154.862).
+hlabud includes R code for the divergence calculations that was translated from the original Perl code by Pierini & Lenz 2018 (https://doi.org/10.1093/molbev/msy116).
 
-Alternatively, we can choose to use a uniform matrix instead (diagonal values are 0, all non-diagonal values are equal to 1):
+The amino acid distance matrix is easily accessible, and we provide two built-in options "grantham" and "uniform":
 
-```{r div-uniform}
-hla_divergence(my_genos, method = "uniform")
+```{r grantham-dist}
+amino_distance_matrix(method = "grantham")
 ```
-
-The amino acid distance matrix is easily accessible, and we provide two built-in options `"grantham"` and `"uniform"`:
-
-```{r amino-dist}
-amino_distance_matrix(method = "uniform")
-```
-
 
 # Download and unpack all data from the latest IMGTHLA release
 

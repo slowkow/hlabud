@@ -5,8 +5,8 @@ library(glue)
 # lapply(setdiff(unique(renv::dependencies()$Package), c("R")), function(x) library(x, character.only = TRUE))
 
 my_release <- "3.52.0"
-# my_gene <- "A"
-# my_type <- "prot"
+my_gene <- "A"
+my_type <- "prot"
 my_genes <- hla_genes(release = my_release)
 
 # my_gene <- "DRB1"

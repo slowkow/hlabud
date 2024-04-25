@@ -133,7 +133,7 @@ So, we have manually confirmed that PDB position 9 matches with IMGT position 3.
 Next, we might ask which HLA-B alleles have Y3?
 
 ```{r}
-my_alleles <- names(which(a$onehot[,"p3_Y"] == 1))
+my_alleles <- names(which(a$onehot[,"Y3"] == 1))
 length(my_alleles)
 head(my_alleles, 20)
 ```
@@ -142,7 +142,7 @@ head(my_alleles, 20)
 What fraction of reported HLA-B alleles have tyrosine at IMGT position 3 (Y3)?
 
 ```{r, B-Tyr21-sum}
-sum(a$onehot[,"p3_Y"] == 1) / nrow(a$onehot)
+sum(a$onehot[,"Y3"] == 1) / nrow(a$onehot)
 ```
 
 As it turns out, almost all of the HLA-B alleles have Y3.

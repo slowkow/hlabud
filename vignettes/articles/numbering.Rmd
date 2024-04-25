@@ -152,7 +152,7 @@ Notice below that the numbering starts with negative numbers. The [help page] cl
 There is no amino acid with the number 0.
 
 
-## Numbering indels that are present in the reference sequence
+## Numbering indels
 
 The alignment below shows that the letters are displayed in chunks of 10:
 
@@ -179,7 +179,7 @@ Here are the first few amino acid positions for the first 4 sequences:
 ```{r}
 library(hlabud)
 a <- hla_alignments("DRB1", release = "3.56.0")
-seqs <- substr(a$sequences[1:4,], 30, 99)
+seqs <- substr(a$sequences[1:4], 30, 99)
 str_replace_all(seqs, "(\\S{10})", "\\1 ")
 ```
 
@@ -192,8 +192,8 @@ colnames(a$alleles)[50:70]
 If hlabud is using the correct numbering, then we should see a `T` at position 21 and we should see a `C` at position 30:
 
 ```{r}
-a$alleles[1,"p21"]
-a$alleles[1,"p30"]
+a$alleles[1,"21"]
+a$alleles[1,"30"]
 ```
 
 What do we see at positions 25, 26, and 25\_26?
@@ -205,9 +205,9 @@ Here is the alignment file:
 And here is the result from hlabud:
 
 ```{r}
-a$alleles[1,"p25"]
-a$alleles[1,"p26"]
-a$alleles[1,"p25_26"]
+a$alleles[1,"25"]
+a$alleles[1,"26"]
+a$alleles[1,"25_26"]
 ```
 
 So, we can see that the indel that resides between positions 25 and 26 is not numbered!
@@ -216,77 +216,14 @@ Instead, it gets a special label (25\_26) that consists of the positions flankin
 What are all of the different observed alleles for the indel at position 25_26?
 
 ```{r}
-table(a$alleles[,"p25_26"])
+table(a$alleles[,"25_26"])
 ```
 
-There are only three possibilities at position 25\_26:
+There are three possibilities at position 25\_26:
 
 - `.` indicates a deletion of 1 amino acid (or the absence of an amino at this position)
 - `*` indicates that the sequence is unknown at this position
 - `W` indicates tryptophan at this position
 
-This example should help to explain the numbering of indels. 
-However, the numbering convention is different for indels in the reference sequence versus indels in non-reference sequences.
-
-Some indels are only present in non-reference sequences, but absent from the reference sequence.
-It turns out that position 34\_37 is a nice example of this situation, so let's explore it below.
-
-
-## Numbering indels that are absent in the reference sequence
-
-The numbering convention for indels absent from the reference sequence is different than the convention for indels that are present in the reference sequence.
-
-First, notice that there is only one character `.` at position 36\_37 in the reference sequence shown below:
-
-![](https://github.com/ANHIG/IMGTHLA/assets/209714/67f3ee93-10e0-46ab-a30b-2a76e18bccbc)
-
-Notice that hlabud does not include positions 35 or 36:
-
-```{r}
-colnames(a$alleles)[50:70]
-```
-
-So, why did hlabud number this indel as 34\_37 instead of 36\_37?
-To understand why, we need to look at *all of the non-reference sequences* in this alignment.
-
-Here are the alleles that hlabud counts for the indel at position 34_37:
-
-```{r}
-table(a$alleles[,"p34_37"])
-```
-
-hlabud shows `r length(table(a$alleles[,"p34_37"]))` different possible amino acid alleles at this position, so this is a more complicated locus than the indel at position 25\_26.
-
-We can find which sequence has a particular allele like this:
-
-```{r}
-which(a$alleles[,"p34_37"] == ".E.")
-which(a$alleles[,"p34_37"] == "E..")
-```
-
-If we focus on those sequences, it should become clear why hlabud uses the name 34\_37 instead of 36\_37:
-
-```{r}
-my_alleles <- c("DRB1*01:01:01:01", "DRB1*13:278Q", "DRB1*15:164Q")
-seqs <- substr(a$sequences[my_alleles,], 60, 79)
-cbind(my_alleles, str_replace_all(seqs, "(\\S{10})", "\\1 "))
-```
-
-We can see that the reference sequence (`DRB1*01:01:01:01`) has different indels than the non-reference sequences (`DRB1*13:278Q` and `DRB1*15:164Q`):
-
-| allele            | sequence at positions 35, 36, 36\_37 |
-|-------------------|----------|
-| DRB1\*01:01:01:01 | `EE.`    |
-| DRB1\*13:278Q     | `E..`    |
-| DRB1\*15:164Q     | `.E.`    |
-
-We need to have a single numbering convention that adequately describes all of the sequences in the alignment.
-
-So, that is the reason why hlabud names adjacent `.` characters (in positions 35 and 36 and 36\_37) as a single indel instead of naming them as multiple different indels.
-
-hlabud uses the name 34\_37 to account for the three amino acid residues at this position in the alignment, because different sequences have different combinations of indels at this position.
-
-If this is still confusing, please feel free to email me with questions.
-
-Good luck!
+I hope this example helps to explain the numbering of indels. 
 

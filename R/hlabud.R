@@ -343,11 +343,7 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
 #' - `{gene}_nuc.txt` has the nucleotide sequence for the exons.
 #' - `{gene}_gen.txt` has the genomic sequence for the exons and introns.
 #'
-#' @return A list with a dataframe called `sequences` and two matrices `alleles` and `onehot`.
-#'
-#' The dataframe has two columns:
-#' * `allele`: the name of the allele, e.g., `DQB*01:01`
-#' * `seq`: the amino acid sequence
+#' @return A list with a character vector called `sequences` and two matrices `alleles` and `onehot`.
 #'
 #' The matrix `alleles` has one row for each allele, and one column for each position, with the values representing the residues at each position in each allele.
 #' The matrix `onehot` has a one-hot encoding of the variants that distinguish the alleles, with one row for each allele and one column for each amino acid at each position.
@@ -406,10 +402,10 @@ read_alignments <- function(file) {
   al <- al %>% unite("seq", starts_with("V"), sep = "")
   al$seq <- str_replace_all(al$seq, " ", "")
   # Convert to a matrix
-  sequences <- as.matrix(al$seq)
-  rownames(sequences) <- al$allele
+  sequences <- as.character(al$seq)
+  names(sequences) <- al$allele
   # Create a one-hot encoding
-  oh <- get_onehot(al, n_pre)
+  oh <- get_onehot(sequences, n_pre)
   return(list(
     sequences = sequences,
     alleles = oh$alleles,
@@ -424,9 +420,9 @@ read_alignments <- function(file) {
 #' @param n_pre The number of amino acid sequences before position 1.
 #' @param verbose Print messages along the way.
 #' @keywords internal
-get_onehot <- function(al, n_pre, verbose = FALSE) {
+get_onehot <- function(sequences, n_pre, verbose = FALSE) {
   # Split the sequences into character vectors
-  seq_chars <- str_split(al$seq, "")
+  seq_chars <- str_split(sequences, "")
   # The first sequence is the reference
   ref_chars <- seq_chars[[1]]
   # Not all sequences are the same length, so we need to know the range
@@ -461,7 +457,7 @@ get_onehot <- function(al, n_pre, verbose = FALSE) {
   # 
   #######################################################################
   alleles <- do.call(rbind, seq_chars)
-  rownames(alleles) <- al$allele
+  rownames(alleles) <- names(sequences)
   #
   # indels "." in the reference sequence do not increment the position
   gap <- ref_chars == "."
@@ -504,7 +500,7 @@ get_onehot <- function(al, n_pre, verbose = FALSE) {
   if (verbose) {
     message(glue("{n_indels} indels"))
   }
-  nums <- sprintf("p%s", nums)
+  # nums <- sprintf("p%s", nums)
   # rbind(nums, alleles[1,])[,1:200]
   colnames(alleles) <- nums
   #
@@ -536,8 +532,18 @@ get_onehot <- function(al, n_pre, verbose = FALSE) {
   n_levels <- apply(alleles, 2, function(x) length(unique(x)))
   p <- onehot(alleles, max_levels = max(n_levels))
   retval <- predict(p, alleles)
-  rownames(retval) <- al$allele
-  colnames(retval) <- str_replace(colnames(retval), "=", "_")
+  rownames(retval) <- rownames(alleles)
+	#
+	my_cols <- colnames(retval)
+	colnames_dat <- str_split_fixed(colnames(retval), "=", 2)
+	ix_del <- str_detect(colnames_dat[,2], "\\.+")
+	my_cols[ix_del] <- sprintf("%sdel", colnames_dat[ix_del,1])
+	ix_unk <- str_detect(colnames_dat[,2], "\\*+")
+	my_cols[ix_unk] <- sprintf("%sunk", colnames_dat[ix_unk,1])
+	ix_aa <- !(ix_del | ix_unk)
+	my_cols[ix_aa] <- sprintf("%s%s", colnames_dat[ix_aa,2], colnames_dat[ix_aa,1])
+	colnames(retval) <- my_cols
+  # colnames(retval) <- str_replace(colnames(retval), "=", "_")
   # Rename "*" to "unk" so we can use these names in formulas
   # colnames(retval) <- str_replace(colnames(retval), "\\*", "unknown")
   # Rename "." to "gap" so we can use these names in formulas
