@@ -1,6 +1,7 @@
 # hlabud <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/b39a3f04-c9a8-4867-a3e0-9434f0f9ef20"></img>
 
 [![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11093557.svg)](https://doi.org/10.5281/zenodo.11093557)
 
 hlabud provides methods to retrieve sequence alignment data from
 [IMGTHLA](https://github.com/ANHIG/IMGTHLA) and convert the data into
@@ -120,9 +121,8 @@ please cite the AFND paper:
 
 Additionally, you can also cite the `hlabud` package like this:
 
--   Slowikowski K. hlabud: methods for access and analysis of the human
-    leukocyte antigen (HLA) gene sequence alignments from IMGT/HLA. R
-    package version 1.0.0.
+-   Slowikowski K. hlabud: HLA analysis in R. Zenodo.
+    <https://doi.org/10.5281/zenodo.11093557>
 
 # Related work
 
@@ -157,4 +157,5 @@ available on CRAN. Here is the related article:
     analysis pipeline.](https://pubmed.ncbi.nlm.nih.gov/26708359) Hum
     Immunol. 2016;77: 283–287.
 
-<https://github.com/rbentham/HLAdivR/>
+[HLAdivR](https://github.com/rbentham/HLAdivR/) is another R package for
+calculating HLA divergence.

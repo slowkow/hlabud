@@ -16,7 +16,7 @@ dosage(a$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
 ```
 
 From this output, we can conclude that four positions (26, 28, 47, 86) distinguish these two HLA-DRB1 alleles.
-We see that DRB1\*03:01:05 has a F at position 26 and DRB1\*03:02:03 has a Y.
+We see that DRB1\*03:01:05 has a Y at position 26 and DRB1\*03:02:03 has a F.
 
 
 Installation

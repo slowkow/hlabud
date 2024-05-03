@@ -13,6 +13,7 @@ output:
 # hlabud <img width="25%" align="right" src="https://github.com/slowkow/hlabud/assets/209714/b39a3f04-c9a8-4867-a3e0-9434f0f9ef20"></img>
 
 [![R-CMD-check](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/slowkow/hlabud/actions/workflows/R-CMD-check.yaml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11093557.svg)](https://doi.org/10.5281/zenodo.11093557)
 
 hlabud provides methods to retrieve sequence alignment data from [IMGTHLA] and convert the data into convenient R matrices ready for downstream analysis. See the [usage examples](https://slowkow.github.io/hlabud/articles/examples.html) to learn how to use the data with logistic regression and dimensionality reduction. We also share tips on how to [visualize the 3D molecular structure](https://slowkow.github.io/hlabud/articles/visualize-hla-structure.html) of HLA proteins and highlight specific amino acid residues.
 
@@ -90,7 +91,7 @@ See the [usage examples](https://slowkow.github.io/hlabud/articles/examples.html
 
 Additionally, you can also cite the `hlabud` package like this:
 
-- Slowikowski K. hlabud: methods for access and analysis of the human leukocyte antigen (HLA) gene sequence alignments from IMGT/HLA. R package version 1.0.0.
+- Slowikowski K. hlabud: HLA analysis in R. Zenodo. https://doi.org/10.5281/zenodo.11093557
 
 # Related work
 
@@ -116,5 +117,7 @@ CRAN. Here is the related article:
 
 - Pappas DJ, Marin W, Hollenbach JA, Mack SJ. [Bridging ImmunoGenomic Data Analysis Workflow Gaps (BIGDAWG): An integrated case-control analysis pipeline.](https://pubmed.ncbi.nlm.nih.gov/26708359) Hum Immunol. 2016;77: 283–287.
 
+[HLAdivR] is another R package for calculating HLA divergence.
 
-https://github.com/rbentham/HLAdivR/
+[HLAdivR]: https://github.com/rbentham/HLAdivR/
+

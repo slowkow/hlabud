@@ -21,7 +21,7 @@ What amino acid positions are different between these two genotypes?
 
 From this output, we can conclude that four positions (26, 28, 47, 86)
 distinguish these two HLA-DRB1 alleles. We see that DRB1\*03:01:05 has a
-F at position 26 and DRB1\*03:02:03 has a Y.
+Y at position 26 and DRB1\*03:02:03 has a F.
 
 # Installation
 
