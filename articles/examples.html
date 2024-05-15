@@ -90,7 +90,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2024-05-03</p>
+<p>2024-05-15</p>
 <p><a href="https://github.com/slowkow/hlabud" class="external-link">hlabud</a> is an R
 package that provides functions to facilitate download and analysis of
 human leukocyte antigen (HLA) genotype sequence alignments from <a href="https://github.com/ANHIG/IMGTHLA" class="external-link">IMGTHLA</a> in R.</p>
@@ -242,12 +242,31 @@ for each amino acid at each position:</p>
 <span><span class="co">#&gt; DRB1*01:01:01:03    1      0    1      0</span></span>
 <span><span class="co">#&gt; DRB1*01:01:01:04    1      0    1      0</span></span>
 <span><span class="co">#&gt; DRB1*01:01:01:05    1      0    1      0</span></span></code></pre></div>
+<p>What is a one-hot encoded matrix? Here is a simple example to
+demonstrate the idea:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  V1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>  V2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>  V3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C"</span>, <span class="st">"B"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">dat</span></span>
+<span><span class="co">#&gt;   V1 V2 V3</span></span>
+<span><span class="co">#&gt; 1  A  B  C</span></span>
+<span><span class="co">#&gt; 2  A  B  B</span></span>
+<span><span class="co">#&gt; 3  B  B  B</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="fu">onehot</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/onehot/man/onehot.html" class="external-link">onehot</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, <span class="va">dat</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      V1=A V1=B V2=B V3=B V3=C</span></span>
+<span><span class="co">#&gt; [1,]    1    0    1    0    1</span></span>
+<span><span class="co">#&gt; [2,]    1    0    1    1    0</span></span>
+<span><span class="co">#&gt; [3,]    0    1    1    1    0</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="convert-genotypes-to-a-dosage-matrix">Convert genotypes to a dosage matrix<a class="anchor" aria-label="anchor" href="#convert-genotypes-to-a-dosage-matrix"></a>
 </h2>
 <p>Suppose we have some individuals with the following genotypes:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">genotypes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"DRB1*12:02:02:03,DRB1*12:02:02:03"</span>,</span>
 <span>  <span class="st">"DRB1*04:174,DRB1*15:152"</span>,</span>
@@ -260,7 +279,7 @@ then we need to convert the genotype names to a matrix of allele dosages
 (e.g., 0, 1, 2).</p>
 <p>We can use <code><a href="../reference/dosage.html">dosage()</a></code> to convert each individual’s
 genotypes to amino acid dosages:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dosage</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dosage.html">dosage</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span>, <span class="va">genotypes</span><span class="op">)</span></span>
 <span><span class="va">dosage</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                                   n29unk Mn29 n28unk Vn28 n27unk Cn27 n26unk</span></span>
@@ -298,7 +317,7 @@ expect!</p>
 <p>Let’s simulate a dataset with cases and controls to demonstrate one
 approach for testing which amino acid positions might be associated with
 cases.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -332,7 +351,7 @@ to test for association with the <code>case</code> variable.</p>
 acid position. This could reveal if any amino acid position might be
 associated with the <code>case</code> variable in our simulated
 dataset.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># prepare column names for use in formulas</span></span>
 <span><span class="va">ix</span> <span class="op">&lt;-</span> <span class="fl">4</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">[</span><span class="va">ix</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"VAR%s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">[</span><span class="va">ix</span><span class="op">]</span><span class="op">)</span></span>
@@ -382,7 +401,7 @@ encoding matrix.</p>
 <p>For example, here is a UMAP embedding of HLA-DRB1 alleles encoded as
 a one-hot amino acid matrix with 1658 columns, one for each amino acid
 at each position. The color indicates the 2-digit allele name.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uamp</span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span>, n_epochs <span class="op">=</span> <span class="fl">200</span>, min_dist <span class="op">=</span> <span class="fl">1</span>, spread <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="examples_files/figure-html/umap-2digit-1.png" width="2700"></p>
 <p>We can highlight which alleles have aspartic acid (Asp or D) at
@@ -409,7 +428,7 @@ access genotype data and new query tools.</a> Nucleic Acids Res.
 2020;48: D783–D788. <a href="doi:10.1093/nar/gkz1029" class="uri">doi:10.1093/nar/gkz1029</a>
 </li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">af</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hla_frequencies.html">hla_frequencies</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">af</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123,502 × 7</span></span></span>
@@ -429,7 +448,7 @@ access genotype data and new query tools.</a> Nucleic Acids Res.
 <p>We can use this data to plot the frequency of a specific allele
 (e.g. DQB1*02:01) in populations with more than 1000 sampled
 individuals:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_allele</span> <span class="op">&lt;-</span> <span class="st">"DQB1*02:01"</span></span>
 <span><span class="va">my_af</span> <span class="op">&lt;-</span> <span class="va">af</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">allele</span> <span class="op">==</span> <span class="va">my_allele</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1000</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -465,7 +484,7 @@ antigen in individuals homozygous for that class II allele.</p>
 <p>The amino acid distance matrix by Granthan 1974 (<a href="https://doi.org/10.1126/science.185.4154.862" class="external-link uri">https://doi.org/10.1126/science.185.4154.862</a>) encodes
 information about the composition, polarity, and molecular volume of
 each amino acid.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grantham</span></span>
 <span><span class="co">#&gt;    amino    c    p     v</span></span>
 <span><span class="co">#&gt; 1    Ser 1.42  9.2  32.0</span></span>
@@ -490,14 +509,14 @@ each amino acid.</p>
 <span><span class="co">#&gt; 20   Trp 0.13  5.4 170.0</span></span></code></pre></div>
 <p>We can use that matrix to compute an HLA divergence metric for a set
 of individuals like this:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_genos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A*23:01:12,A*24:550"</span>, <span class="st">"A*25:12N,A*11:27"</span>, <span class="st">"A*24:381,A*33:85"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/hla_divergence.html">hla_divergence</a></span><span class="op">(</span><span class="va">my_genos</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A*23:01:12,A*24:550    A*25:12N,A*11:27    A*24:381,A*33:85 </span></span>
 <span><span class="co">#&gt;           0.5131579           3.4736842           5.1078947</span></span></code></pre></div>
 <p>The divergence for a homozygote is equal to zero, by definition:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hla_divergence.html">hla_divergence</a></span><span class="op">(</span><span class="st">"A*01:01,A*01:01"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A*01:01,A*01:01 </span></span>
 <span><span class="co">#&gt;               0</span></span></code></pre></div>
@@ -505,7 +524,7 @@ of individuals like this:</p>
 translated from the original Perl code by Pierini &amp; Lenz 2018 (<a href="https://doi.org/10.1093/molbev/msy116" class="external-link uri">https://doi.org/10.1093/molbev/msy116</a>).</p>
 <p>The amino acid distance matrix is easily accessible, and we provide
 two built-in options “grantham” and “uniform”:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/amino_distance_matrix.html">amino_distance_matrix</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"grantham"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     A   R   N   D   C   Q   E   G   H   I   L   K   M   F   P   S   T   W   Y</span></span>
 <span><span class="co">#&gt; A   0 112 111 126 195  91 107  60  86  94  96 106  84 113  27  99  58 148 112</span></span>
@@ -565,7 +584,7 @@ operating system thanks to the <a href="https://github.com/r-lib/rappdirs" class
 <p>Here are a few examples of how to download releases or get a list of
 release names.</p>
 <p>Download the latest release (default) or a specific release:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download all of the data (120MB) for the latest IMGTHLA release</span></span>
 <span><span class="fu"><a href="../reference/install_hla.html">install_hla</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span></span>
 <span></span>
@@ -573,7 +592,7 @@ release names.</p>
 <span><span class="fu"><a href="../reference/install_hla.html">install_hla</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"3.51.0"</span><span class="op">)</span></span></code></pre></div>
 <p>Optionally, get or set the directory hlabud uses to store the
 data:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"hlabud_dir"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "/home/username/.local/share/hlabud"</span></span>
 <span></span>
@@ -594,7 +613,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <h2 id="count-the-number-of-alleles-in-each-imgthla-release">Count the number of alleles in each IMGTHLA release<a class="anchor" aria-label="anchor" href="#count-the-number-of-alleles-in-each-imgthla-release"></a>
 </h2>
 <p>We can get a list of the release names:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">releases</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hla_releases.html">hla_releases</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">releases</span></span>
 <span><span class="co">#&gt;  [1] "3.56.0"   "3.55.0"   "3.54.0"   "3.53.0"   "3.52.0"   "3.51.0"  </span></span>
@@ -603,7 +622,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <span><span class="co">#&gt; [19] "3.42.0"   "3.41.2"   "3.41.0"   "3.40.0"   "3.39.0"   "3.38.0"  </span></span>
 <span><span class="co">#&gt; [25] "3.37.0"   "3.36.0"   "3.35.0"   "3.34.0"   "3.33.0"   "3.32.0"</span></span></code></pre></div>
 <p>Then we can get the allele names for each release:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_alleles</span> <span class="op">&lt;-</span> <span class="fu">rbindlist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">releases</span>, <span class="kw">function</span><span class="op">(</span><span class="va">release</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">retval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hla_alleles.html">hla_alleles</a></span><span class="op">(</span>release <span class="op">=</span> <span class="va">release</span><span class="op">)</span></span>
 <span>  <span class="va">retval</span><span class="op">$</span><span class="va">release</span> <span class="op">&lt;-</span> <span class="va">release</span></span>
@@ -620,7 +639,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <span><span class="co">#&gt; Warning in hla_alleles(release = release): unrecognized release name</span></span>
 <span><span class="co">#&gt; 'Allelelist.3412.txt'</span></span></code></pre></div>
 <p>Next, count how many alleles we have in each release:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">my_alleles</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">count</span><span class="op">(</span><span class="va">release</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">d</span></span>
 <span><span class="co">#&gt;     release     n</span></span>
@@ -652,7 +671,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <span><span class="co">#&gt; 25:  3.56.0 39886</span></span>
 <span><span class="co">#&gt;     release     n</span></span></code></pre></div>
 <p>And plot the number of alleles as a line plot:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">release</span>, y <span class="op">=</span> <span class="va">n</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -664,7 +683,7 @@ drwxrwxr-x 12 user user    4.0K Apr  5 00:27 3.51.0
 <span>    axis.ticks.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="examples_files/figure-html/alleles_per_release-1.png" width="700"></p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="va">my_alleles</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>gene <span class="op">=</span> <span class="fu">str_split_fixed</span><span class="op">(</span><span class="va">Allele</span>, <span class="st">"\\*"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">count</span><span class="op">(</span><span class="va">release</span>, <span class="va">gene</span><span class="op">)</span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">release</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span> <span class="op">+</span></span>
