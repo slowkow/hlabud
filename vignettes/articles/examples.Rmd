@@ -186,6 +186,20 @@ each position:
 a$onehot[1:5,1:25]
 ```
 
+What is a one-hot encoded matrix?
+Here is a simple example to demonstrate the idea:
+
+```{r}
+dat <- data.frame(
+  V1 = c("A", "A", "B"),
+  V2 = c("B", "B", "B"),
+  V3 = c("C", "B", "B"),
+  stringsAsFactors = TRUE
+)
+dat
+predict(onehot::onehot(dat), dat)
+```
+
 # Convert genotypes to a dosage matrix
 
 Suppose we have some individuals with the following genotypes:
