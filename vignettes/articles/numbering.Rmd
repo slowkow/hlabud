@@ -172,7 +172,7 @@ Then, as we move on to `TERVR.LLER`, we add 10 to 11 to get 21 for the `T` amino
 However, as we move on to `CIYNQEE.SV` the rule of "add 10" does not work.
 Instead of labeling `C` as position 31, we label it position 30. Why?
 
-The reason why `C` is 31, and not 30, is because there is an indel (or gap) in the reference sequence at position 25_26 (notice the `.` in `R.L`).
+The reason why `C` is 30, and not 31, is because there is an indel (or gap) in the reference sequence at position 25_26 (notice the `.` in `R.L`).
 The convention is that deletions in the reference sequence are not numbered.
 
 Let's take a closer look at this data with hlabud.
@@ -193,6 +193,7 @@ colnames(a$alleles)[50:70]
 ```
 
 If hlabud is using the correct numbering, then we should see:
+
 - `T` at position 21
 - `C` at position 30
 

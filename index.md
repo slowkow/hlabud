@@ -44,8 +44,8 @@ how to use hlabud in your analyses.
 -   [Logistic regression association for amino acid
     positions](articles/examples.html#logistic-regression-association-for-amino-acid-positions)
 
--   [UMAP embedding of 3,516 HLA-DRB1
-    alleles](articles/examples.html#umap-embedding-of-3516-hla-drb1-alleles)
+-   [UMAP embedding of 3,671 HLA-DRB1
+    alleles](articles/examples.html#umap-embedding-of-hla-drb1-alleles)
 
 -   [Get HLA allele frequencies from Allele Frequency Net Database
     (AFND)](articles/examples.html#get-hla-allele-frequencies-from-allele-frequency-net-database-afnd)
@@ -62,7 +62,7 @@ how to use hlabud in your analyses.
 <a href="https://slowkow.github.io/hlabud/articles/examples.html#logistic-regression-association-for-amino-acid-positions">
 <img width="49%" src="articles/examples_files/figure-html/glm-volcano-1.png">
 </a>
-<a href="https://slowkow.github.io/hlabud/articles/examples.html#umap-embedding-of-3516-hla-drb1-alleles">
+<a href="https://slowkow.github.io/hlabud/articles/examples.html#umap-embedding-of-hla-drb1-alleles">
 <img width="49%" src="articles/examples_files/figure-html/umap-2digit-1.png">
 </a>
 <a href="https://slowkow.github.io/hlabud/articles/examples.html#get-hla-allele-frequencies-from-allele-frequency-net-database-afnd">
