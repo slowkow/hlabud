@@ -90,7 +90,7 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Kamil Slowikowski</p>
-<p>2024-05-15</p>
+<p>2024-06-05</p>
 <p>In this vignette, we explore a few different methods for visualizing
 the molecular structure of HLA proteins. First, we’ll look at an example
 of how to use the <a href="https://github.com/nvelden/NGLVieweR" class="external-link">NGLVieweR</a> R package to
@@ -215,8 +215,9 @@ with IMGT position 3.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_alleles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">[</span>,<span class="st">"Y3"</span><span class="op">]</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">my_alleles</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 7023</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">my_alleles</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 7023</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">my_alleles</span>, <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "B*07:02:01:01" "B*07:02:01:02" "B*07:02:01:03" "B*07:02:01:04"</span></span>
 <span><span class="co">#&gt;  [5] "B*07:02:01:05" "B*07:02:01:06" "B*07:02:01:07" "B*07:02:01:08"</span></span>
 <span><span class="co">#&gt;  [9] "B*07:02:01:09" "B*07:02:01:10" "B*07:02:01:11" "B*07:02:01:12"</span></span>
@@ -224,7 +225,7 @@ with IMGT position 3.</p>
 <span><span class="co">#&gt; [17] "B*07:02:01:17" "B*07:02:01:18" "B*07:02:01:19" "B*07:02:01:20"</span></span></code></pre></div>
 <p>What fraction of reported HLA-B alleles have tyrosine at IMGT
 position 3 (Y3)?</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">[</span>,<span class="st">"Y3"</span><span class="op">]</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">onehot</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.711406</span></span></code></pre></div>
 <p>As it turns out, almost all of the HLA-B alleles have Y3.</p>
@@ -243,31 +244,31 @@ HLA-DQB1, this snippet of PyMOL code will produce the figure below.</p>
 <li>Write a PyMOL script</li>
 <li>Run the PyMOL script with the <code>pymol</code> command</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co"># Write a pymol script</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt; EOF</span> <span class="op">&gt;</span> script.pml</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="st">fetch 7kei</span></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="st">show cartoon</span></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="st">remove solvent</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="st">remove chain D</span></span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="st">remove chain H</span></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="st">color teal, chain A</span></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="st">color orange, chain B</span></span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="st">color purple, chain C</span></span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="st">color red, chain B &amp; resi 13</span></span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="st">color red, chain B &amp; resi 45</span></span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="st">label n. CA and chain B &amp; resi 13, "%s %s" % (resi, resn)</span></span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="st">label n. CA and chain B &amp; resi 45, "%s %s" % (resi, resn)</span></span>
-<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="st">png 7kei.png, width=1200, height=800, dpi=300 </span></span>
-<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="op">EOF</span></span>
-<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co"># On Linux, we can just use `pymol` without making an alias</span></span>
-<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co"># On macOS, we need to make an alias</span></span>
-<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="bu">alias</span> pymol=/Applications/PyMOL.app/Contents/MacOS/PyMOL</span>
-<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="ex">pymol</span> <span class="at">-c</span> script.pml</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co"># Write a pymol script</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt; EOF</span> <span class="op">&gt;</span> script.pml</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="st">fetch 7kei</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="st">show cartoon</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="st">remove solvent</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="st">remove chain D</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="st">remove chain H</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="st">color teal, chain A</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="st">color orange, chain B</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="st">color purple, chain C</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="st">color red, chain B &amp; resi 13</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="st">color red, chain B &amp; resi 45</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="st">label n. CA and chain B &amp; resi 13, "%s %s" % (resi, resn)</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="st">label n. CA and chain B &amp; resi 45, "%s %s" % (resi, resn)</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="st">png 7kei.png, width=1200, height=800, dpi=300 </span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="op">EOF</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co"># On Linux, we can just use `pymol` without making an alias</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co"># On macOS, we need to make an alias</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="bu">alias</span> pymol=/Applications/PyMOL.app/Contents/MacOS/PyMOL</span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="ex">pymol</span> <span class="at">-c</span> script.pml</span></code></pre></div>
 <p>Here is what the PyMOL script will do:</p>
 <ol style="list-style-type: decimal">
 <li>Load a structure from the <a href="https://www.rcsb.org/" class="external-link">Protein
