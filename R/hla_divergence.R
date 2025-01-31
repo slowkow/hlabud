@@ -80,7 +80,8 @@ V	64	96	133	152	192	96	121	109	84	29	32	97	21	50	68	124	69	88	55	0")
 #' hla_divergence(my_genos, method = amino_distance_matrix("grantham"))
 #' @export
 hla_divergence <- function(
-  alleles = c("A*01:01,A*02:01"), method = "grantham", release = "latest", verbose = FALSE
+  alleles = c("A*01:01,A*02:01"), method = "grantham", release = "latest", verbose = FALSE,
+  positions = NULL
 ) {
 
   aminos <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M",
@@ -123,11 +124,24 @@ hla_divergence <- function(
     sequenceLength <- ncol(my_mat)
     allelePairs <- list()
 
+    if (is.null(positions)) {
+      positions <- 1:sequenceLength
+    } else {
+      positions <- as.character(positions)
+      if (!all(positions %in% colnames(my_mat))) {
+        stop(
+          glue("positions must be a subset of column names from the hla_alignments()$alleles matrix:\n{paste(head(colnames(my_mat), 10), collapse=',')} ... {paste(tail(colnames(my_mat), 10), collapse=',')}"),
+          call. = FALSE
+        )
+      }
+    }
+
     for (i in 1:nrow(my_mat)) {
       for (j in 1:nrow(my_mat)) {
         distanceSum <- 0
         if (i != j) { # Calculate sum of pairwise aa distance between ith and jth allele
-          for (id in 1:sequenceLength) {
+          # for (id in 1:sequenceLength) {
+          for (id in positions) {
             x <- my_mat[i,id]
             y <- my_mat[j,id]
             if (x %in% aminos && y %in% aminos) {
