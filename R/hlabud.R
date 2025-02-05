@@ -323,6 +323,14 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
   }
   if (verbose) { message(glue("Reading {my_file}")) }
   retval <- read_alignments(my_file)
+  # Special cases: DRB3, DRB4, DRB5
+  if (gene %in% c("DRB3", "DRB4", "DRB5")) {
+    my_regex <- paste("^", gene, "\\*", collapse="", sep="")
+    ix <- str_detect(rownames(retval$alleles), my_regex)
+    retval$alleles <- retval$alleles[ix,,drop=FALSE]
+    retval$onehot <- retval$onehot[ix,,drop=FALSE]
+    retval$sequences <- retval$sequences[ix]
+  }
   retval$gene <- gene
   retval$type <- type
   retval$release <- release
@@ -358,52 +366,75 @@ hla_alignments <- function(gene = "DRB1", type = "prot", release = "latest", ver
 #' a$onehot[1:5,1:5]
 #' @export
 read_alignments <- function(file) {
+
   # Here is some ugly parsing code
   # Maybe one day we can switch to using a BNF parser, e.g. the {rly} R package
   my_type <- str_remove(str_split_fixed(basename(file), "_", 2)[,2], ".txt")
   my_gene <- str_split_fixed(basename(file), "_", 2)[,1]
   lines <- readLines(file)
-  #
+
+  n_pre <- 0
   if (my_type == "prot") {
     # Many amino acids are located before the position labeled as "1"
     al_i <- which(str_detect(lines, "Prot.+ 1$"))
     pre <- lines[al_i]
+    # look for the first negative number
     pre_i <- str_locate(pre, "-")[1,1]
-    if (is.na(pre_i)) {
-      n_pre <- 0
-    } else {
+    # if we don't have a negative number, then we don't have negative positions
+    if (!is.na(pre_i)) {
+      # assume that the number "1" is on the same line as the negative number
       pre_j <- str_locate(pre, "1")[1,1]
+      # number of positions before the position called "1"
       n_pre <- nchar(str_replace_all(substr(lines[al_i + 2], pre_i, pre_j - 1), " ", ""))
-    }
-  } else if (my_type == "nuc") {
-    al_i <- which(str_detect(lines, "cDNA"))
-    n_pre <- as.numeric(str_remove(lines[al_i][1], " *cDNA +"))
-    if (n_pre > 0) {
-      n_pre <- 0
-    } else {
-      n_pre <- 3 * abs(n_pre)
     }
   } else if (my_type == "gen") {
     al_i <- which(str_detect(lines, "gDNA"))
-    n_pre <- abs(as.numeric(str_remove(lines[al_i][1], " *gDNA +")))
+    n_char <- as.numeric(str_remove(lines[al_i][1], " *gDNA +"))
   }
+  # n_pre is always 0 for my_type == "nuc"
+
   # Convert lines to a simple data frame
-  my_regex <- glue("^ {my_gene}\\\\*")
-  al <- lines[str_detect(lines, my_regex)]
-  al <- str_replace_all(al, "\\|", "")
-  al <- str_split_fixed(al, " +", 3)
-  al <- al[,2:3]
+  my_regex <- paste("^ ", my_gene, "\\*", collapse="", sep="")
+  # Special cases: DRB, DRB3, DRB4, DRB5
+  if (my_gene %in% c("DRB", "DRB3", "DRB4", "DRB5")) {
+    my_regex <- "^ DRB[12345]\\*"
+  }
+  al <- lines[str_detect(lines, my_regex)] # get lines that match this gene
+  al <- str_replace_all(al, "\\|", "")     # remove the pipe character "|"
+  al <- str_remove(al, "^ +")              # remove spaces at the start of each line
+  al <- str_split_fixed(al, " +", 2)       # split each line into two pieces
   colnames(al) <- c("allele", "seq")
   al <- as.data.frame(al)
+  
+  # paste the pieces of sequences together for each allele
   al <- al %>% group_by(.data$allele) %>% mutate(id = sprintf("V%s", seq(n()))) %>% ungroup()
   al <- al %>% pivot_wider(names_from = "id", values_from = "seq", values_fill = "")
   al <- al %>% unite("seq", starts_with("V"), sep = "")
   al$seq <- str_replace_all(al$seq, " ", "")
-  # Convert to a matrix
+
+  # Convert to a named character vector
   sequences <- as.character(al$seq)
   names(sequences) <- al$allele
+
+  # How many positions do we need to look at in order to count n_char non-gaps?
+  if (my_type == "gen" && n_char < 0) {
+    n_char <- abs(n_char)
+    non_gaps <- 0
+    # we need to witness n_char non-gap characters
+    while (non_gaps < n_char) {
+      # get the reference sequence character at this position
+      n_pre <- n_pre + 1
+      this_char <- substr(sequences[[1]], n_pre, n_pre)
+      # we witnessed a non-gap character at this position
+      if (this_char != ".") {
+        non_gaps <- non_gaps + 1
+      }
+    }
+  }
+
   # Create a one-hot encoding
   oh <- get_onehot(sequences, n_pre)
+
   return(list(
     sequences = sequences,
     alleles = oh$alleles,
@@ -416,21 +447,25 @@ read_alignments <- function(file) {
 #'
 #' @param al A dataframe with columns allele, seq
 #' @param n_pre The number of amino acid sequences before position 1.
+#' @param drop_identical Drop positions where all alleles have the same amino acid. Default is false.
 #' @param verbose Print messages along the way.
 #' @keywords internal
-get_onehot <- function(sequences, n_pre, verbose = FALSE) {
-  # Split the sequences into character vectors
+get_onehot <- function(sequences, n_pre, drop_identical = FALSE, verbose = FALSE) {
+
+  # Split each string into a vector of individual characters
   seq_chars <- str_split(sequences, "")
   # The first sequence is the reference
   ref_chars <- seq_chars[[1]]
   # Not all sequences are the same length, so we need to know the range
   max_chars <- max(sapply(seq_chars, length))
   min_chars <- min(sapply(seq_chars, length))
+
   # Skip the reference (first sequence), and loop through the remaining sequences
   for (i in 2:length(seq_chars)) {
     # The "-" character indicates identity to the reference
     ix <- which(seq_chars[[i]] == "-")
     ix <- ix[ix <= length(ref_chars)]
+    # copy the residues from the reference sequence into this sequence
     seq_chars[[i]][ix] <- ref_chars[ix]
     seq_len <- length(seq_chars[[i]])
     # If necessary, add "*" characters to pad the length of this sequence
@@ -456,18 +491,31 @@ get_onehot <- function(sequences, n_pre, verbose = FALSE) {
   #######################################################################
   alleles <- do.call(rbind, seq_chars)
   rownames(alleles) <- names(sequences)
-  #
-  # indels "." in the reference sequence do not increment the position
-  gap <- ref_chars == "."
-  #
-  # establish the numbering based on the reference sequence
-  nums <- cumsum(!gap) - n_pre
-  lt1 <- nums < 1
-  nums[lt1] <- nums[lt1] - 1
-  nums[lt1] <- str_replace(nums[lt1], "-", "n")
-  #
+
+  if (n_pre > 0) {
+    # Characters before "1"
+    # Indels "." in the reference sequence do not increment the position
+    neg_gap <- ref_chars[1:n_pre] == "."
+    neg_nums <- sprintf("n%s", rev(cumsum(rev(!neg_gap))))
+    #
+    # Characters starting with "1"
+    # Indels "." in the reference sequence do not increment the position
+    pos_gap <- ref_chars[(n_pre+1):max_chars] == "."
+    pos_nums <- cumsum(!pos_gap)
+    # Concatenate the results
+    gap <- c(neg_gap, pos_gap)
+    nums <- c(neg_nums, pos_nums)
+  } else {
+    # Characters starting with "1"
+    # Indels "." in the reference sequence do not increment the position
+    gap <- ref_chars[1:max_chars] == "."
+    nums <- cumsum(!gap)
+  }
+  # Sanity check
+  stopifnot(length(gap) == max_chars)
+  stopifnot(length(nums) == max_chars)
+
   # deal with indels of various lengths
-  # gap <- apply(alleles == ".", 2, any)
   gap_i <- which(gap)
   num1 <- ""
   i1 <- 0
@@ -496,12 +544,12 @@ get_onehot <- function(sequences, n_pre, verbose = FALSE) {
   indels <- unique(nums[str_detect(nums, "_")])
   n_indels <- length(indels)
   if (verbose) {
-    message(glue("{n_indels} indels"))
+    cat(glue("{n_indels} indels:\n"), paste(indels, collapse = ", "), "\n")
   }
+
   # nums <- sprintf("p%s", nums)
-  # rbind(nums, alleles[1,])[,1:200]
   colnames(alleles) <- nums
-  #
+  
   # collapse the indel columns
   col_n <- table(colnames(alleles))
   col_n <- names(col_n[col_n > 1])
@@ -511,22 +559,27 @@ get_onehot <- function(sequences, n_pre, verbose = FALSE) {
     alleles[,new_i[1]] <- new_col
     alleles <- alleles[,-tail(new_i, length(new_i) - 1)]
   }
-  #
+  
   # keep positions with more than 1 allele
-  keep_pos <- apply(alleles, 2, function(x) length(unique(x))) > 1
-  if (verbose) {
-    message(glue("{sum(keep_pos)} polymorphic positions"))
+  if (drop_identical) {
+    keep_pos <- apply(alleles, 2, function(x) length(unique(x))) > 1
+    if (verbose) {
+      message(glue("{sum(keep_pos)} polymorphic positions"))
+    }
+    if (!any(keep_pos)) {
+      warning(glue("all positions have exactly 1 allele (there are no polymorphisms)"))
+      return(list(alleles = as.matrix(alleles)))
+    }
+    alleles <- alleles[,keep_pos, drop = FALSE]
   }
-  if (!any(keep_pos)) {
-    warning(glue("all positions have exactly 1 allele (there are no polymorphisms)"))
-    return(list(alleles = as.matrix(alleles)))
-  }
-  alleles <- alleles[,keep_pos, drop = FALSE]
+
+  # convert to factor
   alleles <- as.data.frame(alleles)
   for (i in seq(ncol(alleles))) {
     alleles[,i] <- as.factor(alleles[,i])
   }
-  #
+  
+  # use the onehot package to do the conversion
   n_levels <- apply(alleles, 2, function(x) length(unique(x)))
   p <- onehot(alleles, max_levels = max(n_levels))
   retval <- predict(p, alleles)
@@ -546,7 +599,7 @@ get_onehot <- function(sequences, n_pre, verbose = FALSE) {
   # colnames(retval) <- str_replace(colnames(retval), "\\*", "unknown")
   # Rename "." to "gap" so we can use these names in formulas
   # colnames(retval) <- str_replace(colnames(retval), "\\.", "indel")
-  #
+  
   return(list(alleles = as.matrix(alleles), onehot = retval))
 }
 
