@@ -16,3 +16,4 @@ docs
 optimize-figures.sh
 R/GranthamDist
 paper/latex/.texpadtmp
+/issues/
