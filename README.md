@@ -22,7 +22,7 @@ a <- hla_alignments("DRB1")
 a$release
 ```
 
-    ## [1] "3.56.0"
+    ## [1] "3.59.0"
 
 ``` r
 dosage(a$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
@@ -39,7 +39,7 @@ n <- hla_alignments("DRB1", type = "nuc")
 n$release
 ```
 
-    ## [1] "3.56.0"
+    ## [1] "3.59.0"
 
 ``` r
 dosage(n$onehot, c("DRB1*03:01:05", "DRB1*03:02:03"))
@@ -124,7 +124,7 @@ Additionally, you can also cite the `hlabud` package like this:
 -   Slowikowski K. hlabud: HLA analysis in R. Zenodo.
     <https://doi.org/10.5281/zenodo.11093557>
 
-# Related work
+# Learn more
 
 I recommend this article for anyone new to HLA, because the beautiful
 figures help to build intuition:
@@ -141,12 +141,11 @@ Learn about the conventions for HLA nomenclature:
     2010.](https://pubmed.ncbi.nlm.nih.gov/20356336/) Tissue Antigens.
     2010;75: 291–455.
 
-[HATK](https://github.com/WansonChoi/HATK) is set of Python scripts for
-processing and analyzing IMGT-HLA data. Here is the related article:
+# Related work
 
--   Choi W, Luo Y, Raychaudhuri S, Han B. [HATK: HLA analysis
-    toolkit](https://pubmed.ncbi.nlm.nih.gov/32735319). Bioinformatics.
-    2021;37: 416–418. <doi:10.1093/bioinformatics/btaa684>
+[HLAtools](https://github.com/sjmack/HLAtools) is an R package that also
+makes IPD-IMGT/HLA resources available for analysis, and also works with
+BIGDAWG data formats.
 
 For case-control analysis of HLA genotype data, consider the
 [BIGDAWG](https://CRAN.R-project.org/package=BIGDAWG) R package
@@ -156,6 +155,22 @@ available on CRAN. Here is the related article:
     Data Analysis Workflow Gaps (BIGDAWG): An integrated case-control
     analysis pipeline.](https://pubmed.ncbi.nlm.nih.gov/26708359) Hum
     Immunol. 2016;77: 283–287.
+
+[HATK](https://github.com/WansonChoi/HATK) is set of Python scripts for
+processing and analyzing IMGT-HLA data. Here is the related article:
+
+-   Choi W, Luo Y, Raychaudhuri S, Han B. [HATK: HLA analysis
+    toolkit.](https://pubmed.ncbi.nlm.nih.gov/32735319) Bioinformatics.
+    2021;37: 416–418. <doi:10.1093/bioinformatics/btaa684>
+
+The HLA divergence code in hlabud is a translation of the [original Perl
+code](https://sourceforge.net/projects/granthamdist) by [Tobias
+Lenz](https://orcid.org/0000-0002-7203-0044), which was published in:
+
+-   Pierini F, Lenz TL. [Divergent allele advantage at human MHC genes:
+    signatures of past and ongoing
+    selection.](https://pubmed.ncbi.nlm.nih.gov/29893875) Mol Biol
+    Evol. 2018. <doi:10.1093/molbev/msy116>
 
 [HLAdivR](https://github.com/rbentham/HLAdivR/) is another R package for
 calculating HLA divergence.
