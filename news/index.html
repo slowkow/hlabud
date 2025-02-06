@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hlabud</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,42 @@
       <small>Source: <a href="https://github.com/slowkow/hlabud/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.1.0" id="hlabud-210">hlabud 2.1.0<a class="anchor" aria-label="anchor" href="#hlabud-210"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-2-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-1-0"></a></h3>
+<ul><li>Fix incorrect position numbering again, thanks to Vinicius Stelet for bringing this to my attention in issue <a href="https://github.com/slowkow/hlabud/issues/4" class="external-link">#4</a>.</li>
+</ul><p>In hlabud version 2.0.0, some genes were correctly numbered and some were not:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>A     incorrect</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>B     incorrect</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>C     ok</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>DMA   incorrect</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>DMB   incorrect</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>DOA   incorrect</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>DOB   incorrect</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>DPA1  ok</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>DPB1  ok</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>DQA1  ok</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>DQA2  incorrect</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>DQB1  ok</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>DQB2  ok</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>DRA   incorrect</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>DRB   ok</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>DRB1  ok</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>DRB3  ok</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>DRB4  ok</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>DRB5  ok</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>E     ok</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>F     incorrect</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>G     incorrect</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>HFE   incorrect</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>MICA  incorrect</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>MICB  incorrect</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>TAP1  incorrect</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>TAP2  ok</span></code></pre></div>
+<p>We now have additional tests to confirm that the IMGT files are being parsed correctly, and the positions are numbered correctly.</p>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.0.0" id="hlabud-200">hlabud 2.0.0<a class="anchor" aria-label="anchor" href="#hlabud-200"></a></h2>
 <div class="section level3">
