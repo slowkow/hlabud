@@ -53,6 +53,7 @@ The amino acid distance matrix we use is the one published by Grantham 1974 (doi
 <span>  alleles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A*01:01,A*02:01"</span><span class="op">)</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"grantham"</span>,</span>
 <span>  release <span class="op">=</span> <span class="st">"latest"</span>,</span>
+<span>  positions <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -71,6 +72,10 @@ The amino acid distance matrix we use is the one published by Grantham 1974 (doi
 
 <dt id="arg-release">release<a class="anchor" aria-label="anchor" href="#arg-release"></a></dt>
 <dd><p>Default is "latest". Should be a release name like "3.51.0".</p></dd>
+
+
+<dt id="arg-positions">positions<a class="anchor" aria-label="anchor" href="#arg-positions"></a></dt>
+<dd><p>Only use these positions in the calculation. Should be column names from the <code>hla_alignments()$alleles</code> matrix.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -94,8 +99,10 @@ The amino acid distance matrix we use is the one published by Grantham 1974 (doi
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">my_genos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A*23:01:12,A*24:550"</span>, <span class="st">"A*25:12N,A*11:27"</span>,</span></span>
-<span class="r-in"><span>              <span class="st">"A*24:381,A*33:85"</span>, <span class="st">"A*01:01:,A*01:01,A*02:01"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">my_genos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A*23:01:12,A*24:550"</span>,</span></span>
+<span class="r-in"><span>              <span class="st">"A*25:12N,A*11:27"</span>,</span></span>
+<span class="r-in"><span>              <span class="st">"A*24:381,A*33:85"</span>,</span></span>
+<span class="r-in"><span>              <span class="st">"A*01:01:,A*01:01,A*02:01"</span><span class="op">)</span> <span class="co"># this individual has 3 alleles</span></span></span>
 <span class="r-in"><span><span class="fu">hla_divergence</span><span class="op">(</span><span class="va">my_genos</span>, method <span class="op">=</span> <span class="st">"grantham"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      A*23:01:12,A*24:550         A*25:12N,A*11:27         A*24:381,A*33:85 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 0.511811                 3.464567                 5.094488 </span>
@@ -108,6 +115,13 @@ The amino acid distance matrix we use is the one published by Grantham 1974 (doi
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 0.511811                 3.464567                 5.094488 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A*01:01:,A*01:01,A*02:01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 3.987752 </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Compute divergence on a subset of positions:</span></span></span>
+<span class="r-in"><span><span class="fu">hla_divergence</span><span class="op">(</span><span class="va">my_genos</span>, positions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      A*23:01:12,A*24:550         A*25:12N,A*11:27         A*24:381,A*33:85 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        0                        0                        0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A*01:01:,A*01:01,A*02:01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        0 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

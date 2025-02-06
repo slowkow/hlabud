@@ -46,7 +46,7 @@ sequences.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_onehot</span><span class="op">(</span><span class="va">sequences</span>, <span class="va">n_pre</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_onehot</span><span class="op">(</span><span class="va">sequences</span>, <span class="va">n_pre</span>, drop_identical <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -55,6 +55,10 @@ sequences.</p>
 
 <dl><dt id="arg-n-pre">n_pre<a class="anchor" aria-label="anchor" href="#arg-n-pre"></a></dt>
 <dd><p>The number of amino acid sequences before position 1.</p></dd>
+
+
+<dt id="arg-drop-identical">drop_identical<a class="anchor" aria-label="anchor" href="#arg-drop-identical"></a></dt>
+<dd><p>Drop positions where all alleles have the same amino acid. Default is false.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
