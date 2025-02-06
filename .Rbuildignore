@@ -23,3 +23,4 @@ paper/
 ^vignettes/articles$
 ^optimize-figures.sh$
 ^R/GranthamDist/
+^inst/extdata/

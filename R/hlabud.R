@@ -450,6 +450,7 @@ read_alignments <- function(file) {
 #' @param drop_identical Drop positions where all alleles have the same amino acid. Default is false.
 #' @param verbose Print messages along the way.
 #' @keywords internal
+#' @importFrom utils tail
 get_onehot <- function(sequences, n_pre, drop_identical = FALSE, verbose = FALSE) {
 
   # Split each string into a vector of individual characters

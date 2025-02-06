@@ -5,10 +5,12 @@
 \title{Make a one-hot encoded matrix from a dataframe of amino acid
 sequences.}
 \usage{
-get_onehot(sequences, n_pre, verbose = FALSE)
+get_onehot(sequences, n_pre, drop_identical = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{n_pre}{The number of amino acid sequences before position 1.}
+
+\item{drop_identical}{Drop positions where all alleles have the same amino acid. Default is false.}
 
 \item{verbose}{Print messages along the way.}
 
