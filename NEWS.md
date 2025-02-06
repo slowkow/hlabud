@@ -1,3 +1,46 @@
+
+hlabud 2.1.0
+============
+
+## Bug fixes
+
+* Fix incorrect position numbering again, thanks to Vinicius Stelet for
+  bringing this to my attention in issue #4.
+
+In hlabud version 2.0.0, some genes were correctly numbered and some were not:
+
+    A     incorrect
+    B     incorrect
+    C     ok
+    DMA   incorrect
+    DMB   incorrect
+    DOA   incorrect
+    DOB   incorrect
+    DPA1  ok
+    DPB1  ok
+    DQA1  ok
+    DQA2  incorrect
+    DQB1  ok
+    DQB2  ok
+    DRA   incorrect
+    DRB   ok
+    DRB1  ok
+    DRB3  ok
+    DRB4  ok
+    DRB5  ok
+    E     ok
+    F     incorrect
+    G     incorrect
+    HFE   incorrect
+    MICA  incorrect
+    MICB  incorrect
+    TAP1  incorrect
+    TAP2  ok
+
+We now have additional tests to confirm that the IMGT files are being parsed
+correctly, and the positions are numbered correctly.
+
+
 hlabud 2.0.0
 ============
 
