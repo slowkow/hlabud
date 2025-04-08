@@ -141,12 +141,14 @@ hla_divergence <- function(
         )
       }
     }
+    
+    # the total length depends on the user's input
+    sequenceLength <- length(positions)
 
     for (i in 1:nrow(my_mat)) {
       for (j in 1:nrow(my_mat)) {
         distanceSum <- 0
         if (i != j) { # Calculate sum of pairwise aa distance between ith and jth allele
-          # for (id in 1:sequenceLength) {
           for (id in positions) {
             x <- my_mat[i,id]
             y <- my_mat[j,id]
