@@ -129,9 +129,13 @@ hla_divergence <- function(
     my_mat <- a$alleles[my_alleles,]
     sequenceLength <- ncol(my_mat)
     allelePairs <- list()
+    
+    # some positions might be all * so we should discard those
+    keep_positions <- names(which(apply(my_mat, MARGIN = 2, FUN = function(x) all(x %in% aminos))))
+    my_mat <- my_mat[,keep_positions] 
 
     if (is.null(positions)) {
-      positions <- 1:sequenceLength
+      positions <- as.character(colnames(my_mat))
     } else {
       positions <- as.character(positions)
       if (!all(positions %in% colnames(my_mat))) {
@@ -141,9 +145,10 @@ hla_divergence <- function(
         )
       }
     }
+    my_mat <- my_mat[,positions]
     
-    # the total length depends on the user's input
-    sequenceLength <- length(positions)
+    # the total length depends on the user's input and on the alleles in this individual
+    sequenceLength <- ncol(my_mat)
 
     for (i in 1:nrow(my_mat)) {
       for (j in 1:nrow(my_mat)) {
