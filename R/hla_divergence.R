@@ -130,8 +130,8 @@ hla_divergence <- function(
     sequenceLength <- ncol(my_mat)
     allelePairs <- list()
     
-    # some positions might be all * so we should discard those
-    keep_positions <- names(which(apply(my_mat, MARGIN = 2, FUN = function(x) all(x %in% aminos))))
+    # some positions might lack any amino acids (*, .) so we should discard those
+    keep_positions <- names(which(apply(my_mat, MARGIN = 2, FUN = function(x) any(x %in% aminos))))
     my_mat <- my_mat[,keep_positions] 
 
     if (is.null(positions)) {
